@@ -1,0 +1,89 @@
+.banner {
+	display: flex;
+	height: 100vh;
+	position: relative;
+	background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
+}
+.container {
+	margin: 0;
+}
+.title_font {
+	font-family: Saira;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 72px;
+	line-height: 100%;
+	letter-spacing: 0.05em;
+	color: #ffffff;
+}
+.subtitle_font {
+	font-family: Saira;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 24px;
+	line-height: 38px;
+	letter-spacing: 0.05em;
+
+	color: #ffffff;
+}
+.banner__info {
+	background-color: none;
+	padding-top: 45vh;
+	padding-left: 50px;
+	padding-right: 50px;
+	padding-bottom: 40px;
+}
+.banner__info > button {
+	font-family: Saira;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	line-height: 38px;
+
+	letter-spacing: 0.05em;
+
+	color: #ffffff;
+	background: #f2994a;
+	border-radius: 15px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+.banner__search {
+	display: flex;
+	justify-content: space-between;
+	text-align: center;
+	background-color: white;
+	padding-bottom: 20px;
+	border-radius: 42px;
+	flex-direction: column;
+	width: 492px;
+	height: 382px;
+	align-items: fl;
+	align-self: center;
+}
+.banner__search > form > input {
+	background: #ffffff;
+
+	border: 1px solid #bbbbbb;
+	box-sizing: border-box;
+	border-radius: 15px;
+	width: 100%;
+	padding: 10px;
+	outline-width: 0;
+}
+.banner__search > form > button {
+	background: #fd275f;
+	border-radius: 15px;
+	font-family: Saira;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 38px;
+	margin-top: 30px;
+	letter-spacing: 0.05em;
+	width: 100%;
+	color: #ffffff;
+}
+.banner__search > form {
+	padding: 50px;
+}

@@ -1,8 +1,7 @@
 import React from 'react';
-import SearchIcon from '@material-ui/icons/Search';
 
 import { Avatar } from '@material-ui/core';
-import '../assets/Header.css';
+import '../Styles/Header.css';
 const Header = () => {
 	return (
 		<div className="header">
