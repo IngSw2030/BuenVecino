@@ -1,9 +1,17 @@
 import React from 'react';
+import Header from './components/Header';
+import Main from './Main';
 
 function App() {
 	return (
-		<div className="container">
-			<h4 className="text-center mt-4">Prueba</h4>
+		<div>
+			<Header />
+			<Main />
+			{/* home */}
+			{/* Header */}
+			{/* banner */}
+			{/* cards */}
+			{/* footer */}
 		</div>
 	);
 }
