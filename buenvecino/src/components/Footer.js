@@ -1,17 +1,18 @@
 import React, { Component } from "react";
+import "../styles/Footer.css";
 
 class Footer extends Component {
   render() {
     return (
-      <div>
-        <div>
+      <div className="Footer">
+        <div className="Contacto">
           <img src={require("../assets/Logo.png")} alt="" />
           <h4>Contacto</h4>
           <h4>Anuncia tu propiedad</h4>
           <h4>Universidad Javeriana 2020</h4>
-          <h4>Hecho con en Bogotá</h4>
+          <p>Hecho con ♥ en Bogotá</p>
         </div>
-        <div>
+        <div className="Suscripcion">
           <h4>Suscribete</h4>
           <input type="email" />
           <h4>Nuestras redes sociales</h4>

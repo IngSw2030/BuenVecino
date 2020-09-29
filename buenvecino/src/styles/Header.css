@@ -1,13 +1,3 @@
-/* Se normaliza la pagina web */
-* {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    text-decoration: none;
-    border: none;
-    outline: none;
-}
-
 .header {
 	display: flex;
 	justify-content: space-between;
@@ -37,10 +27,12 @@
 
 nav ul {
 	display: inline;
-	list-style: none;
+	text-decoration: none;
 }
 
 .nav-items>li {
+	text-decoration: none;
+	list-style: none;
 	float: left;
 }
 .nav-items li a {
@@ -59,7 +51,7 @@ nav ul {
 	color: #00F3BB;
 	
 }
-.nav-items li a:active {
+/* .nav-items li a:active {
 	
-}
+} */
 

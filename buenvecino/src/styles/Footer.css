@@ -1,0 +1,53 @@
+
+.Footer {
+  display: flex;
+  height: 45vh;
+  position: relative;
+  background: #24243c;
+}
+h4 {
+  font-family: Saira;
+  font-size: 18px;
+  font-weight: 400;
+  color: white;
+}
+
+.Contacto {
+  margin-top: 2%;
+  margin-left: 10%;
+}
+.Contacto img {
+  width: 60%;
+  margin-left: -10%;
+  margin-bottom: 3%;
+}
+.Contacto p {
+  font-family: Saira;
+  font-size: 18px;
+  font-weight: 400;
+  color: white;
+  margin-top: 5%;
+}
+
+.Suscripcion{
+    margin-top: 3%;
+}
+
+.Suscripcion input{
+    background-color: #24243c;
+    border: 1px solid white;
+    color: white;
+    box-sizing: border-box;
+    border-radius: 15px;
+    font-size: 18px;
+    padding-left: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    margin-bottom: 5%;
+}
+
+.Suscripcion .fab{
+    font-size: 50px;
+    color: white;
+    margin-right: 10%;
+}

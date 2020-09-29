@@ -1,0 +1,26 @@
+.Localidad {
+  margin: 5%;
+}
+.Localidad h2 {
+  font-family: Saira;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 57px;
+  letter-spacing: 0.05em;
+  margin: 0;
+  padding: 0;
+}
+.Localidad p {
+  font-family: Saira;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: 0.05em;
+  color: #4f4f4f;
+  margin-bottom: 5%;
+}
+
+.Localidad .Inmuebles{
+  display: flex;
+  justify-content: center;
+}

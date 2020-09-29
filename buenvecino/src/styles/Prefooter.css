@@ -1,0 +1,31 @@
+.Prefooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 77vh;
+  background: no-repeat center/100% url("../assets/Fondo_prefooter.png") ;
+}
+
+h3{
+    color: white;
+    font-family: Saira;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 40px;
+    letter-spacing: 0.05em;
+}
+
+.Prefooter button{
+    color: white;
+    background: #fd275f; ;
+    border-radius: 15px;
+    height: 67px;
+    width: 411px;
+    
+    font-family: Saira;
+    font-size: 22px;
+    font-weight: bold;
+
+    margin-top: 4%;
+}
