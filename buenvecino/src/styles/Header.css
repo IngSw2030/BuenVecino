@@ -1,0 +1,65 @@
+/* Se normaliza la pagina web */
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    border: none;
+    outline: none;
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	background-color: none;
+	z-index: 100;
+	width: 100%;
+}
+.header__icon {
+	object-fit: contain;
+	height: 100px;
+	width: 300px;
+	margin-left: 5%;
+}
+
+.header__right {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 50vw;
+	margin-right: 3%;
+}
+
+/* Barra de navegación */
+
+nav ul {
+	display: inline;
+	list-style: none;
+}
+
+.nav-items>li {
+	float: left;
+}
+.nav-items li a {
+	color: white;
+	text-decoration: none;
+	display: inline-block;
+	font-family: Saira;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 28px;
+	letter-spacing: 0.05em;
+	padding-right: 1em;
+}
+.nav-items li a:hover {
+	color: #00F3BB;
+	
+}
+.nav-items li a:active {
+	
+}
+

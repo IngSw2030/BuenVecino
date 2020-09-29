@@ -1,19 +1,22 @@
-import React from 'react';
-import Header from './components/Header';
-import Main from './Main';
+import React,{Component} from "react";
+import Landing from "./screens/landing";
+// import Header from './components/Header';
+// import Main from './Main';
 
-function App() {
-	return (
-		<div>
-			<Header />
-			<Main />
-			{/* home */}
-			{/* Header */}
-			{/* banner */}
-			{/* cards */}
-			{/* footer */}
-		</div>
-	);
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <Landing />
+        {/* <Header />
+			<Main /> */}
+        {/* home */}
+        {/* Header */}
+        {/* banner */}
+        {/* cards */}
+        {/* footer */}
+      </div>
+    );
+  }
 }
-
 export default App;

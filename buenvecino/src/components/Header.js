@@ -1,18 +1,30 @@
-import React from 'react';
+import React,{Component} from 'react';
 
 import { Avatar } from '@material-ui/core';
-import '../Styles/Header.css';
-const Header = () => {
+import '../styles/Header.css';
+
+class Header extends Component{
+
+
+render(){
 	return (
 		<div className="header">
-			<img src={require('../assets/Logo.png')} alt="" className="header__icon" />
+			<img src={require('../assets/Logo.png')} alt="Logo de la pagina" className="header__icon" />
 
 			<div className="header__right">
-				<p className="saira">Ingresar | Registrate | Registra tu vivienda | Ayuda</p>
+				<nav>
+					<lu className ="nav-items">
+						<li><a href=""> Ingresar</a> </li>
+						<li><a href=""> Registrate</a> </li>
+						<li><a href=""> Registra tu vivienda</a> </li>
+						<li><a href=""> Ayuda</a> </li>
+					</lu>
+				</nav>
 				<Avatar />
 			</div>
 		</div>
 	);
 };
+}
 
 export default Header;
