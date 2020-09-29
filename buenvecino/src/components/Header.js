@@ -24,7 +24,7 @@ render(){
 			</div>
 		</div>
 	);
-};
+}
 }
 
 export default Header;
