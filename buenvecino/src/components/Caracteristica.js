@@ -6,9 +6,9 @@ class Caracteristica extends Component {
     render() {
       return (
         <div className="Caracteristica">
-            <img src={require('../assets/guy-working-at-home 1.png')} alt=""/>
-            <h3>Nombre</h3>
-            <p>Descripción</p>
+            <img src= {this.props.imagen } alt=""/>
+            <h3>{this.props.nombre}</h3>
+            <p>{this.props.descripcion}</p>
         </div>
       );
     }

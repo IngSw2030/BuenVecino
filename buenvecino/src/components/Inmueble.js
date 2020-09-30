@@ -5,10 +5,10 @@ class Inmueble extends Component {
     render() {
       return (
         <div className="Inmueble">
-            <img src={require('../assets/Rectangle 7.png')} alt=""/>
-            <h3>Nombre</h3>
-            <h4>Descripción</h4>
-            <p className="Precio">Desde $ fkjldsaf Precio / Mes</p>
+            <img src={this.props.imagen} alt=""/>
+            <h3>{this.props.nombre}</h3>
+            <h4>{this.props.descripcion}</h4>
+            <p className="Precio">Desde $ {this.props.precio} / Mes</p>
 
         </div>
       );

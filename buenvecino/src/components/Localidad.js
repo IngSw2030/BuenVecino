@@ -11,9 +11,9 @@ class Localidad extends Component {
             <p>Aquí encontrarás los lugares de Bogotá donde <br/>
                 más se hospendan nuestros clientes</p>
             <div className="Inmuebles">
-            <Inmueble/>
-            <Inmueble/>
-            <Inmueble/>
+            <Inmueble imagen={require('../assets/Rectangle7.png')} nombre="Chia" descripcion="Afueras de Bogotá" precio={123456} />
+            <Inmueble imagen={require('../assets/Rectangle7.png')} nombre="Chapinero" descripcion="Centro de Bogota" precio={3621873}/>
+            <Inmueble imagen={require('../assets/Rectangle7.png')} nombre="teusaquillo" descripcion="Recomendado" precio={587687}/>
             </div>
 
         </div>
