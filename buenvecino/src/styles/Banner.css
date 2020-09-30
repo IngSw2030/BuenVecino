@@ -49,7 +49,6 @@
 	width: 280px;
 	height: 65px;
 	margin-top: 3%;
-
 }
 .banner__search {
 	display: flex;
@@ -64,7 +63,6 @@
 	align-self: center;
 	margin-right: 8%;
 	margin-top: 7%;
-
 }
 .banner__search > form > input {
 	background: #ffffff;
@@ -80,7 +78,6 @@
 	outline-width: 0;
 	margin-top: 0px;
 	margin-bottom: 5%;
-
 }
 .banner__search > form > button {
 	background: #fd275f;
@@ -99,15 +96,14 @@
 	font-family: Kanit;
 	font-style: normal;
 	font-weight: 300;
-	font-size: 15px;
+	font-size: 20px;
 	line-height: 90%;
 	width: 100%;
 	margin-top: 3%;
 	margin-bottom: 0.2em;
-	
 }
 .banner__search > form {
-	padding-top:7%;
+	padding-top: 7%;
 	padding-left: 10%;
 	padding-right: 10%;
 }

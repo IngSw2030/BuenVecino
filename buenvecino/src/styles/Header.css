@@ -2,7 +2,8 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	position: fixed;
+	position: absolute;
+	opacity: 1;
 	top: 0;
 	background-color: none;
 	z-index: 100;
@@ -30,7 +31,7 @@ nav ul {
 	text-decoration: none;
 }
 
-.nav-items>li {
+.nav-items > li {
 	text-decoration: none;
 	list-style: none;
 	float: left;
@@ -48,10 +49,8 @@ nav ul {
 	padding-right: 1em;
 }
 .nav-items li a:hover {
-	color: #00F3BB;
-	
+	color: #00f3bb;
 }
 /* .nav-items li a:active {
 	
 } */
-
