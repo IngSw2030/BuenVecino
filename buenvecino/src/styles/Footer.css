@@ -1,8 +1,8 @@
 .Footer {
 	display: flex;
-
 	position: relative;
 	background: #24243c;
+	justify-content: space-around;
 }
 h4 {
 	font-family: Saira;
@@ -13,10 +13,9 @@ h4 {
 
 .Contacto {
 	margin-top: 2%;
-	margin-left: 10%;
 }
 .Contacto img {
-	width: 60%;
+	width: 40%;
 	margin-left: -10%;
 	margin-bottom: 3%;
 }
@@ -30,6 +29,7 @@ h4 {
 
 .Suscripcion {
 	margin-top: 3%;
+	text-align: right;
 }
 
 .Suscripcion input {
