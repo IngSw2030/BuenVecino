@@ -1,5 +1,6 @@
 import React,{Component} from "react";
-import Landing from "./screens/landing";
+//import Landing from "./screens/landing";
+import Mapas from "./screens/mapas"
 // import Header from './components/Header';
 // import Main from './Main';
 
@@ -7,7 +8,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Landing />
+        {/* <Landing /> */}
+        <Mapas/>
         {/* <Header />
 			<Main /> */}
         {/* home */}

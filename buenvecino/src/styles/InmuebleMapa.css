@@ -1,0 +1,6 @@
+.InmuebleMapa{
+    display: flex;
+}
+.InmuebleMapa img{
+    width: 10%;
+}
