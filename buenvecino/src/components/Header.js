@@ -13,12 +13,12 @@ render(){
 
 			<div className="header__right">
 				<nav>
-					<lu className ="nav-items">
+					<ul className ="nav-items">
 						<li><a href=""> Ingresar</a> </li>
 						<li><a href=""> Registrate</a> </li>
 						<li><a href=""> Registra tu vivienda</a> </li>
 						<li><a href=""> Ayuda</a> </li>
-					</lu>
+					</ul>
 				</nav>
 				<Avatar />
 			</div>
