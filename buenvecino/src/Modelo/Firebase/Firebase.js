@@ -18,4 +18,4 @@ const fb = firebase.initializeApp(firebaseConfig)
 const db = fb.firestore()
 const auth = fb.auth()
 
-export {db, auth} 
+export {db, auth}

@@ -1,0 +1,177 @@
+//Los distintos valores $id... son ofrecidos por el identificador automatico de Firebase
+
+//REVISAR inmueble.coordendas, las coordenadas si son String?
+//Se necesita el nombre en un inmueble ?
+//Echarle un ojo a la relación Arrendador - PeriodoEstadia - Inmueble
+
+//Queda la duda de como se administraran las Notificaciones, tal vez con la ayuda de una coleccion auxiliar
+//para saber las notificaciones auxiliares que ya fueron recibidas y las que no
+
+{
+    "Arrendadores" : {
+        "$idArrendador": {                         
+            "nombre": "Juan Perez",
+            "dni" : 1111111,
+            "genero" : "M",
+            "fechaNacimiento" : 20200101,
+            "correo" : "juanperez@prueba.com",
+            "telefono" : 3112224455,
+            "direccion" : "Kra 1 # 01-01",
+            "ciudad" : "Bogotá",
+            "chats" : ["$idChat1", "$idChat2", "$idChatN"],
+            "inmuebles" : ["$idInmueble1", "$idInmueble2", "$idInmuebleN"]
+        },
+        "$idArrendador2" : {...},
+        "$idArrendadorN" : {...}
+    },
+    "Arrendatarios" : {
+        "$idArrendatario1" : {
+            "nombre": "Juana Gomez",
+            "dni" : 22222222,
+            "genero" : "F",
+            "fechaNacimiento" : 20200102,
+            "correo" : "juanaGomez@prueba.com",
+            "telefono" : 3112224466,
+            "chats" : ["$idChat1", "$idChat2", "$idChatN"],
+            "favoritos" : ["$idFav1", "$idFav2", "$idFavN"],
+            "historialInmuebles" : ["$idPeriodoEstadia1", "$idPeriodoEstadia2", "$idPeriodoEstadiaN"],
+            "metodoPago" : {
+                "idPSE" : "223045940493"
+            }
+        },
+        "$idArrendatario2" : {...},
+        "$idArrendatarioN" : {...}
+    },
+    "Inmuebles" : {
+        //Ejemplo Inmueble tipo habitación (El campo tipo dice que tipo de vivienda es)
+        "$idInmueble1" : {
+            "tipo" : "H",
+            "nombre" : "Habitacion dentro de una casa",
+            "precio" : 500000,
+            "descripcion" : "Habitación pequeña con televisor y cama",
+            "nBaños" : 1,
+            "area" : 17.41,
+            "esAmoblado" : true,
+            "ubicacion" : {
+                "direccion" : "Kra 7 #45-02",
+                "localidad" : "Chapinero",
+                "coordenadas" : "98.322 - 55.9843",
+                "barrio" : "Mariscal Sucre"
+            },
+            "servicios" : ["$idServicio1", "$idServicio2", "$idServicioN"],
+            "historialArrendatarios" : ["$idPeriodoEstadia1", "$idPeriodoEstadia2", "$idPeriodoEstadiaN"]
+        },
+        //Ejemplo Inmueble tipo Apartamento
+        "$idInmueble2" : {
+            "tipo" : "A",
+            "nombre" : "Apartamento dentro de casa",
+            "precio" : 500000,
+            "descripcion" : "Apartamento dentro de una casa en el piso 3",
+            "nBaños" : 2,
+            "area" : 55.60,
+            "esAmoblado" : false,
+            "ubicacion" : {
+                "direccion" : "Kra 7 #45-02",
+                "localidad" : "Chapinero",
+                "coordenadas" : "98.322 - 55.9843",
+                "barrio" : "Mariscal Sucre"
+            },
+            "servicios" : ["$idServicio1", "$idServicio2", "$idServicioN"],
+            "nHabitaciones" : 5,
+            "esCompartido" : true,
+            "historialArrendatarios" : ["$idPeriodoEstadia1", "$idPeriodoEstadia2", "$idPeriodoEstadiaN"]
+        },
+        //Ejemplo Inmueble tipo Apartamento
+        "$idInmueble3" : {
+            "tipo" : "C",
+            "nombre" : "Casa",
+            "precio" : 500000,
+            "descripcion" : "Casa bonita de 3 pisos",
+            "nBaños" : 2,
+            "area" : 55.60,
+            "esAmoblado" : false,
+            "ubicacion" : {
+                "direccion" : "Kra 7 #45-02",
+                "localidad" : "Chapinero",
+                "coordenadas" : "98.322 - 55.9843",
+                "barrio" : "Mariscal Sucre"
+            },
+            "servicios" : ["$idServicio1", "$idServicio2", "$idServicioN"],
+            "nHabitaciones" : 5,
+            "esCompartido" : true,
+            "nPisos" : 3,
+            "nCocinas" : 2,
+            "historialArrendatarios" : ["$idPeriodoEstadia1", "$idPeriodoEstadia2", "$idPeriodoEstadiaN"]
+        },
+        "$idInmueble4" : {...},
+        "$idInmuebleN" : {...}
+    },
+    "Servicios" :{
+        "$idServicio1" : {
+            "nombre" : "lavandería",
+            "precioExtra" : 50000,
+            "descripción" : "El usuario puede usar la lavadora de la casa"
+        },
+        "$idServicio2" : {...},
+        "$idServicio3" : {...}
+    },
+    "Chats" : {
+        "$idChat1" : {
+            "miembro1" : "$idUsuario1",
+            "miembro2" : "$idUsuario2"
+        }
+    },
+    "Mensajes" : {
+        "$idChat1" : {
+            "$idMen1" : {
+                "mensaje" : "hola, como está",
+                "remitente" : "$idUsuario",
+                "momento" : 20200101040503
+            },
+            "$idMen2" : {...},
+            "$idMenN" : {...}
+        },
+        "$idChat2" : {...},
+        "$idChat3" : {...}
+    },
+    "Favorito" : {
+        "$idFav1" : {
+            "inmubele" : "$idInmueble1",
+            "fechaAgregado" : 20200102,
+            "comentario" : "Esta casa me interesa por está razón"
+        },
+        "$idFav2" : {...},
+        "$idFav3" : {...}
+    },
+    "PeriodoEstadia" : {
+        "$idPeriodo1" : {
+            "idArrendatario" : "$idArrendatarioN",
+            "idInmueble" : "$idInmuebleN",
+            "valor" : 3500000,
+            "fechaInicio" : 20190101,
+            "fechaFin" : 20200101,
+            "valoración" : {
+                "valor" : 5,
+                "comentario" : "Una casa muy bonita, bonitos vecinos"
+            }
+        },
+        "$idPeriodo2" : {...},
+        "$idPeriodoN" : {...}
+    },
+    "Notificaciones" : {
+        "$idNotificacion1" : {
+            "contenido" : "Juanito ha calificado tu casa",
+            "tipo" : 1,
+            "arrendador" : "$idArrendadorN",
+            "arrendatario" : "$idArrendatarioN"
+        },
+        "$idNotificacion2" : {...},
+        "$idNotificacionN" : {...}        
+    },
+    "Boletines" : {
+        "$idBoletin1" : {
+            "fecha" : 20200103,
+            "contenido" : "BuenVecino ha iniciado Operaciones"
+        }
+    }
+}
