@@ -4,6 +4,8 @@ import {db as DataBase} from '../../Modelo/Firebase/Firebase'
 import Autenticador from '../../Modelo/Firebase/Autenticador'
 import ManejadorBD from '../../Modelo/Firebase/ManejadorBD'
 
+import SistemaBV from '../../Modelo/SistemaBV'
+
 class PaginaTest extends Component{
 
   render(){
@@ -93,13 +95,62 @@ class PaginaTest extends Component{
           }
           <br/><br/>
           <button onClick={(e)=>this.prueba2()}>
-            TEXTO
+            PRUEBA CONSULTA COMPUESTA
           </button>
 
+          <br/><br/>
+          <form>
+          <input type="text" name="campo8" id="campo8" placeholder="documento" onChange={(e)=>this.actualizarCampo(e)}/>
+          <input type="text" name="campo9" id="campo9" placeholder="tipo doc" onChange={(e)=>this.actualizarCampo(e)}/>
+          <input type="text" name="campo10" id="campo10" placeholder="correo sin @prueba" onChange={(e)=>this.actualizarCampo(e)}/>
+          <button name="fsf12das" onClick={(e)=> { e.preventDefault(); this.registrarUsuarioPrueba("campo8", "campo9", "campo10"); } }>
+            REGISTRAR USUARIO
+          </button>
+
+          <br/><br/><br/><br/>
+          <button name="fsf12das" onClick={(e)=> { e.preventDefault(); this.prueba3() } }>
+            PRUEBA MODELO
+          </button>
+            
+          </form>
+          <br/><br/><br/><br/>
           </div>
 
 				</div>
       )
+  }
+
+  prueba3(){
+    let ss = new SistemaBV()
+    ss.pruebaX()
+  }
+
+
+  async registrarUsuarioPrueba(cDni, cTipoDni, cCorreo){
+
+    let dni = this.state[cDni]
+    let tipo = this.state[cTipoDni]
+    let usuario = {
+      nombre : "John Gonzalez",
+      dni : dni,
+      tipoDni : tipo,
+      genero : "M",
+      fechaNacimiento : 20200101,
+      email : this.state[cCorreo]+"@prueba.com",
+      telefono : 3112224455,
+      chats : [],
+      favoritos : [],
+      historialInmuebles : [],
+      metodoPago : {
+        idPSE : "223045940493"
+      }
+    }
+    let ss = new SistemaBV()
+
+    let r = await ss.registrarUsuario(usuario, usuario.email, "123456")
+    console.log("QUE PORQUERIA CON LOS ASYNC")
+    console.log(r)
+    
   }
 
   async prueba2(){

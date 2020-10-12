@@ -1,20 +1,14 @@
 //Los distintos valores $id... son ofrecidos por el identificador automatico de Firebase
 
-//REVISAR inmueble.coordendas, las coordenadas si son String?
-//Se necesita el nombre en un inmueble ?
-//Echarle un ojo a la relación Arrendador - PeriodoEstadia - Inmueble
-
-//Queda la duda de como se administraran las Notificaciones, tal vez con la ayuda de una coleccion auxiliar
-//para saber las notificaciones auxiliares que ya fueron recibidas y las que no
-
 {
     "Arrendadores" : {
         "$idArrendador": {                         
             "nombre": "Juan Perez",
             "dni" : 1111111,
+            "tipoDni" : "TI",
             "genero" : "M",
             "fechaNacimiento" : 20200101,
-            "correo" : "juanperez@prueba.com",
+            "email" : "juanperez@prueba.com",
             "telefono" : 3112224455,
             "direccion" : "Kra 1 # 01-01",
             "ciudad" : "Bogotá",
@@ -28,9 +22,10 @@
         "$idArrendatario1" : {
             "nombre": "Juana Gomez",
             "dni" : 22222222,
+            "tipoDni" : "CC",
             "genero" : "F",
             "fechaNacimiento" : 20200102,
-            "correo" : "juanaGomez@prueba.com",
+            "email" : "juanaGomez@prueba.com",
             "telefono" : 3112224466,
             "chats" : ["$idChat1", "$idChat2", "$idChatN"],
             "favoritos" : ["$idFav1", "$idFav2", "$idFavN"],
@@ -81,7 +76,7 @@
             "esCompartido" : true,
             "historialArrendatarios" : ["$idPeriodoEstadia1", "$idPeriodoEstadia2", "$idPeriodoEstadiaN"]
         },
-        //Ejemplo Inmueble tipo Apartamento
+        //Ejemplo Inmueble tipo Casa
         "$idInmueble3" : {
             "tipo" : "C",
             "nombre" : "Casa",
@@ -93,7 +88,8 @@
             "ubicacion" : {
                 "direccion" : "Kra 7 #45-02",
                 "localidad" : "Chapinero",
-                "coordenadas" : "98.322 - 55.9843",
+                "latitud" : 55.6,
+                "longitud" : 55.7,
                 "barrio" : "Mariscal Sucre"
             },
             "servicios" : ["$idServicio1", "$idServicio2", "$idServicioN"],
@@ -146,6 +142,7 @@
     "PeriodoEstadia" : {
         "$idPeriodo1" : {
             "idArrendatario" : "$idArrendatarioN",
+            "idArrendador" : "$idArrendador",
             "idInmueble" : "$idInmuebleN",
             "valor" : 3500000,
             "fechaInicio" : 20190101,

@@ -19,6 +19,8 @@ class Autenticador{
         try {
             let rest = await auth.fetchSignInMethodsForEmail(email)
             if (rest.length > 0){
+                console.log("REST = ")
+                console.log(rest)
                 return true
             }
             else{
