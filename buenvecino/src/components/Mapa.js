@@ -7,10 +7,10 @@ const AnyReactComponent = ({ text }) => <div>{text}</div>;
 class Mapa extends Component {
   static defaultProps = {
     center: {
-      lat: 4,
-      lng: -74
+      lat: 4.641055,
+      lng: -74.086925
     },
-    zoom: 11
+    zoom: 12
   };
  
   render() {
