@@ -23,10 +23,11 @@ class Mapa extends Component {
           defaultZoom={this.props.zoom}
         >
           <AnyReactComponent
-            lat={4}
-            lng={-74}
+            lat={4.641055}
+            lng={-74.086925}
             text="My Marker"
           />
+          
         </GoogleMapReact>
       </div>
     );

@@ -1,6 +1,16 @@
-.InmuebleMapa{
-    display: flex;
+.InmuebleMapa {
+  margin: 3%;
+  display: flex;
+  background: #f8f8f8;
+  border: 0.2px solid #000000;
+  box-sizing: border-box;
+  border-radius: 42px;
+  margin-top: 5%;
 }
-.InmuebleMapa img{
-    width: 10%;
+.InmuebleMapa img {
+  width: 30%;
+  background: #bbbbbb;
+  border: 0.2px solid #000000;
+  box-sizing: border-box;
+  border-radius: 42px 0px 0px 42px;
 }

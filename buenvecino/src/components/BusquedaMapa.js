@@ -7,7 +7,7 @@ class BusquedaMapa extends Component {
   render() {
     return (
           <div className="BusquedaMapa">
-              <div>
+              <div className="Inmuebles">
                   <InmuebleMapa/>
                   <InmuebleMapa/>
                   <InmuebleMapa/>
