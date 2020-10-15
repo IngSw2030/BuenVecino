@@ -127,8 +127,8 @@ class PaginaTest extends Component{
 
 
   async registrarUsuarioPrueba(cDni, cTipoDni, cCorreo){
-
-    let dni = this.state[cDni]
+    
+    let dni = parseInt(this.state[cDni], 10)
     let tipo = this.state[cTipoDni]
     let usuario = {
       nombre : "John Gonzalez",
@@ -138,16 +138,29 @@ class PaginaTest extends Component{
       fechaNacimiento : 20200101,
       email : this.state[cCorreo]+"@prueba.com",
       telefono : 3112224455,
-      chats : [],
-      favoritos : [],
-      historialInmuebles : [],
-      metodoPago : {
-        idPSE : "223045940493"
+    }
+    let esA = true
+    if ( Math.floor(Math.random() * 2) == 0  ){
+      esA = false
+    }
+
+    if ( !esA ){
+      usuario = {
+        ...usuario,
+        direccion : "Cra 7ma .....",
+        ciudad : "Bogotá"
       }
     }
-    let ss = new SistemaBV()
+    if ( esA ){
+      console.log("REGISTRADO ARRENDATARIO")
+    }
+    else{
+      console.log("REGISTRADO ARRENDADOR")
+    }
 
-    let r = await ss.registrarUsuario(usuario, usuario.email, "123456")
+
+    let ss = new SistemaBV()
+    let r = await ss.registrarUsuario(usuario, esA, usuario.email, "123456")
     console.log("QUE PORQUERIA CON LOS ASYNC")
     console.log(r)
     

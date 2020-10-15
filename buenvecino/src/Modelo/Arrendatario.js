@@ -1,31 +1,59 @@
 class Arrendatario{
     
-    static DATOS_USAURIO = ["nombre", "dni", "tipoDni", "genero", "fechaNacimiento", "email", "telefono"]
-    constructor(infoBasicaUsuario){
-
+    static ESTRUCTURA_JSON = {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+            "nombre": {
+                "type": "string"
+            },
+            "dni": {
+                "type": "integer"
+            },
+            "tipoDni": {
+                "type": "string",
+                "enum": ["CC", "CE", "TI", "PA"]
+            },
+            "genero": {
+                "type": "string",
+                "enum": ["M", "F", "O", "N"]
+            },
+            "fechaNacimiento": {
+                "type": "integer"
+            },
+            "email": {
+                "type": "string"
+            },
+            "telefono": {
+                "type": "integer"
+            }
+        },
+        "required": [
+            "dni",
+            "email",
+            "fechaNacimiento",
+            "genero",
+            "nombre",
+            "telefono",
+            "tipoDni"
+        ],
+        "title": "ESTRUCTURA_JSON"
     }
 
-    static validarEstructura(infoArrendatario){
+    constructor(infoBasicaUsuario){
+        this.state = {
+            ...infoBasicaUsuario,
+            chats : [],
+            favoritos : [],
+            historialInmuebles : [],
+            metodoPago : {}
+        }
+    }
 
-        let respuesta = {esValido : true, faltantes: [], sobrantes: []}
-        for(let dato in this.DATOS_USAURIO){
-            if ( infoArrendatario[ this.DATOS_USAURIO[dato] ] == undefined ){
-                respuesta = {esValido : false, faltantes : respuesta.faltantes.push(this.DATOS_USAURIO[dato]), ...respuesta}
-            }
-        }
-        let existeLlave = false
-        for(let llave in Object.keys(infoArrendatario)){
-            existeLlave = false
-            for(let dato in this.DATOS_USAURIO){
-                if ( llave === dato ){
-                    existeLlave = true
-                }
-            }
-            if ( !existeLlave ){
-                respuesta = {esValido:false, sobrantes : respuesta.sobrantes.push(Object.keys(infoArrendatario)[llave]), ...respuesta}
-            }
-        }
-        return respuesta
+    static validarEstructuraObjeto(infoArrendatario){
+        let Validator = require('jsonschema').Validator;
+        let v = new Validator();
+        return v.validate(infoArrendatario, this.ESTRUCTURA_JSON) 
     }
 }
 

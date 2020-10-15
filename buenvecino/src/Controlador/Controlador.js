@@ -6,8 +6,8 @@ class Controlador{
         this.modelo = new SistemaBV()
     }
 
-    registrarArrendatario(idCliente, nombre, dni, tipoDni, genero, fechaNacimiento, telefono, correo){
-        this.modelo.registrarArrendatario(idCliente, nombre, dni, tipoDni, genero, fechaNacimiento, telefono, correo)
+    registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
+        this.modelo.registrarUsuario(infoUsuario, esArrendatario, email, contrasena)
     }
 }
 

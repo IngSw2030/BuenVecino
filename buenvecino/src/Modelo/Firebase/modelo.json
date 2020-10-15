@@ -1,5 +1,3 @@
-//Los distintos valores $id... son ofrecidos por el identificador automatico de Firebase
-
 {
     "Arrendadores" : {
         "$idArrendador": {                         
@@ -10,16 +8,14 @@
             "fechaNacimiento" : 20200101,
             "email" : "juanperez@prueba.com",
             "telefono" : 3112224455,
-            "direccion" : "Kra 1 # 01-01",
+            "direccion" : "Kra 1 # 01-0",
             "ciudad" : "Bogotá",
-            "chats" : ["$idChat1", "$idChat2", "$idChatN"],
-            "inmuebles" : ["$idInmueble1", "$idInmueble2", "$idInmuebleN"]
-        },
-        "$idArrendador2" : {...},
-        "$idArrendadorN" : {...}
+            "chats" : ["$idChat", "$idChat", "$idChat"],
+            "inmuebles" : ["$idInmueble", "$idInmueble", "$idInmueble"]
+        }
     },
     "Arrendatarios" : {
-        "$idArrendatario1" : {
+        "$idArrendatario" : {
             "nombre": "Juana Gomez",
             "dni" : 22222222,
             "tipoDni" : "CC",
@@ -27,19 +23,16 @@
             "fechaNacimiento" : 20200102,
             "email" : "juanaGomez@prueba.com",
             "telefono" : 3112224466,
-            "chats" : ["$idChat1", "$idChat2", "$idChatN"],
-            "favoritos" : ["$idFav1", "$idFav2", "$idFavN"],
-            "historialInmuebles" : ["$idPeriodoEstadia1", "$idPeriodoEstadia2", "$idPeriodoEstadiaN"],
+            "chats" : ["$idChat", "$idChat", "$idChat"],
+            "favoritos" : ["$idFav", "$idFav", "$idFav"],
+            "historialInmuebles" : ["$idPeriodoEstadia", "$idPeriodoEstadia", "$idPeriodoEstadia"],
             "metodoPago" : {
                 "idPSE" : "223045940493"
             }
-        },
-        "$idArrendatario2" : {...},
-        "$idArrendatarioN" : {...}
+        }
     },
     "Inmuebles" : {
-        //Ejemplo Inmueble tipo habitación (El campo tipo dice que tipo de vivienda es)
-        "$idInmueble1" : {
+        "$idInmueble" : {
             "tipo" : "H",
             "nombre" : "Habitacion dentro de una casa",
             "precio" : 500000,
@@ -48,16 +41,15 @@
             "area" : 17.41,
             "esAmoblado" : true,
             "ubicacion" : {
-                "direccion" : "Kra 7 #45-02",
+                "direccion" : "Kra 7 #45-0",
                 "localidad" : "Chapinero",
                 "coordenadas" : "98.322 - 55.9843",
                 "barrio" : "Mariscal Sucre"
             },
-            "servicios" : ["$idServicio1", "$idServicio2", "$idServicioN"],
-            "historialArrendatarios" : ["$idPeriodoEstadia1", "$idPeriodoEstadia2", "$idPeriodoEstadiaN"]
+            "servicios" : ["$idServicio", "$idServicio", "$idServicio"],
+            "historialArrendatarios" : ["$idPeriodoEstadia", "$idPeriodoEstadia", "$idPeriodoEstadia"]
         },
-        //Ejemplo Inmueble tipo Apartamento
-        "$idInmueble2" : {
+        "$idInmueble" : {
             "tipo" : "A",
             "nombre" : "Apartamento dentro de casa",
             "precio" : 500000,
@@ -66,18 +58,17 @@
             "area" : 55.60,
             "esAmoblado" : false,
             "ubicacion" : {
-                "direccion" : "Kra 7 #45-02",
+                "direccion" : "Kra 7 #45-0",
                 "localidad" : "Chapinero",
                 "coordenadas" : "98.322 - 55.9843",
                 "barrio" : "Mariscal Sucre"
             },
-            "servicios" : ["$idServicio1", "$idServicio2", "$idServicioN"],
+            "servicios" : ["$idServicio", "$idServicio", "$idServicio"],
             "nHabitaciones" : 5,
             "esCompartido" : true,
-            "historialArrendatarios" : ["$idPeriodoEstadia1", "$idPeriodoEstadia2", "$idPeriodoEstadiaN"]
+            "historialArrendatarios" : ["$idPeriodoEstadia", "$idPeriodoEstadia", "$idPeriodoEstadia"]
         },
-        //Ejemplo Inmueble tipo Casa
-        "$idInmueble3" : {
+        "$idInmueble" : {
             "tipo" : "C",
             "nombre" : "Casa",
             "precio" : 500000,
@@ -86,64 +77,54 @@
             "area" : 55.60,
             "esAmoblado" : false,
             "ubicacion" : {
-                "direccion" : "Kra 7 #45-02",
+                "direccion" : "Kra 7 #45-0",
                 "localidad" : "Chapinero",
                 "latitud" : 55.6,
                 "longitud" : 55.7,
                 "barrio" : "Mariscal Sucre"
             },
-            "servicios" : ["$idServicio1", "$idServicio2", "$idServicioN"],
+            "servicios" : ["$idServicio", "$idServicio", "$idServicio"],
             "nHabitaciones" : 5,
             "esCompartido" : true,
             "nPisos" : 3,
             "nCocinas" : 2,
-            "historialArrendatarios" : ["$idPeriodoEstadia1", "$idPeriodoEstadia2", "$idPeriodoEstadiaN"]
-        },
-        "$idInmueble4" : {...},
-        "$idInmuebleN" : {...}
+            "historialArrendatarios" : ["$idPeriodoEstadia", "$idPeriodoEstadia", "$idPeriodoEstadia"]
+        }
     },
     "Servicios" :{
-        "$idServicio1" : {
+        "$idServicio" : {
             "nombre" : "lavandería",
             "precioExtra" : 50000,
             "descripción" : "El usuario puede usar la lavadora de la casa"
-        },
-        "$idServicio2" : {...},
-        "$idServicio3" : {...}
+        }
     },
     "Chats" : {
-        "$idChat1" : {
-            "miembro1" : "$idUsuario1",
-            "miembro2" : "$idUsuario2"
+        "$idChat" : {
+            "miembro1" : "$idUsuario",
+            "miembro2" : "$idUsuario"
         }
     },
     "Mensajes" : {
-        "$idChat1" : {
-            "$idMen1" : {
+        "$idChat" : {
+            "$idMen" : {
                 "mensaje" : "hola, como está",
                 "remitente" : "$idUsuario",
                 "momento" : 20200101040503
-            },
-            "$idMen2" : {...},
-            "$idMenN" : {...}
-        },
-        "$idChat2" : {...},
-        "$idChat3" : {...}
+            }
+        }
     },
     "Favorito" : {
-        "$idFav1" : {
-            "inmubele" : "$idInmueble1",
+        "$idFav" : {
+            "inmubele" : "$idInmueble",
             "fechaAgregado" : 20200102,
             "comentario" : "Esta casa me interesa por está razón"
-        },
-        "$idFav2" : {...},
-        "$idFav3" : {...}
+        }
     },
     "PeriodoEstadia" : {
-        "$idPeriodo1" : {
-            "idArrendatario" : "$idArrendatarioN",
+        "$idPeriodo" : {
+            "idArrendatario" : "$idArrendatario",
             "idArrendador" : "$idArrendador",
-            "idInmueble" : "$idInmuebleN",
+            "idInmueble" : "$idInmueble",
             "valor" : 3500000,
             "fechaInicio" : 20190101,
             "fechaFin" : 20200101,
@@ -151,22 +132,18 @@
                 "valor" : 5,
                 "comentario" : "Una casa muy bonita, bonitos vecinos"
             }
-        },
-        "$idPeriodo2" : {...},
-        "$idPeriodoN" : {...}
+        }
     },
     "Notificaciones" : {
-        "$idNotificacion1" : {
+        "$idNotificacion" : {
             "contenido" : "Juanito ha calificado tu casa",
             "tipo" : 1,
-            "arrendador" : "$idArrendadorN",
-            "arrendatario" : "$idArrendatarioN"
-        },
-        "$idNotificacion2" : {...},
-        "$idNotificacionN" : {...}        
+            "arrendador" : "$idArrendador",
+            "arrendatario" : "$idArrendatario"
+        }       
     },
     "Boletines" : {
-        "$idBoletin1" : {
+        "$idBoletin" : {
             "fecha" : 20200103,
             "contenido" : "BuenVecino ha iniciado Operaciones"
         }
