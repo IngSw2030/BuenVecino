@@ -15,7 +15,7 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route path="/" exact>
-              <Mapas />
+              <Landing />
 							
               {/* <Header />
               <Main /> */}
@@ -24,6 +24,9 @@ class App extends Component {
               {/* banner */}
               {/* cards */}
               {/* footer */}
+            </Route>
+            <Route path="/busqueda" exact>
+              <Mapas/>
             </Route>
 						
 						{/*Pagina para pruebas de cualquier cosa, en el archivo screens/PaginaTests.js*/}

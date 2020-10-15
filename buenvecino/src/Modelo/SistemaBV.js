@@ -26,6 +26,24 @@ class SistemaBV{
         }
     }
 
+    async buscarTodosInmuebles(){
+        try {
+            return ManejadorBD.leerInformacionColeccion("Inmuebles")
+        } catch (error) {
+            return error
+        }
+    }
+
+    buscarInmueblePorTipo(tipoInmueble, filtros){
+        switch(tipoInmueble.toUpperCase()){
+            case "A" : 
+            case "C" :
+            case "H" :
+            default : return {error : "El tipo de inmueble seleccionado no es valido"}
+        }
+    }
+
+
     crearUsuario(infoUsuario, esArrendatario){
         if ( esArrendatario ){
             return new Arrendatario(infoUsuario)
@@ -85,46 +103,12 @@ class SistemaBV{
 
 
     pruebaX2(){
-        //ManejadorBD.escribirInformacion("prueba", {nombre: "JAJAJA", ubi : new firebase.firestore.GeoPoint(10,10)})
         
-        var Validator = require('jsonschema').Validator;
-        var v = new Validator();
-        var instance = {    
-            nombre: "Juan Perez",
-                dni : 1111111,
-                tipoDni : "TI",
-                genero : "M",
-                fechaNacimiento : 45333,
-                email : "juanperez@prueba.com",
-                telefono : 3112224455,
-                //chats : ["lll", "lllpo", "BNVNCc"],
-                //inmuebles : ["kadkasdlkasñdl", "DJDJdjadjad", "LDkdkd"]
-        };
-        console.log(v.validate(instance, definitions.IDArrendatario));
-        
-        
-        /*console.log("HERE")
-        var Validator = require('jsonschema').Validator;
-        var v = new Validator();
-        v.addSchema(definitions);
-
-        console.log(definitions)
-
-        function importNextSchema(){
-          var nextSchema = v.unresolvedRefs.shift();
-          if(!nextSchema){ console.log("OLOLO"); return; }
-          console.log(nextSchema)
-          /*databaseGet(nextSchema, function(schema){
-            v.addSchema(schema);
-            importNextSchema();
-          });*/
-        
-        //importNextSchema();
     }
 
     async pruebaX(){
         try{
-            let data = await ManejadorBD.leerInformacion("prueba","8Jp13yNtwN8TkB6bakkB")
+            let data = await ManejadorBD.leerInformacionDocumento("prueba","8Jp13yNtwN8TkB6bakkB")
             console.log(data)
             console.log("FINISHED :V")
         }

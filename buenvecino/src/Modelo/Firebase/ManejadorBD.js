@@ -23,19 +23,9 @@ class ManejadorBD{
         }
     }
 
-    static async leerInformacion(...ruta){
+    static async leerInformacionColeccion(coleccion){
         try {
-            console.log(ruta)
-            //let path = new firebase.firestore.FieldPath(ruta)
-            let ref = db.collection(ruta[0]).doc().get()
-            for(let i=1; i<ruta.length; i++){
-                ref = ref.collection(ruta[i]).doc().get()
-            }
-            console.log(ref)
-
-            ref = db.collection("prueba").doc().collection("8Jp13yNtwN8TkB6bakkB").doc()
-
-            const infoLeida = await ref.get()
+            const infoLeida = await db.collection(coleccion).get()
             const data = infoLeida.docs.map( doc => ({ id: doc.id, ...doc.data() }) )
             return data;
         } catch (error) {
@@ -43,9 +33,18 @@ class ManejadorBD{
         }
     }
 
-    static async realizarConsulta(rutaColeccion, campos, relaciones, valores){
+    static async leerInformacionDocumento(coleccion, documento){
         try {
-            let ref =  db.collection(rutaColeccion)
+            const infoLeida = await db.collection(coleccion).doc(documento).get()
+            return infoLeida.data();
+        } catch (error) {
+            throw error
+        }
+    }
+
+    static async realizarConsulta(coleccion, campos, relaciones, valores){
+        try {
+            let ref =  db.collection(coleccion)
             for(let i=0; i<campos.length; i++){
                 ref = ref.where(campos[i], relaciones[i], valores[i])
             }
