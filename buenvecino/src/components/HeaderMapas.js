@@ -9,7 +9,7 @@ render(){
         <div className="header">
             <img src={require('../assets/Logo.png')} alt="Logo de la pagina"/>
             <div className="barraBuscar">
-                <input type="text" placeholder="Ubicacion" className="ubicacion"/>
+                <input type="text" placeholder="Ubicacion" className="ubicacion" onChange={(e)=>{this.buscar()}}/>
                 <input type="text" placeholder="Tiempo" className="tiempo" />
                 <Button variant="outlined" className="buscar">Buscar</Button>
                 <Button variant="outlined" className="ingreso">Ingresar</Button>
@@ -19,6 +19,13 @@ render(){
         </div>
 	);
 }
+
+buscar(){
+let palabra = "candelaria"
+fetch('https://nominatim.openstreetmap.org/?addressdetails=1&q='+palabra+' bogota&format=json&limit=1').then(response => response.json())
+.then(data => console.log(data));
+}
+
 }
 
 export default HeaderMapas;
