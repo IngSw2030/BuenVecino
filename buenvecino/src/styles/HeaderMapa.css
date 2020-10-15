@@ -1,0 +1,67 @@
+.header {
+    display: flex;
+    flex-direction: column;
+	background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
+}
+
+.header img{
+    margin-top: 2.5%;
+    align-self: start;
+    width: 30%;
+}
+
+.header .barraBuscar{
+    background: #F8F8F8;
+    margin: 3%;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 42px;
+    padding: 1%;
+}
+
+.header input{
+    border: 1px solid #BBBBBB;
+    border-radius: 15px;
+    padding-left: 1%;
+}
+.header .tiempo{
+    width: 10%;
+}
+
+.header Button{
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    font-family: Saira;
+    font-size: 15px;
+    font-weight: 700;
+    height: 3em;
+}
+
+.header .buscar{
+    background: #fd275f;
+    width: 12%;
+}
+
+.header .buscar:hover{
+    color: #fd275f;
+}
+
+.header .ingreso{
+    background: #24243C;
+    width: 13%;
+}
+
+.header .ingreso:hover{
+    color: #24243C;
+    background: white;
+}
+
+.header .registro{
+    background: black;
+    width: 25%;
+}
+
+.header .registro:hover{
+    color: black;
+}
