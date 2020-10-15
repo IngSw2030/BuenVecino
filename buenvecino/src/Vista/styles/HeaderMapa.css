@@ -1,16 +1,16 @@
-.header {
+.headerMapa {
     display: flex;
     flex-direction: column;
 	background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
 }
 
-.header img{
+.headerMapa img{
     margin-top: 2.5%;
     align-self: start;
     width: 30%;
 }
 
-.header .barraBuscar{
+.headerMapa .barraBuscar{
     background: #F8F8F8;
     margin: 3%;
     display: flex;
@@ -19,16 +19,16 @@
     padding: 1%;
 }
 
-.header input{
+.headerMapa input{
     border: 1px solid #BBBBBB;
     border-radius: 15px;
     padding-left: 1%;
 }
-.header .tiempo{
+.headerMapa .tiempo{
     width: 10%;
 }
 
-.header Button{
+.headerMapa Button{
     border-radius: 15px;
     color: white;
     text-align: center;
@@ -38,30 +38,30 @@
     height: 3em;
 }
 
-.header .buscar{
+.headerMapa .buscar{
     background: #fd275f;
     width: 12%;
 }
 
-.header .buscar:hover{
+.headerMapa .buscar:hover{
     color: #fd275f;
 }
 
-.header .ingreso{
+.headerMapa .ingreso{
     background: #24243C;
     width: 13%;
 }
 
-.header .ingreso:hover{
+.headerMapa .ingreso:hover{
     color: #24243C;
     background: white;
 }
 
-.header .registro{
+.headerMapa .registro{
     background: black;
     width: 25%;
 }
 
-.header .registro:hover{
+.headerMapa .registro:hover{
     color: black;
 }

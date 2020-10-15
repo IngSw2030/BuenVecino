@@ -6,7 +6,7 @@ import '../styles/HeaderMapa.css';
 class HeaderMapas extends Component{
 render(){
 	return (
-        <div className="header">
+        <div className="headerMapa">
             <img src={require('../assets/Logo.png')} alt="Logo de la pagina"/>
             <div className="barraBuscar">
                 <input type="text" placeholder="Ubicacion" className="ubicacion" onChange={(e)=>{this.buscar()}}/>
