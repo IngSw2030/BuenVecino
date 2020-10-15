@@ -3,6 +3,7 @@ import Landing from "./screens/landing";
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 
 import PaginaTests from './screens/PaginaTest'
+import Mapas from './screens/mapas'
 
 // import Header from './components/Header';
 // import Main from './Main';
@@ -14,7 +15,7 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route path="/" exact>
-              <Landing />
+              <Mapas />
 							
               {/* <Header />
               <Main /> */}
