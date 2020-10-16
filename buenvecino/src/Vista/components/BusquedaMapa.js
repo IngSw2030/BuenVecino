@@ -10,35 +10,19 @@ class BusquedaMapa extends Component {
           <div className="BusquedaMapa">
               <div className="Inmuebles">
                 {
-                    this.state.inmueblesInicio.map( (obj, index) => {
+                    this.props.infoInmuebles.map( (obj, index) => {
                       return <InmuebleMapa info={obj} />
                     } )
                 }
-                  {/*<InmuebleMapa/>
-                  <InmuebleMapa/>
-                  <InmuebleMapa/>*/}
               </div>
-            <Mapa/>
+            <Mapa infoInmuebles={this.props.infoInmuebles} centrar={this.props.centrar} zoom={this.props.zoom}/>
           </div>
     );
   }
 
   constructor(props){
     super()
-    this.state = {
-      inmueblesInicio : []
-    }
-    this.cargarInmueblesIniciales()
   }
-
-  async cargarInmueblesIniciales(){
-    let controlador = Controlador.getControlador()
-    let inmIniciales = await controlador.buscarInmueblesIniciales(3)
-    this.setState({
-      inmueblesInicio : inmIniciales
-    })
-  }
-
 }
 
 export default BusquedaMapa;
