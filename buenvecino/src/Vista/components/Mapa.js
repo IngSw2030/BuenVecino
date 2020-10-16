@@ -22,16 +22,53 @@ class Mapa extends Component {
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
         >
-          <AnyReactComponent
+        {
+          this.state.infoInmuebles.map( (obj, index) =>{
+            console.log(obj.ubicacion.latitud)
+            console.log("JAJAJ")
+            return <AnyReactComponent
+                lat={obj.ubicacion.latitud}
+                lng={obj.ubicacion.longitud}
+                text="My Marker"
+              />
+          } )
+        }
+          {/*<AnyReactComponent
             lat={4.641055}
             lng={-74.086925}
+<<<<<<< HEAD
             // text="My Marker"
           />
+=======
+            text="My Marker"
+          />*/}
+>>>>>>> 0cc679a7d80d7fa0d06b01f5e1508ce615c8daf8
           
         </GoogleMapReact>
       </div>
     );
   }
+
+  constructor(props){
+    super()
+    this.state = {
+      infoInmuebles : []
+    }
+    
+  }
+
+  componentDidMount(){
+    this.cargarInmueblesIniciales()
+  }
+  async cargarInmueblesIniciales(){
+    let controlador = Controlador.getControlador()
+    let inmIniciales = await controlador.buscarInmueblesIniciales(3)
+    this.setState({
+      infoInmuebles : inmIniciales
+    })
+    console.log("FINISHED")
+  }
+  
 }
  
 export default Mapa;
