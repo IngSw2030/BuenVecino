@@ -8,9 +8,9 @@ class InmuebleMapa extends Component{
             <div className="InmuebleMapa">
                 <img src={require('../assets/Rectangle7.png')} alt=""/>
                 <div>
-                    <h3>{this.props.info.nombre}</h3>
+                    <h3 className="Titulo">{this.props.info.nombre}</h3>
                     <p>{this.props.info.descripcion}</p>
-                    <h3>{this.props.info.precio}</h3>
+                    <h3>$ {this.props.info.precio}</h3>
                 </div>
             </div>
         );

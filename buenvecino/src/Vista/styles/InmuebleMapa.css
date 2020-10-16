@@ -5,7 +5,7 @@
   border: 0.2px solid #000000;
   box-sizing: border-box;
   border-radius: 42px;
-  margin-top: 5%;
+  width: 90%;
 }
 .InmuebleMapa img {
   width: 30%;
@@ -14,8 +14,21 @@
   box-sizing: border-box;
   border-radius: 42px 0px 0px 42px;
 }
-
+.InmuebleMapa div{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-left: 5%;
+}
 .InmuebleMapa h3{
   color: black;
   font-weight: 400;
+  font-size:28px;
+  line-height: 30px;
+  padding-bottom: 2%;
+  
+}
+.InmuebleMapa .Titulo{
+  padding-top: 5%;
+  padding-right: 5%;
 }

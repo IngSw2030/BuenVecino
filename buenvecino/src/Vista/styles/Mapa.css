@@ -1,11 +1,23 @@
-.icono i{
-    font-size: 30px;
+.marcador i{
+    font-size: 20px;
     color: white;
 }
-.icono button{
+.marcador i:hover{
+    font-size: 20px;
+    color: red;
+}
+.marcador button{
     background: none;
     border: none;
 }
+
+.marcador button:focus{
+    border: none;
+    border-radius: none;
+    outline: none; 
+    box-shadow: none; 
+}
+
 .Mapa{
     height: 100vh;
     width: 100%;

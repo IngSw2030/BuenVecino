@@ -3,7 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import '../styles/Mapa.css';
 import Controlador from '../../Controlador/Controlador' 
  
-const AnyReactComponent = ({ text }) => <div> <button><i class="fas fa-map-marker-alt"></i> </button></div>;
+const AnyReactComponent = ({ text }) => <div className="marcador"> <button><i class="fas fa-map-marker-alt"></i> </button></div>;
  
 class Mapa extends Component {
   /*static defaultProps = {
