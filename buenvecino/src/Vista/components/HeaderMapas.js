@@ -10,7 +10,7 @@ class HeaderMapas extends Component{
                 <img src={require('../assets/Logo.png')} alt="Logo de la pagina"/>
                 <div className="barraBuscar">
                     <input type="text" placeholder="Ubicacion" className="ubicacion" ref={this.inputBusqueda}/>
-                    <input type="text" placeholder="Tiempo" className="tiempo" />
+                    {/* <input type="text" placeholder="Tiempo" className="tiempo" /> */}
                     <Button variant="outlined" className="buscar" onClick={(e)=>{this.buscarInmueble(e)}}>Buscar</Button>
                     <Button variant="outlined" className="ingreso">Ingresar</Button>
                     <Button variant="outlined" className="registro">Registra tu vivenda</Button>
