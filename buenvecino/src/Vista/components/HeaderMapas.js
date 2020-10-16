@@ -20,19 +20,11 @@ class HeaderMapas extends Component{
         );
     }
 
-<<<<<<< HEAD
 buscar(){
 let palabra = "chapinero"
 fetch('https://nominatim.openstreetmap.org/?addressdetails=1&q='+palabra+' bogota&format=json&limit=1').then(response => response.json())
 .then(data => console.log(data));
 }
-=======
-    buscar(){
-        let palabra = "candelaria"
-        fetch('https://nominatim.openstreetmap.org/?addressdetails=1&q='+palabra+' bogota&format=json&limit=1').then(response => response.json())
-        .then(data => console.log(data));
-    }
->>>>>>> 0cc679a7d80d7fa0d06b01f5e1508ce615c8daf8
 
 }
 

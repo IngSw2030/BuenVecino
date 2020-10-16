@@ -36,13 +36,8 @@ class Mapa extends Component {
           {/*<AnyReactComponent
             lat={4.641055}
             lng={-74.086925}
-<<<<<<< HEAD
             // text="My Marker"
-          />
-=======
-            text="My Marker"
           />*/}
->>>>>>> 0cc679a7d80d7fa0d06b01f5e1508ce615c8daf8
           
         </GoogleMapReact>
       </div>
