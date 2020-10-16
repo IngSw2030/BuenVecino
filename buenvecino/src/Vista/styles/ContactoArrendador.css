@@ -1,0 +1,32 @@
+.ContactoArrendador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.ContactoArrendador h3 {
+  font-family: Saira;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 57px;
+  letter-spacing: 0.05em;
+
+  color: #000000;
+}
+.ContactoArrendador .logos{
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    width: 100%;
+    justify-content: space-around;
+}
+.logos div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.logos img{
+    width: 70%;
+}

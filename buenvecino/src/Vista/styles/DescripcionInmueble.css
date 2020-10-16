@@ -1,0 +1,22 @@
+.DescripcionInmueble h3 {
+  font-family: Saira;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 57px;
+
+  /* identical to box height */
+  letter-spacing: 0.05em;
+
+  color: #000000;
+}
+.DescripcionInmueble p {
+  font-family: Saira;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 38px;
+  letter-spacing: 0.05em;
+
+  color: #000000;
+}

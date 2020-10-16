@@ -1,0 +1,45 @@
+.Reservar {
+  background: #ffffff;
+  border: 0.4px solid #000000;
+  border-radius: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 23em;
+  padding: 3%;
+  margin-top: 5%;
+}
+.Reservar Button {
+  background: #fd275f;
+  border-radius: 15px;
+  font-family: Saira;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 38px;
+  width: 90%;
+
+  /* identical to box height */
+  letter-spacing: 0.05em;
+
+  /* Principal - FFFFFF */
+  color: #ffffff;
+}
+.Reservar Button:hover {
+    background: white;
+    color: #fd275f;
+}
+
+.Reservar h3 {
+  font-family: Saira;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 25px;
+  padding-top: 1%;
+  
+  /* identical to box height */
+  
+  color: #000000;
+}

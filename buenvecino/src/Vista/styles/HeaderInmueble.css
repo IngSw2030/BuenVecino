@@ -1,0 +1,12 @@
+.HeaderInmueble {
+    
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
+        height: 30vh;   
+}
+.HeaderInmueble img{
+    margin-top: 2.5%;
+    align-self: start;
+    width: 30%;
+}

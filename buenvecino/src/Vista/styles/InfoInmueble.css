@@ -1,0 +1,13 @@
+.contenido {
+  display: flex;
+  margin-right: 10%;
+  margin-left: 10%;
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.descripcion {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+}
