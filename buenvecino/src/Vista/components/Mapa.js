@@ -3,7 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import '../styles/Mapa.css';
 import Controlador from '../../Controlador/Controlador' 
  
-const AnyReactComponent = ({ text }) => <div className="marcador"> <button><i class="fas fa-map-marker-alt"></i> </button></div>;
+const AnyReactComponent = ({ text }) => <div className="marcador" onMouseOver={(e)=>mostrarTexto(e,this)}> <p>{text}</p><button><i class="fas fa-map-marker-alt"></i> </button></div>;
  
 class Mapa extends Component {
   /*static defaultProps = {
@@ -28,7 +28,9 @@ class Mapa extends Component {
             return <AnyReactComponent
                 lat={obj.ubicacion.latitud}
                 lng={obj.ubicacion.longitud}
+                
                 text="My Marker"
+                
               />
           } )
         }          
@@ -40,7 +42,16 @@ class Mapa extends Component {
   constructor(props){
     super()
   }
+
+  
   
 }
- 
+
+function mostrarTexto(e,props){
+  console.log(" gonorrea")
+  console.log(e)
+  console.log(props)
+  
+}
+
 export default Mapa;

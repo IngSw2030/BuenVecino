@@ -10,7 +10,7 @@ class InmuebleMapa extends Component{
                 <div>
                     <h3 className="Titulo">{this.props.info.nombre}</h3>
                     <p>{this.props.info.descripcion}</p>
-                    <h3>$ {this.props.info.precio}</h3>
+                    <h3>$ COP {this.props.info.precio}</h3>
                 </div>
             </div>
         );
