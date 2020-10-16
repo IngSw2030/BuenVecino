@@ -28,7 +28,7 @@ class Mapas extends Component {
 
   async cargarInmueblesIniciales(){
     let controlador = Controlador.getControlador()
-    let inmIniciales = await controlador.buscarInmueblesIniciales(3)
+    let inmIniciales = await controlador.buscarInmueblesIniciales(7)
     this.setState({
       infoInmuebles : inmIniciales
     })
@@ -38,7 +38,12 @@ class Mapas extends Component {
     let controlador = Controlador.getControlador()
     let resBusqueda = await controlador.buscarInmueblePorBarrioLocalidad(busqueda)
     let zoom = 15
-    if ( !busquedaExitosa ){
+    if( busqueda.trim() === "" ){
+      resBusqueda = await controlador.buscarInmueblesIniciales(11)
+      coordenadasMapa = this.obtenerCoordenadasPromedioInmuebles(resBusqueda)
+      zoom = 13
+    }
+    else if ( !busquedaExitosa ){
       if ( resBusqueda.length > 0 ){
         coordenadasMapa = this.obtenerCoordenadasPromedioInmuebles(resBusqueda)
       }

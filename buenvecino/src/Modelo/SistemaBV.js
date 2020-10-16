@@ -114,7 +114,6 @@ class SistemaBV{
     
     async pruebaX2(){
         
-        
     }
 
     async pruebaX(){
