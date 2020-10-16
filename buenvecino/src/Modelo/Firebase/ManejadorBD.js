@@ -1,10 +1,6 @@
-import {db, fb, firebase} from './Firebase'
+import {db} from './Firebase'
 
 class ManejadorBD{
-
-    constructor(){
-
-    }
 
     static async escribirInformacion(coleccion, objeto){
         try {
@@ -17,15 +13,19 @@ class ManejadorBD{
 
     static async escribirInformacionIdManual(coleccion, id, objeto){
         try {
-            let nuevoObjeto = await db.collection(coleccion).doc(id).set(objeto)
+            await db.collection(coleccion).doc(id).set(objeto)
         } catch (error) {
             throw error
         }
     }
 
-    static async leerInformacionColeccion(coleccion){
+    static async leerInformacionColeccion(coleccion, nElementos = -1){
         try {
-            const infoLeida = await db.collection(coleccion).get()
+            let infoLeida = db.collection(coleccion)
+            if ( nElementos > 0 ){
+                infoLeida = infoLeida.limit(nElementos)
+            }
+            infoLeida = await infoLeida.get()
             const data = infoLeida.docs.map( doc => ({ id: doc.id, ...doc.data() }) )
             return data;
         } catch (error) {
@@ -42,11 +42,14 @@ class ManejadorBD{
         }
     }
 
-    static async realizarConsulta(coleccion, campos, relaciones, valores){
+    static async realizarConsulta(coleccion, campos, relaciones, valores, nElementos = -1){
         try {
             let ref =  db.collection(coleccion)
             for(let i=0; i<campos.length; i++){
                 ref = ref.where(campos[i], relaciones[i], valores[i])
+            }
+            if ( nElementos > 0 ){
+                ref = ref.limit(nElementos)
             }
             let info = await ref.get()
             info = info.docs.map( doc => ({ id: doc.id, ...doc.data() })  )

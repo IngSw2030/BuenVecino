@@ -26,23 +26,34 @@ class SistemaBV{
         }
     }
 
-    async buscarTodosInmuebles(){
+    //Que coincida con el barrio o con la localidad
+    //
+
+    async buscarInmueblesIniciales(cantInmuebles = 3){
+        return await ManejadorBD.leerInformacionColeccion("Inmuebles", cantInmuebles)
+    }
+
+    async buscarInmueblePorTipo(tipoInmueble){
+        return await ManejadorBD.realizarConsulta("Inmuebles", "tipo", "==", tipoInmueble)
+    }
+
+    async buscarInmueblePorBarrioLocalidad(sitio){
         try {
-            return ManejadorBD.leerInformacionColeccion("Inmuebles")
+            let inmuebles1 = await ManejadorBD.realizarConsulta("Inmuebles", ["ubicacion.barrio"], ["=="], [sitio])
+            let inmuebles2 = await ManejadorBD.realizarConsulta("Inmuebles", ["ubicacion.localidad"], ["=="], [sitio])
+            return [...inmuebles1, ...inmuebles2]
         } catch (error) {
             return error
         }
     }
 
-    buscarInmueblePorTipo(tipoInmueble, filtros){
-        switch(tipoInmueble.toUpperCase()){
-            case "A" : 
-            case "C" :
-            case "H" :
-            default : return {error : "El tipo de inmueble seleccionado no es valido"}
+    async buscarTodosInmuebles(){
+        try {
+            return await ManejadorBD.leerInformacionColeccion("Inmuebles")
+        } catch (error) {
+            return error
         }
     }
-
 
     crearUsuario(infoUsuario, esArrendatario){
         if ( esArrendatario ){
@@ -100,9 +111,9 @@ class SistemaBV{
             return Arrendador.validarEstructuraObjeto(infoUsuario)
         }
     }
-
-
-    pruebaX2(){
+    
+    async pruebaX2(){
+        
         
     }
 

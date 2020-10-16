@@ -6,6 +6,8 @@ import ManejadorBD from '../../Modelo/Firebase/ManejadorBD'
 
 import SistemaBV from '../../Modelo/SistemaBV'
 
+import Inmueble from '../../Modelo/Inmueble'
+
 class PaginaTest extends Component{
 
   render(){
@@ -108,7 +110,10 @@ class PaginaTest extends Component{
           </button>
 
           <br/><br/><br/><br/>
-          <button name="fsf12das" onClick={(e)=> { e.preventDefault(); this.prueba3() } }>
+          <form>
+          <input type="text" name="campo12" id="campo12" placeholder="Consulta" onChange={(e)=>this.actualizarCampo(e)}/>
+          </form>
+          <button name="fsf12das" onClick={(e)=> { e.preventDefault(); this.prueba3("campo12") } }>
             PRUEBA MODELO
           </button>
             
@@ -120,9 +125,22 @@ class PaginaTest extends Component{
       )
   }
 
-  prueba3(){
+  async prueba3(campo){
+    let dato = this.state[campo]
     let ss = new SistemaBV()
-    ss.pruebaX()
+    //let res = await ss.buscarInmueblePorBarrioLocalidad(dato)
+
+    //let res = await ss.buscarInmueblesIniciales(5)
+    //console.log(res)
+    let l1 = {latitud:4.626080, longitud :  -74.065809}
+    let l2 = {latitud : 4.631259, longitud : -74.064342}
+    let d = Inmueble.calcularDistanciaPuntosGeograficos(l1, l2) 
+    console.log(d)
+
+    let d2 = Inmueble.getDistanceFromLatLonInKm(l1, l2) 
+    console.log(d2)
+
+    
   }
 
 

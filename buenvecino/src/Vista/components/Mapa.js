@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import '../styles/Mapa.css';
- 
+
+import Controlador from '../../Controlador/Controlador'
+
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
  
 class Mapa extends Component {
@@ -22,16 +24,48 @@ class Mapa extends Component {
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
         >
-          <AnyReactComponent
+        {
+          this.state.infoInmuebles.map( (obj, index) =>{
+            console.log(obj.ubicacion.latitud)
+            console.log("JAJAJ")
+            return <AnyReactComponent
+                lat={obj.ubicacion.latitud}
+                lng={obj.ubicacion.longitud}
+                text="My Marker"
+              />
+          } )
+        }
+          {/*<AnyReactComponent
             lat={4.641055}
             lng={-74.086925}
             text="My Marker"
-          />
+          />*/}
           
         </GoogleMapReact>
       </div>
     );
   }
+
+  constructor(props){
+    super()
+    this.state = {
+      infoInmuebles : []
+    }
+    
+  }
+
+  componentDidMount(){
+    this.cargarInmueblesIniciales()
+  }
+  async cargarInmueblesIniciales(){
+    let controlador = Controlador.getControlador()
+    let inmIniciales = await controlador.buscarInmueblesIniciales(3)
+    this.setState({
+      infoInmuebles : inmIniciales
+    })
+    console.log("FINISHED")
+  }
+  
 }
  
 export default Mapa;

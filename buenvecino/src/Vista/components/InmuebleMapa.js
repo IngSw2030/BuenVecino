@@ -3,20 +3,22 @@ import '../styles/InmuebleMapa.css';
 
 
 class InmuebleMapa extends Component{
-render(){
-	return (
-        <div className="InmuebleMapa">
-            <img src={require('../assets/Rectangle7.png')} alt=""/>
-            <div>
-                <h3>Nombre</h3>
-                <p>Descripcion</p>
-                <h3>precio</h3>
+    render(){
+        return (
+            <div className="InmuebleMapa">
+                <img src={require('../assets/Rectangle7.png')} alt=""/>
+                <div>
+                    <h3>{this.props.info.nombre}</h3>
+                    <p>{this.props.info.descripcion}</p>
+                    <h3>{this.props.info.precio}</h3>
+                </div>
             </div>
-            
+        );
+    }
 
-        </div>
-	);
-}
+    constructor(props){
+        super()
+    }
 }
 
 export default InmuebleMapa;
