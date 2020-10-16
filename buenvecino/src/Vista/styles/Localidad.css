@@ -1,5 +1,7 @@
 .Localidad {
-  margin: 5%;
+  margin-top: 3%;
+  margin-right: 5%;
+  margin-left: 5%;
 }
 .Localidad h2 {
   font-family: Saira;
@@ -17,11 +19,11 @@
   line-height: 28px;
   letter-spacing: 0.05em;
   color: #4f4f4f;
-  margin-bottom: 5%;
 }
 
-.Localidad .Inmuebles{
+.Localidad .InmueblesL{
   display: flex;
   justify-content: center;
   flex-direction: row;
+  width: 100%;
 }

@@ -6,6 +6,14 @@
     font-size: 20px;
     color: red;
 }
+
+.marcador i:hover::after{
+    content: "";
+    color:black;
+    width: 400px;
+    position: relative;
+    top:0;
+}
 .marcador button{
     background: none;
     border: none;

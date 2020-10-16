@@ -10,10 +10,10 @@ class Localidad extends Component {
             <h2>Las localidades más solicitadas:</h2>
             <p>Aquí encontrarás los lugares de Bogotá donde <br/>
                 más se hospendan nuestros clientes</p>
-            <div className="Inmuebles">
+            <div className="InmueblesL">
             <Inmueble imagen={require('../assets/Rectangle7.png')} nombre="Chia" descripcion="Afueras de Bogotá" precio={123456} />
             <Inmueble imagen={require('../assets/Rectangle7.png')} nombre="Chapinero" descripcion="Centro de Bogota" precio={3621873}/>
-            <Inmueble imagen={require('../assets/Rectangle7.png')} nombre="teusaquillo" descripcion="Recomendado" precio={587687}/>
+            <Inmueble imagen={require('../assets/Rectangle7.png')} nombre="Teusaquillo" descripcion="Recomendado" precio={587687}/>
             </div>
 
         </div>
