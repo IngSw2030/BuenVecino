@@ -13,7 +13,7 @@ class Banner extends Component {
           <h3 className="subtitle_font">
             Reserva o comparte residencias universitarias con nosotros.
           </h3>
-          <Button variant="outlined">Regístrate</Button>
+          <Button variant="outlined" className="registrate">Regístrate</Button>
         </div>
         <div className="banner__search">
           <form>
@@ -21,7 +21,7 @@ class Banner extends Component {
             <input type="text" />
             <p>Duración en meses en la que planeas hospedarte</p>
             <input type="text" />
-            <Button variant="outlined">Buscar</Button>
+            <Button variant="outlined" className="buscar">Buscar</Button>
           </form>
         </div>
       </div>

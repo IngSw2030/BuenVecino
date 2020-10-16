@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import '../styles/Mapa.css';
+import Controlador from '../../Controlador/Controlador' 
  
 const AnyReactComponent = ({ text }) => <div> <button><i class="fas fa-map-marker-alt"></i> </button></div>;
  
