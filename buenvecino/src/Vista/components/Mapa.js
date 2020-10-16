@@ -6,13 +6,13 @@ import Controlador from '../../Controlador/Controlador'
 const AnyReactComponent = ({ text }) => <div> <button><i class="fas fa-map-marker-alt"></i> </button></div>;
  
 class Mapa extends Component {
-  static defaultProps = {
-    center: {
+  /*static defaultProps = {
+    coordenadas: {
       lat: 4.641055,
       lng: -74.086925
     },
     zoom: 12
-  };
+  };*/
  
   render() {
     return (
@@ -20,26 +20,18 @@ class Mapa extends Component {
       <div className="Mapa">
         <GoogleMapReact
           bootstrapURLKeys={{ key: 'AIzaSyDhsvsEHAbP4WIea6w7U4uXtnDQ9TmFooI' }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
+          center={this.props.centrar}
+          zoom={this.props.zoom}
         >
         {
-          this.state.infoInmuebles.map( (obj, index) =>{
-            console.log(obj.ubicacion.latitud)
-            console.log("JAJAJ")
+          this.props.infoInmuebles.map( (obj, index) =>{
             return <AnyReactComponent
                 lat={obj.ubicacion.latitud}
                 lng={obj.ubicacion.longitud}
                 text="My Marker"
               />
           } )
-        }
-          {/*<AnyReactComponent
-            lat={4.641055}
-            lng={-74.086925}
-            // text="My Marker"
-          />*/}
-          
+        }          
         </GoogleMapReact>
       </div>
     );
@@ -47,22 +39,6 @@ class Mapa extends Component {
 
   constructor(props){
     super()
-    this.state = {
-      infoInmuebles : []
-    }
-    
-  }
-
-  componentDidMount(){
-    this.cargarInmueblesIniciales()
-  }
-  async cargarInmueblesIniciales(){
-    let controlador = Controlador.getControlador()
-    let inmIniciales = await controlador.buscarInmueblesIniciales(3)
-    this.setState({
-      infoInmuebles : inmIniciales
-    })
-    console.log("FINISHED")
   }
   
 }
