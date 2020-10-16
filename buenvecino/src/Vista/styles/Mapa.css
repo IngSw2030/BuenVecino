@@ -1,4 +1,13 @@
+.icono i{
+    font-size: 30px;
+    color: white;
+}
+.icono button{
+    background: none;
+    border: none;
+}
 .Mapa{
     height: 100vh;
     width: 100%;
 }
+

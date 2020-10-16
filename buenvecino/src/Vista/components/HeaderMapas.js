@@ -21,7 +21,7 @@ render(){
 }
 
 buscar(){
-let palabra = "candelaria"
+let palabra = "chapinero"
 fetch('https://nominatim.openstreetmap.org/?addressdetails=1&q='+palabra+' bogota&format=json&limit=1').then(response => response.json())
 .then(data => console.log(data));
 }

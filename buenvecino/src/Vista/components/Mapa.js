@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import '../styles/Mapa.css';
  
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const AnyReactComponent = ({ text }) => <div> <button><i class="fas fa-map-marker-alt"></i> </button></div>;
  
 class Mapa extends Component {
   static defaultProps = {
@@ -25,7 +25,7 @@ class Mapa extends Component {
           <AnyReactComponent
             lat={4.641055}
             lng={-74.086925}
-            text="My Marker"
+            // text="My Marker"
           />
           
         </GoogleMapReact>

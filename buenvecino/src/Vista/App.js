@@ -4,6 +4,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 
 import PaginaTests from './screens/PaginaTest'
 import Mapas from './screens/mapas'
+import InfoInmueble from './screens/infoInmueble'
 
 // import Header from './components/Header';
 // import Main from './Main';
@@ -27,6 +28,9 @@ class App extends Component {
             </Route>
             <Route path="/busqueda" exact>
               <Mapas/>
+            </Route>
+            <Route path="/inmueble" exact>
+              <InfoInmueble/>
             </Route>
 						
 						{/*Pagina para pruebas de cualquier cosa, en el archivo screens/PaginaTests.js*/}
