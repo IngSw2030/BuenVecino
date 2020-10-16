@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import '../styles/Mapa.css';
 import Controlador from '../../Controlador/Controlador' 
-
+import {Link} from 'react-router-dom'
 
 const AnyReactComponent = ({ text } ) => {
   const [visible, setVisible] = React.useState(false)
   return (
+    <Link to="/inmueble">
     <div className="marcador" 
       onMouseOver={
           (e)=>{
@@ -24,6 +25,8 @@ const AnyReactComponent = ({ text } ) => {
         <i class="fas fa-map-marker-alt"></i> 
       </button>
     </div>
+    </Link>
+
  
   )
 }
@@ -55,6 +58,8 @@ class Mapa extends Component {
                 lng={obj.ubicacion.longitud}
                 text={obj.nombre}
               />
+       
+            
           } )
         }          
         </GoogleMapReact>
