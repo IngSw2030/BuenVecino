@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-
+import {Link} from 'react-router-dom'
 import { Avatar } from '@material-ui/core';
 import '../styles/Header.css';
 
@@ -14,10 +14,10 @@ render(){
 			<div className="header__right">
 				<nav>
 					<ul className ="nav-items">
-						<li><a href=""> Ingresar</a> </li>
-						<li><a href=""> Registrate</a> </li>
-						<li><a href=""> Registra tu vivienda</a> </li>
-						<li><a href=""> Ayuda</a> </li>
+						<li><Link to="/">Ingresar</Link></li>
+						<li><Link to="/">Registrate</Link></li>
+						<li><Link to="/">Registra tu vivienda</Link></li>
+						<li><Link to="/">Ayuda</Link></li>
 					</ul>
 				</nav>
 				<Avatar />

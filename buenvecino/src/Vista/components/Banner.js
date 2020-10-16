@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../styles/Banner.css";
 import { Button } from "@material-ui/core";
+import { Link } from 'react-router-dom'
 
 class Banner extends Component {
   render() {
@@ -21,7 +22,9 @@ class Banner extends Component {
             <input type="text" />
             <p>Duración en meses en la que planeas hospedarte</p>
             <input type="text" />
-            <Button variant="outlined" className="buscar">Buscar</Button>
+            <Link to="/busqueda">
+              <Button variant="outlined" className="buscar">Buscar</Button>
+            </Link>
           </form>
         </div>
       </div>
