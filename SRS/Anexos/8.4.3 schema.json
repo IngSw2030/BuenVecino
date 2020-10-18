@@ -1,0 +1,638 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/BuenVecino",
+    "definitions": {
+        "BuenVecino": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Arrendadores": {
+                    "$ref": "#/definitions/Arrendadores"
+                },
+                "Arrendatarios": {
+                    "$ref": "#/definitions/Arrendatarios"
+                },
+                "Inmuebles": {
+                    "$ref": "#/definitions/Inmuebles"
+                },
+                "Servicios": {
+                    "$ref": "#/definitions/Servicios"
+                },
+                "Chats": {
+                    "$ref": "#/definitions/Chats"
+                },
+                "Mensajes": {
+                    "$ref": "#/definitions/Mensajes"
+                },
+                "Favorito": {
+                    "$ref": "#/definitions/Favorito"
+                },
+                "PeriodoEstadia": {
+                    "$ref": "#/definitions/PeriodoEstadia"
+                },
+                "Notificaciones": {
+                    "$ref": "#/definitions/Notificaciones"
+                },
+                "Boletines": {
+                    "$ref": "#/definitions/Boletines"
+                }
+            },
+            "required": [
+                "Arrendadores",
+                "Arrendatarios",
+                "Boletines",
+                "Chats",
+                "Favorito",
+                "Inmuebles",
+                "Mensajes",
+                "Notificaciones",
+                "PeriodoEstadia",
+                "Servicios"
+            ],
+            "title": "BuenVecino"
+        },
+        "Arrendadores": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idArrendador": {
+                    "$ref": "#/definitions/IDArrendador"
+                }
+            },
+            "required": [
+                "$idArrendador"
+            ],
+            "title": "Arrendadores"
+        },
+        "IDArrendador": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "nombre": {
+                    "type": "string"
+                },
+                "dni": {
+                    "type": "integer"
+                },
+                "tipoDni": {
+                    "type": "string",
+                    "enum": ["CC", "CE", "TI", "PA"]
+                },
+                "genero": {
+                    "type": "string",
+                    "enum": ["M", "F", "O", "N"]
+                },
+                "fechaNacimiento": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "telefono": {
+                    "type": "integer"
+                },
+                "direccion": {
+                    "type": "string"
+                },
+                "ciudad": {
+                    "type": "string"
+                },
+                "chats": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/IDChat",
+                        "uniqueItems": true
+
+                    }
+                },
+                "inmuebles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/IDInmueble",
+                        "uniqueItems": true
+                    }
+                }
+            },
+            "required": [
+                "chats",
+                "ciudad",
+                "direccion",
+                "dni",
+                "email",
+                "fechaNacimiento",
+                "genero",
+                "inmuebles",
+                "nombre",
+                "telefono",
+                "tipoDni"
+            ],
+            "title": "IDArrendador"
+        },
+        "Arrendatarios": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idArrendatario": {
+                    "$ref": "#/definitions/IDArrendatario"
+                }
+            },
+            "required": [
+                "$idArrendatario"
+            ],
+            "title": "Arrendatarios"
+        },
+        "IDArrendatario": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "nombre": {
+                    "type": "string"
+                },
+                "dni": {
+                    "type": "integer"
+                },
+                "tipoDni": {
+                    "type": "string",
+                    "enum": ["CC", "CE", "TI", "PA"]
+                },
+                "genero": {
+                    "type": "string",
+                    "enum": ["M", "F", "O", "N"]
+                },
+                "fechaNacimiento": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "telefono": {
+                    "type": "integer"
+                },
+                "chats": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/IDChat",
+                        "uniqueItems": true,
+                        "default" : []
+                    }
+                },
+                "favoritos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/IDFavorito",
+                        "uniqueItems": true,
+                        "default" : []
+                    }
+                },
+                "historialInmuebles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PeriodoEstadia",
+                        "uniqueItems": true,
+                        "default" : []
+                    }
+                },
+                "metodoPago": {
+                    "$ref": "#/definitions/MetodoPago"
+                }
+            },
+            "required": [
+                "chats",
+                "dni",
+                "email",
+                "favoritos",
+                "fechaNacimiento",
+                "genero",
+                "historialInmuebles",
+                "metodoPago",
+                "nombre",
+                "telefono",
+                "tipoDni"
+            ],
+            "title": "IDArrendatario"
+        },
+        "MetodoPago": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "idPSE": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "idPSE"
+            ],
+            "title": "MetodoPago"
+        },
+        "Boletines": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idBoletin": {
+                    "$ref": "#/definitions/IDBoletin"
+                }
+            },
+            "required": [
+                "$idBoletin"
+            ],
+            "title": "Boletines"
+        },
+        "IDBoletin": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "fecha": {
+                    "type": "integer"
+                },
+                "contenido": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "contenido",
+                "fecha"
+            ],
+            "title": "IDBoletin"
+        },
+        "Chats": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idChat": {
+                    "$ref": "#/definitions/ChatsIDChat",
+                    "uniqueItems": true
+                }
+            },
+            "required": [
+                "$idChat"
+            ],
+            "title": "Chats"
+        },
+        "ChatsIDChat": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "miembro1": {
+                    "type": "string"
+                },
+                "miembro2": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "miembro1",
+                "miembro2"
+            ],
+            "title": "ChatsIDChat"
+        },
+        "Favorito": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idFav": {
+                    "$ref": "#/definitions/IDFavorito"
+                }
+            },
+            "required": [
+                "$idFav"
+            ],
+            "title": "Favorito"
+        },
+        "IDFavorito": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "inmubele": {
+                    "$ref": "#/definitions/IDInmueble"
+                },
+                "fechaAgregado": {
+                    "type": "integer"
+                },
+                "comentario": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "comentario",
+                "fechaAgregado",
+                "inmubele"
+            ],
+            "title": "IDFavorito"
+        },
+        "Inmuebles": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idInmueble": {
+                    "$ref": "#/definitions/IDInmueble"
+                }
+            },
+            "required": [
+                "$idInmueble"
+            ],
+            "title": "Inmuebles"
+        },
+        "IDInmueble": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "tipo": {
+                    "type": "string",
+                    "enum": ["C", "H", "A"]
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "precio": {
+                    "type": "integer"
+                },
+                "descripcion": {
+                    "type": "string"
+                },
+                "nBaños": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "area": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "esAmoblado": {
+                    "type": "boolean"
+                },
+                "ubicacion": {
+                    "$ref": "#/definitions/Ubicacion"
+                },
+                "servicios": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "uniqueItems": true
+                    }
+                },
+                "nHabitaciones": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "esCompartido": {
+                    "type": "boolean"
+                },
+                "nPisos": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "nCocinas": {
+                    "type": "integer"
+                },
+                "historialArrendatarios": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PeriodoEstadia",
+                        "uniqueItems": true
+                    }
+                }
+            },
+            "required": [
+                "area",
+                "descripcion",
+                "esAmoblado",
+                "esCompartido",
+                "historialArrendatarios",
+                "nBaños",
+                "nCocinas",
+                "nHabitaciones",
+                "nPisos",
+                "nombre",
+                "precio",
+                "servicios",
+                "tipo",
+                "ubicacion"
+            ],
+            "title": "IDInmueble"
+        },
+        "Ubicacion": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "direccion": {
+                    "type": "string"
+                },
+                "localidad": {
+                    "type": "string"
+                },
+                "latitud": {
+                    "type": "number"
+                },
+                "longitud": {
+                    "type": "number"
+                },
+                "barrio": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "barrio",
+                "direccion",
+                "latitud",
+                "localidad",
+                "longitud"
+            ],
+            "title": "Ubicacion"
+        },
+        "Mensajes": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idChat": {
+                    "$ref": "#/definitions/MensajesIDChat"
+                }
+            },
+            "required": [
+                "$idChat"
+            ],
+            "title": "Mensajes"
+        },
+        "MensajesIDChat": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idMen": {
+                    "$ref": "#/definitions/IDMen",
+                    "uniqueItems": true
+                }
+            },
+            "required": [
+                "$idMen"
+            ],
+            "title": "MensajesIDChat"
+        },
+        "IDMen": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "mensaje": {
+                    "type": "string"
+                },
+                "remitente": {
+                    "type": "string",
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/IDArrendatario"
+                        },
+                        {
+                            "$ref": "#/definitions/IDArrendador"
+                        }
+                      ]
+                },
+                "momento": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "mensaje",
+                "momento",
+                "remitente"
+            ],
+            "title": "IDMen"
+        },
+        "Notificaciones": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idNotificacion": {
+                    "$ref": "#/definitions/IDNotificacion"
+                }
+            },
+            "required": [
+                "$idNotificacion"
+            ],
+            "title": "Notificaciones"
+        },
+        "IDNotificacion": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "contenido": {
+                    "type": "string"
+                },
+                "tipo": {
+                    "type": "integer"
+                },
+                "arrendador": {
+                    "$ref": "#/definitions/IDArrendador"
+                },
+                "arrendatario": {
+                    "$ref": "#/definitions/IDArrendatario"
+                }
+            },
+            "required": [
+                "arrendador",
+                "arrendatario",
+                "contenido",
+                "tipo"
+            ],
+            "title": "IDNotificacion"
+        },
+        "PeriodoEstadia": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idPeriodo": {
+                    "$ref": "#/definitions/IDPeriodo"
+                }
+            },
+            "required": [
+                "$idPeriodo"
+            ],
+            "title": "PeriodoEstadia"
+        },
+        "IDPeriodo": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "idArrendatario": {
+                    "$ref": "#/definitions/IDArrendatario"
+                },
+                "idArrendador": {
+                    "$ref": "#/definitions/IDArrendador"
+                },
+                "idInmueble": {
+                    "$ref": "#/definitions/IDInmueble"
+                },
+                "valor": {
+                    "type": "integer"
+                },
+                "fechaInicio": {
+                    "type": "integer"
+                },
+                "fechaFin": {
+                    "type": "integer"
+                },
+                "valoración": {
+                    "$ref": "#/definitions/Valoracion"
+                }
+            },
+            "required": [
+                "fechaFin",
+                "fechaInicio",
+                "idArrendador",
+                "idArrendatario",
+                "idInmueble",
+                "valor",
+                "valoración"
+            ],
+            "title": "IDPeriodo"
+        },
+        "Valoracion": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "valor": {
+                    "type": "integer"
+                },
+                "comentario": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "comentario",
+                "valor"
+            ],
+            "title": "Valoracion"
+        },
+        "Servicios": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$idServicio": {
+                    "$ref": "#/definitions/IDServicio"
+                }
+            },
+            "required": [
+                "$idServicio"
+            ],
+            "title": "Servicios"
+        },
+        "IDServicio": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "nombre": {
+                    "type": "string"
+                },
+                "precioExtra": {
+                    "type": "integer"
+                },
+                "descripción": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "descripción",
+                "nombre",
+                "precioExtra"
+            ],
+            "title": "IDServicio"
+        }
+    }
+}
