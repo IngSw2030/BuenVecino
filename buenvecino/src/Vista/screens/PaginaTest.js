@@ -128,17 +128,12 @@ class PaginaTest extends Component{
   async prueba3(campo){
     let dato = this.state[campo]
     let ss = new SistemaBV()
+    ss.pruebaX2()
     //let res = await ss.buscarInmueblePorBarrioLocalidad(dato)
 
     //let res = await ss.buscarInmueblesIniciales(5)
     //console.log(res)
-    let l1 = {latitud:4.626080, longitud :  -74.065809}
-    let l2 = {latitud : 4.631259, longitud : -74.064342}
-    let d = Inmueble.calcularDistanciaPuntosGeograficos(l1, l2) 
-    console.log(d)
 
-    let d2 = Inmueble.getDistanceFromLatLonInKm(l1, l2) 
-    console.log(d2)
 
     
   }
