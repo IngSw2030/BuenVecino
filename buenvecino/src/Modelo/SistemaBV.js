@@ -4,6 +4,10 @@ import Autenticador from './Firebase/Autenticador'
 import ManejadorBD from './Firebase/ManejadorBD'
 import {firebase} from './Firebase/Firebase'
 import {definitions} from './Firebase/schema.json'
+import Apartamento from './Apartamento'
+import Casa from './Casa'
+import Inmueble from './Inmueble'
+import Habitacion from './Habitacion'
 
 class SistemaBV{
 
@@ -113,7 +117,8 @@ class SistemaBV{
     }
     
     async pruebaX2(){
-        
+
+
     }
 
     async pruebaX(){
@@ -125,6 +130,50 @@ class SistemaBV{
         catch(error){
             console.log("ERROR : ")
             console.log(error)
+        }
+    }
+
+    async registrarInmueble(infoInmueble, fotos=null){
+        try {
+            //let usuario = this.state.arrendador; REVISAR ARRENDADOR
+            let errores = this.validarEstructuraObjetoInmueble(infoInmueble)
+            if ( errores.errors.length > 0 ){
+                //REVISAR ERROR ID ERROR
+                return {resultadoRegistro: false, idError: 3, mensaje: errores}
+            }
+            /*COMO REVISAR INMUEBLES DUPLICADOS
+            if (  )
+            */
+           let inmueble = this.crearInmueble(infoInmueble)
+           await ManejadorBD.escribirInformacion("Inmuebles2", inmueble.state)
+           return {resultadoRegistro: true, idError: 0, mensaje: "Inmueble registrado exitosamente"}
+        }
+        catch (error) {
+            return error
+        }
+    }
+
+    crearInmueble(infoInmueble){
+        if ( infoInmueble.tipo == "C" ){
+            return new Casa(infoInmueble)
+        }
+        else if ( infoInmueble.tipo == "A" ) {
+            return new Apartamento(infoInmueble)
+        }
+        else{
+            return new Habitacion(infoInmueble)
+        }
+    }
+
+    validarEstructuraObjetoInmueble(infoInmueble){
+        if ( infoInmueble.tipo == "C" ){
+            return Casa.validarEstructuraObjeto(infoInmueble)
+        }
+        else if ( infoInmueble.tipo == "A" ) {
+            return Apartamento.validarEstructuraObjeto(infoInmueble)
+        }
+        else{
+            return Habitacion.validarEstructuraObjeto(infoInmueble)
         }
     }
 
