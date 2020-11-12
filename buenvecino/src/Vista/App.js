@@ -6,6 +6,7 @@ import PaginaTests from './screens/PaginaTest'
 import Mapas from './screens/mapas'
 import InfoInmueble from './screens/infoInmueble'
 
+
 // import Header from './components/Header';
 // import Main from './Main';
 
@@ -32,7 +33,6 @@ class App extends Component {
             <Route path="/inmueble" exact>
               <InfoInmueble/>
             </Route>
-						
 						{/*Pagina para pruebas de cualquier cosa, en el archivo screens/PaginaTests.js*/}
 						<Route path="/test" exact>
 							<PaginaTests/>
