@@ -51,6 +51,10 @@ class Controlador{
         return await this.modelo.eliminarInmueble(idInmueble)
     }
 
+    async modificarInmueble(idInmueble, camposModificados){
+        return await this.modelo.modificarInmueble(idInmueble, camposModificados)
+    }
+
     async pruebaX(param){
         return await this.modelo.pruebaX(param)
     }

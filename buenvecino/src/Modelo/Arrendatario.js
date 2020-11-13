@@ -57,6 +57,10 @@ class Arrendatario{
         } 
     }
 
+    async cargarInformacionAdicional(){
+        console.log("INFORMACION ADICIONAL ARRENDATARIO AUN NO IMPLEMENTADA")
+    }
+
     static validarEstructuraObjeto(infoArrendatario){
         let Validator = require('jsonschema').Validator;
         let v = new Validator();

@@ -72,7 +72,7 @@ class SistemaBV{
         return Autenticador.emailEstaRegistrado(email)
     }
 
-    establecerUsuario(usuario, esArrendatario){
+    async establecerUsuario(usuario, esArrendatario){
         if ( esArrendatario ){
             usuario = new Arrendatario(usuario)
             this.state = {
@@ -89,6 +89,7 @@ class SistemaBV{
                 arrendador: usuario
             }
         }
+        await usuario.cargarInformacionAdicional()
     }
 
     async registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
@@ -126,22 +127,14 @@ class SistemaBV{
     
     async registrarInmueble(infoInmueble, fotos=null){
         try {
-            //let usuario = this.state.arrendador; REVISAR ARRENDADOR
             let errores = this.validarEstructuraObjetoInmueble(infoInmueble)
             if ( errores.errors.length > 0 ){
                 //REVISAR ERROR ID ERROR
                 return {respuesta: false, idError: 3, mensaje: errores}
-            }
-            /*COMO REVISAR INMUEBLES DUPLICADOS
-            if (  )
-            */
-            //ENLAZAR EL NUEVO INMUEBLE CON EL ARRENDADOR
-
-
-           let inmueble = this.crearInmueble(infoInmueble)
-           let idInmueble = await ManejadorBD.escribirInformacion("Inmuebles2", inmueble.state)
-           await this.state.arrendador.agregarInmueble(inmueble, idInmueble)
-           return {respuesta: true, idError: 0, mensaje: "Inmueble registrado exitosamente"}
+            }let inmueble = this.crearInmueble(infoInmueble)
+            let idInmueble = await ManejadorBD.escribirInformacion("Inmuebles2", inmueble.state)
+            await this.state.arrendador.agregarInmueble(inmueble, idInmueble)
+            return {respuesta: true, idError: 0, mensaje: "Inmueble registrado exitosamente"}
         }
         catch (error) {
             return error
@@ -186,12 +179,12 @@ class SistemaBV{
             idRespuesta = idRespuesta.uid
             let arrendador = await this.buscarArrendador( idRespuesta )
             if ( arrendador != null){
-                this.establecerUsuario(arrendador, false)
+                await this.establecerUsuario(arrendador, false)
                 return this.state.arrendador
             }
             else{
                 let arrendatario = await this.buscarArrendatario( idRespuesta )
-                this.establecerUsuario(arrendatario, true)
+                await this.establecerUsuario(arrendatario, true)
                 return this.state.arrendatario
             }
         }
@@ -200,7 +193,10 @@ class SistemaBV{
         }
     }
 
-
+    async modificarInmueble(idInmueble, camposModificados){
+        console.log("ARRENDADOR ", this.state.arrendador)
+        return await this.state.arrendador.modificarInmueble(idInmueble, camposModificados)
+    }
 
     async eliminarInmueble(idInmueble){
         return await this.state.arrendador.eliminarInmueble(idInmueble)

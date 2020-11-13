@@ -14,6 +14,8 @@ class PaginaTest extends Component{
   render(){
       return(
           <div>
+
+
             <button onClick={ (e) => this.pruebaInmuebles(e)}>
               PRUEBA INMUEBLES
             </button>
@@ -24,6 +26,12 @@ class PaginaTest extends Component{
             </button>
             <br/>
 
+            <br/>
+
+            <button onClick={ (e) => this.pruebaModificacion(e)}>
+              PRUEBA MODIFICACION INMUEBLE
+            </button>
+            <br/>
 
 
           </div>
@@ -52,18 +60,21 @@ class PaginaTest extends Component{
   async pruebaIniciarSesion(e){
     let c = Controlador.getControlador()
     let res = await c.iniciarSesionUsuario("prueba112@prueba.com", "123456")
-
     let res2 = await c.eliminarInmueble("mXJtcVZdGPTrRjw6CqdK")
-
-    setTimeout(() => {  c.pruebaX({id: res2.auxiliar2, obj: res2.auxiliar })}, 20000);
-    
-
-
+    setTimeout(() => {  c.pruebaX({id: res2.auxiliar2, obj: res2.auxiliar })}, 10000);
     console.log(res2)
-
     c.cerrarSesion()
   }
 
+  async pruebaModificacion(e){
+    let c = Controlador.getControlador()
+    let res = await c.iniciarSesionUsuario("prueba112@prueba.com", "123456")
+
+    let res2 = await c.modificarInmueble("Ib65yu42QYaFM0aR4u2D", null)
+
+    console.log(res2)
+    c.cerrarSesion()
+  }
 
   constructor(props){
     super()
