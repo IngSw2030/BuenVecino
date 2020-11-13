@@ -2,6 +2,24 @@ import {db} from './Firebase'
 
 class ManejadorBD{
 
+    static async actualizarInformacion(coleccion, id, nuevoDato){
+        try {
+            await db.collection(coleccion).doc(id).update(nuevoDato)
+        }
+        catch (error) {
+            return error
+        }
+    }
+
+    static async borrarInformacion(coleccion, id){
+        try{
+            await db.collection(coleccion).doc(id).delete()
+        }
+        catch(error){
+            return error
+        }
+    }
+
     static async escribirInformacion(coleccion, objeto){
         try {
             let nuevoObjeto = await db.collection(coleccion).add(objeto)
@@ -33,10 +51,10 @@ class ManejadorBD{
         }
     }
 
-    static async leerInformacionDocumento(coleccion, documento){
+    static async leerInformacionDocumento(coleccion, idDocumento){
         try {
-            const infoLeida = await db.collection(coleccion).doc(documento).get()
-            return infoLeida.data();
+            const infoLeida = await db.collection(coleccion).doc(idDocumento).get()
+            return {idFirebase: idDocumento, ...infoLeida.data() };
         } catch (error) {
             throw error
         }
@@ -52,9 +70,10 @@ class ManejadorBD{
                 ref = ref.limit(nElementos)
             }
             let info = await ref.get()
-            info = info.docs.map( doc => ({ id: doc.id, ...doc.data() })  )
+            info = info.docs.map( doc => ({ idFirebase: doc.id, ...doc.data() })  )
             return info
-        } catch (error) {
+        }
+        catch (error) {
             throw error
         }
     }    

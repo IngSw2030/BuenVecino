@@ -390,6 +390,9 @@
                         "$ref": "#/definitions/PeriodoEstadia",
                         "uniqueItems": true
                     }
+                },
+                "idPropietario" : {
+                    "type": "string"
                 }
             },
             "required": [
@@ -406,7 +409,8 @@
                 "precio",
                 "servicios",
                 "tipo",
-                "ubicacion"
+                "ubicacion",
+                "idPropietario"
             ],
             "title": "IDInmueble"
         },

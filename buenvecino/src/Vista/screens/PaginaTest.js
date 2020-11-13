@@ -18,6 +18,12 @@ class PaginaTest extends Component{
               PRUEBA INMUEBLES
             </button>
 
+            <br/>
+            <button onClick={ (e) => this.pruebaIniciarSesion(e)}>
+              PRUEBA BORRADO DE UN INMUEBLE
+            </button>
+            <br/>
+
 
 
           </div>
@@ -26,7 +32,8 @@ class PaginaTest extends Component{
 
   async pruebaInmuebles(e){
     let c = Controlador.getControlador()
-    
+    let res2 = await c.iniciarSesionUsuario("prueba112@prueba.com", "123456")
+
     //CASA
     let inmueble = {
       tipo: "H",
@@ -35,10 +42,26 @@ class PaginaTest extends Component{
       descripcion: "Fdsfsdfs",
       nBaños: 44,
       area: 54.4,
-      esAmoblado: true
+      esAmoblado: true,
+      idPropietario: "wKOO7g9hQuVlDeHPjoMljX53Ryr2"
     }
     let res = await c.registrarInmueble(inmueble)
     console.log( res )
+  }
+
+  async pruebaIniciarSesion(e){
+    let c = Controlador.getControlador()
+    let res = await c.iniciarSesionUsuario("prueba112@prueba.com", "123456")
+
+    let res2 = await c.eliminarInmueble("mXJtcVZdGPTrRjw6CqdK")
+
+    setTimeout(() => {  c.pruebaX({id: res2.auxiliar2, obj: res2.auxiliar })}, 20000);
+    
+
+
+    console.log(res2)
+
+    c.cerrarSesion()
   }
 
 

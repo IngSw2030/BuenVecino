@@ -72,35 +72,43 @@ class SistemaBV{
         return Autenticador.emailEstaRegistrado(email)
     }
 
-    establecerUsuario(tipoUsuario, esArrendatario){
+    establecerUsuario(usuario, esArrendatario){
         if ( esArrendatario ){
-            //this.arrendador = usuario
-            //this.arrendatario = null
+            usuario = new Arrendatario(usuario)
+            this.state = {
+                ...this.state,
+                arrendatario: usuario,
+                arrendador: null
+            }
         }
         else {
-            //this.arrendatario = usuario
-            //this.arrendador = null
+            usuario = new Arrendador(usuario)
+            this.state = {
+                ...this.state,
+                arrendatario: null,
+                arrendador: usuario
+            }
         }
     }
 
     async registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
         try {
             if ( await this.emailEstaRegistrado(email) ){
-                return {resultadoRegistro: false, idError: 1, mensaje: "El email ingreasdo ya se encuentra registrado"}
+                return {respuesta: false, idError: 1, mensaje: "El email ingreasdo ya se encuentra registrado"}
             }
             if ( await this.buscarUsuariosPorDni(infoUsuario.dni, infoUsuario.tipoDni, SistemaBV.ARRENDATARIO) != null ){
-                return {resultadoRegistro: false, idError: 2, mensaje: "Ya existe un usuario registrado con ese numero de documento"}
+                return {respuesta: false, idError: 2, mensaje: "Ya existe un usuario registrado con ese numero de documento"}
             }
             let errores = this.validarEstructuraObjetoUsuario(infoUsuario, esArrendatario)
             if ( errores.errors.length > 0 ){
-                return {resultadoRegistro: false, idError: 3, mensaje: errores}
+                return {respuesta: false, idError: 3, mensaje: errores}
             }
             let usuario = this.crearUsuario(infoUsuario, esArrendatario)
             let idUsuario = await Autenticador.registrarUsuario(email, contrasena)
             idUsuario = idUsuario.uid
             let ruta = esArrendatario ? "Arrendatarios" : "Arrendadores"
             await ManejadorBD.escribirInformacionIdManual(ruta, idUsuario, usuario.state)
-            return {resultadoRegistro: true, idError: 0, mensaje: "Usuario registrado exitosamente"}
+            return {respuesta: true, idError: 0, mensaje: "Usuario registrado exitosamente"}
         }
         catch (error) {
             return error
@@ -116,37 +124,24 @@ class SistemaBV{
         }
     }
     
-    async pruebaX2(){
-
-
-    }
-
-    async pruebaX(){
-        try{
-            let data = await ManejadorBD.leerInformacionDocumento("prueba","8Jp13yNtwN8TkB6bakkB")
-            console.log(data)
-            console.log("FINISHED :V")
-        }
-        catch(error){
-            console.log("ERROR : ")
-            console.log(error)
-        }
-    }
-
     async registrarInmueble(infoInmueble, fotos=null){
         try {
             //let usuario = this.state.arrendador; REVISAR ARRENDADOR
             let errores = this.validarEstructuraObjetoInmueble(infoInmueble)
             if ( errores.errors.length > 0 ){
                 //REVISAR ERROR ID ERROR
-                return {resultadoRegistro: false, idError: 3, mensaje: errores}
+                return {respuesta: false, idError: 3, mensaje: errores}
             }
             /*COMO REVISAR INMUEBLES DUPLICADOS
             if (  )
             */
+            //ENLAZAR EL NUEVO INMUEBLE CON EL ARRENDADOR
+
+
            let inmueble = this.crearInmueble(infoInmueble)
-           await ManejadorBD.escribirInformacion("Inmuebles2", inmueble.state)
-           return {resultadoRegistro: true, idError: 0, mensaje: "Inmueble registrado exitosamente"}
+           let idInmueble = await ManejadorBD.escribirInformacion("Inmuebles2", inmueble.state)
+           await this.state.arrendador.agregarInmueble(inmueble, idInmueble)
+           return {respuesta: true, idError: 0, mensaje: "Inmueble registrado exitosamente"}
         }
         catch (error) {
             return error
@@ -175,6 +170,51 @@ class SistemaBV{
         else{
             return Habitacion.validarEstructuraObjeto(infoInmueble)
         }
+    }
+
+    async buscarArrendador( idArrendador ){
+        return ManejadorBD.leerInformacionDocumento( "Arrendadores", idArrendador )
+    }
+
+    async buscarArrendatario( idArrendatario ){
+        return ManejadorBD.leerInformacionDocumento( "Arrendatarios", idArrendatario )
+    }
+
+    async iniciarSesionUsuario(email, contrasena){
+        try {
+            let idRespuesta = await Autenticador.iniciarSesionUsuario(email, contrasena)
+            idRespuesta = idRespuesta.uid
+            let arrendador = await this.buscarArrendador( idRespuesta )
+            if ( arrendador != null){
+                this.establecerUsuario(arrendador, false)
+                return this.state.arrendador
+            }
+            else{
+                let arrendatario = await this.buscarArrendatario( idRespuesta )
+                this.establecerUsuario(arrendatario, true)
+                return this.state.arrendatario
+            }
+        }
+        catch (error) {
+            return error
+        }
+    }
+
+
+
+    async eliminarInmueble(idInmueble){
+        return await this.state.arrendador.eliminarInmueble(idInmueble)
+    }
+
+    async cerrarSesion(){
+        Autenticador.cerrarSesionUsuario()
+    }
+
+
+    async pruebaX(param){
+        console.log(param)
+        await ManejadorBD.escribirInformacionIdManual("Inmuebles2", param.id, param.obj)
+        await ManejadorBD.actualizarInformacion("Arrendadores", param.obj.idPropietario, {inmuebles: [...this.state.arrendador.state.inmuebles, param.id]})
     }
 
 }

@@ -41,13 +41,20 @@ class Arrendatario{
     }
 
     constructor(infoBasicaUsuario){
-        this.state = {
-            ...infoBasicaUsuario,
-            chats : [],
-            favoritos : [],
-            historialInmuebles : [],
-            metodoPago : {}
+        if ( infoBasicaUsuario.chats != undefined ){
+            this.state = {
+                ...infoBasicaUsuario
+            }
         }
+        else{
+            this.state = {
+                ...infoBasicaUsuario,
+                chats : [],
+                favoritos : [],
+                historialInmuebles : [],
+                metodoPago : {}
+            }
+        } 
     }
 
     static validarEstructuraObjeto(infoArrendatario){

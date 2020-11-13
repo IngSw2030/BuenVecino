@@ -6,7 +6,7 @@ class Autenticador{
         
     }
 
-    static async cerrarSesionUsuario(email){
+    static async cerrarSesionUsuario(){
         try {
             await auth.signOut()
         }
