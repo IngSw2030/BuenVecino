@@ -28,12 +28,17 @@ class Controlador{
         return this.modelo.buscarTodosInmuebles()
     }
 
+    async registrarInmueble(infoInmueble){
+        return this.modelo.registrarInmueble(infoInmueble)
+    }
+
     static getControlador(){
         if ( this.instanciaControlador == null ){
             this.instanciaControlador = new Controlador()
         }
         return this.instanciaControlador
     }
+
 }
 
 

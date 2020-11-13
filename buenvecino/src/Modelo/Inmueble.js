@@ -1,10 +1,76 @@
 class Inmueble{
 
-    constructor(){
 
+    //TODO REVISAR TEMA DE LAS FOTOS
+    static ESTRUCTURA_JSON = {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+            "tipo": {
+                "type": "string",
+                "enum": ["C", "H", "A"]
+            },
+            "nombre": {
+                "type": "string"
+            },
+            "precio": {
+                "type": "integer"
+            },
+            "descripcion": {
+                "type": "string"
+            },
+            "nBaños": {
+                "type": "integer",
+                "minimum": 0
+            },
+            "area": {
+                "type": "number",
+                "minimum": 0
+            },
+            "esAmoblado": {
+                "type": "boolean"
+            },
+            //TO DO
+            /*"ubicacion": {
+                "$ref": "#/definitions/Ubicacion"
+            }*/
+            /*"historialArrendatarios": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/PeriodoEstadia",
+                    "uniqueItems": true
+                }
+            }*/
+        },
+        "required": [
+            "area",
+            "descripcion",
+            "esAmoblado",
+            "nBaños",
+            "nombre",
+            "precio",
+            "tipo",
+            //"ubicacion"
+        ],
+        "title": "ESTRUCTURA_JSON"
+    }
+
+    constructor(infoInmueble){
+        this.state = {
+            ...infoInmueble,
+            servicios : [],
+            ubicacion : [],
+            historialArrendatarios : []
+        }
     }
 
     
+    static validarEstructuraObjeto(infoInmueble){
+        var Validator = require('jsonschema').Validator
+        var v = new Validator()
+        return v.validate(infoInmueble, this.ESTRUCTURA_JSON)
+    }
+
     static calcularDistanciaPuntosGeograficos(punto1, punto2){
         function enRadianes(valor){
             return (Math.PI / 180) * valor;
@@ -17,6 +83,8 @@ class Inmueble{
         let c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) )
         return r * c
     }
+
+    
 }
 
 export default Inmueble
