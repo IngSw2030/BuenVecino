@@ -8,6 +8,10 @@ class Controlador{
         this.modelo = new SistemaBV()
     }
 
+    async iniciarSesionUsuario(email, contrasena){
+        return await this.modelo.iniciarSesionUsuario(email, contrasena)
+    }
+
     async registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
         return await this.modelo.registrarUsuario(infoUsuario, esArrendatario, email, contrasena)
     }
@@ -28,6 +32,10 @@ class Controlador{
         return this.modelo.buscarTodosInmuebles()
     }
 
+    async cerrarSesion(){
+        this.modelo.cerrarSesion()
+    }
+
     async registrarInmueble(infoInmueble){
         return this.modelo.registrarInmueble(infoInmueble)
     }
@@ -37,6 +45,18 @@ class Controlador{
             this.instanciaControlador = new Controlador()
         }
         return this.instanciaControlador
+    }
+
+    async eliminarInmueble(idInmueble){
+        return await this.modelo.eliminarInmueble(idInmueble)
+    }
+
+    async modificarInmueble(idInmueble, camposModificados){
+        return await this.modelo.modificarInmueble(idInmueble, camposModificados)
+    }
+
+    async pruebaX(param){
+        return await this.modelo.pruebaX(param)
     }
 
 }

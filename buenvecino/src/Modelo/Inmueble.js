@@ -30,6 +30,9 @@ class Inmueble{
             "esAmoblado": {
                 "type": "boolean"
             },
+            "idPropietario" : {
+                "type": "string"
+            }
             //TO DO
             /*"ubicacion": {
                 "$ref": "#/definitions/Ubicacion"
@@ -50,6 +53,7 @@ class Inmueble{
             "nombre",
             "precio",
             "tipo",
+            "idPropietario"
             //"ubicacion"
         ],
         "title": "ESTRUCTURA_JSON"
@@ -59,7 +63,7 @@ class Inmueble{
         this.state = {
             ...infoInmueble,
             servicios : [],
-            ubicacion : [],
+            ubicacion : {},
             historialArrendatarios : []
         }
     }
