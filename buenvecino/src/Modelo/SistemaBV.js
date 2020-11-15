@@ -45,12 +45,9 @@ class SistemaBV{
     async buscarInmueblesPorBarrioLocalidad(sitio){
         try {
             sitio = Utils.normalizarString(sitio).toUpperCase().trim()
-            //("Inmuebles", ["ubicacion.tagBusqueda","ubicacion.tagBusqueda"],[">=","<="], [param, param+'\uf8ff'])
             let campos = ["ubicacion.tagBarrio","ubicacion.tagBarrio","ubicacion.tagLocalidad","ubicacion.tagLocalidad"]
             let operadores = [">=", "<=", ">=", "<="]
             let valores =  [sitio, sitio+'\uf8ff', sitio, sitio+'\uf8ff'] 
-            console.log(operadores.slice(0,2))
-            console.log(operadores.slice(2,4))
             let inmuebles1 = await ManejadorBD.realizarConsulta("Inmuebles", campos.slice(0,2), operadores.slice(0,2), valores.slice(0,2))
             let inmuebles2 = await ManejadorBD.realizarConsulta("Inmuebles", campos.slice(2,4), operadores.slice(2,4), valores.slice(2,4))
             return Utils.eliminarDuplicadosDeArray([...inmuebles1, ...inmuebles2])
