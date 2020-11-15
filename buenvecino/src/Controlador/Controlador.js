@@ -24,8 +24,8 @@ class Controlador{
         return await this.modelo.buscarInmueblePorTipo(tipoInmueble)
     }
 
-    async buscarInmueblePorBarrioLocalidad(sitio){
-        return await this.modelo.buscarInmueblePorBarrioLocalidad(sitio)
+    async buscarInmueblesPorBarrioLocalidad(sitio){
+        return await this.modelo.buscarInmueblesPorBarrioLocalidad(sitio)
     }
 
     async buscarTodosInmuebles(){
@@ -55,7 +55,7 @@ class Controlador{
         return await this.modelo.modificarInmueble(idInmueble, camposModificados)
     }
 
-    async pruebaX(param){
+    async pruebaX(param=null){
         return await this.modelo.pruebaX(param)
     }
 

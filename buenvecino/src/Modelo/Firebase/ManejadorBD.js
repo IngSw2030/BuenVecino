@@ -4,10 +4,11 @@ class ManejadorBD{
 
     static async actualizarInformacion(coleccion, id, nuevoDato){
         try {
+            delete nuevoDato.idFirebase
             await db.collection(coleccion).doc(id).update(nuevoDato)
         }
         catch (error) {
-            return error
+            throw error
         }
     }
 
@@ -16,7 +17,7 @@ class ManejadorBD{
             await db.collection(coleccion).doc(id).delete()
         }
         catch(error){
-            return error
+            throw error
         }
     }
 
@@ -44,7 +45,7 @@ class ManejadorBD{
                 infoLeida = infoLeida.limit(nElementos)
             }
             infoLeida = await infoLeida.get()
-            const data = infoLeida.docs.map( doc => ({ id: doc.id, ...doc.data() }) )
+            const data = infoLeida.docs.map( doc => ({ idFirebase: doc.id, ...doc.data() }) )
             return data;
         } catch (error) {
             throw error

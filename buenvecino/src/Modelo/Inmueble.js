@@ -1,3 +1,6 @@
+import Utils from './Utils'
+
+
 class Inmueble{
 
 
@@ -59,20 +62,27 @@ class Inmueble{
         "title": "ESTRUCTURA_JSON"
     }
 
+    objeto(nombre, objeto, valorDefecto = []){
+        return ( objeto.state[nombre] != undefined ? objeto[nombre] : valorDefecto )
+    }
+
     constructor(infoInmueble){
         this.state = {
             ...infoInmueble,
-            servicios : [],
-            ubicacion : {},
-            historialArrendatarios : []
+            ...Utils.agregarCamposSiNoExisten(infoInmueble, ["servicios", "ubicacion", "historialArrendatarios"], [[],[],{}])
         }
     }
-
     
     static validarEstructuraObjeto(infoInmueble){
         var Validator = require('jsonschema').Validator
         var v = new Validator()
         return v.validate(infoInmueble, this.ESTRUCTURA_JSON)
+    }
+
+    static obtenerCadenaBusqueda(barrio, localidad){
+        barrio = Utils.normalizarString(barrio).toUpperCase()
+        localidad = Utils.normalizarString(localidad).toUpperCase()
+        return {tagBarrio : barrio, tagLocalidad : localidad}
     }
 
     static calcularDistanciaPuntosGeograficos(punto1, punto2){

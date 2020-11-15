@@ -8,6 +8,7 @@ import Apartamento from './Apartamento'
 import Casa from './Casa'
 import Inmueble from './Inmueble'
 import Habitacion from './Habitacion'
+import Utils from './Utils'
 
 class SistemaBV{
 
@@ -41,13 +42,20 @@ class SistemaBV{
         return await ManejadorBD.realizarConsulta("Inmuebles", "tipo", "==", tipoInmueble)
     }
 
-    async buscarInmueblePorBarrioLocalidad(sitio){
+    async buscarInmueblesPorBarrioLocalidad(sitio){
         try {
-            let inmuebles1 = await ManejadorBD.realizarConsulta("Inmuebles", ["ubicacion.barrio"], ["=="], [sitio])
-            let inmuebles2 = await ManejadorBD.realizarConsulta("Inmuebles", ["ubicacion.localidad"], ["=="], [sitio])
-            return [...inmuebles1, ...inmuebles2]
+            sitio = Utils.normalizarString(sitio).toUpperCase().trim()
+            //("Inmuebles", ["ubicacion.tagBusqueda","ubicacion.tagBusqueda"],[">=","<="], [param, param+'\uf8ff'])
+            let campos = ["ubicacion.tagBarrio","ubicacion.tagBarrio","ubicacion.tagLocalidad","ubicacion.tagLocalidad"]
+            let operadores = [">=", "<=", ">=", "<="]
+            let valores =  [sitio, sitio+'\uf8ff', sitio, sitio+'\uf8ff'] 
+            console.log(operadores.slice(0,2))
+            console.log(operadores.slice(2,4))
+            let inmuebles1 = await ManejadorBD.realizarConsulta("Inmuebles", campos.slice(0,2), operadores.slice(0,2), valores.slice(0,2))
+            let inmuebles2 = await ManejadorBD.realizarConsulta("Inmuebles", campos.slice(2,4), operadores.slice(2,4), valores.slice(2,4))
+            return Utils.eliminarDuplicadosDeArray([...inmuebles1, ...inmuebles2])
         } catch (error) {
-            return error
+            throw error
         }
     }
 
@@ -75,6 +83,7 @@ class SistemaBV{
     async establecerUsuario(usuario, esArrendatario){
         if ( esArrendatario ){
             usuario = new Arrendatario(usuario)
+            await usuario.cargarInformacionAdicional()
             this.state = {
                 ...this.state,
                 arrendatario: usuario,
@@ -83,13 +92,13 @@ class SistemaBV{
         }
         else {
             usuario = new Arrendador(usuario)
+            await usuario.cargarInformacionAdicional()
             this.state = {
                 ...this.state,
                 arrendatario: null,
                 arrendador: usuario
             }
         }
-        await usuario.cargarInformacionAdicional()
     }
 
     async registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
@@ -206,11 +215,16 @@ class SistemaBV{
         Autenticador.cerrarSesionUsuario()
     }
 
-
     async pruebaX(param){
-        console.log(param)
-        await ManejadorBD.escribirInformacionIdManual("Inmuebles2", param.id, param.obj)
-        await ManejadorBD.actualizarInformacion("Arrendadores", param.obj.idPropietario, {inmuebles: [...this.state.arrendador.state.inmuebles, param.id]})
+        let inmuebles = await ManejadorBD.leerInformacionColeccion("Inmuebles")
+        for (let i in inmuebles){
+            console.log(inmuebles[i])
+            let nubicacion = inmuebles[i].ubicacion
+            let cadena = Inmueble.obtenerCadenaBusqueda( nubicacion.barrio, nubicacion.localidad )
+            nubicacion = {...nubicacion, ...cadena}
+            delete nubicacion.tagBusqueda
+            await ManejadorBD.actualizarInformacion("Inmuebles", inmuebles[i].idFirebase, {ubicacion: {...nubicacion}})
+        }
     }
 
 }

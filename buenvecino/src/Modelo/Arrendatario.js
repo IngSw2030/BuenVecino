@@ -1,3 +1,5 @@
+import Utils from './Utils'
+
 class Arrendatario{
     
     static ESTRUCTURA_JSON = {
@@ -40,21 +42,11 @@ class Arrendatario{
         "title": "ESTRUCTURA_JSON"
     }
 
-    constructor(infoBasicaUsuario){
-        if ( infoBasicaUsuario.chats != undefined ){
-            this.state = {
-                ...infoBasicaUsuario
-            }
+    constructor(infoUsuario){
+        this.state = {
+            ...infoUsuario,
+            ...Utils.agregarCamposSiNoExisten(infoUsuario, ["chats", "favoritos", "historialInmuebles", "metodoPago"])        
         }
-        else{
-            this.state = {
-                ...infoBasicaUsuario,
-                chats : [],
-                favoritos : [],
-                historialInmuebles : [],
-                metodoPago : {}
-            }
-        } 
     }
 
     async cargarInformacionAdicional(){

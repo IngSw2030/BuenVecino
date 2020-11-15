@@ -2,6 +2,7 @@ import Apartamento from './Apartamento';
 import Casa from './Casa';
 import Habitacion from './Habitacion';
 import ManejadorBD from './Firebase/ManejadorBD';
+import Utils from './Utils';
 
 class Arrendador{
 
@@ -55,18 +56,10 @@ class Arrendador{
         "title": "ESTRUCTURA_JSON"
     }
 
-    constructor(infoBasicaUsuario){
-        if ( infoBasicaUsuario.chats != undefined ){
-            this.state = {
-                ...infoBasicaUsuario
-            }
-        }
-        else{
-            this.state = {
-                ...infoBasicaUsuario,
-                inmuebles : [],
-                chats : []
-            }
+    constructor(infoUsuario){   
+        this.state = {
+            ...infoUsuario,
+            ...Utils.agregarCamposSiNoExisten(infoUsuario, ["inmuebles", "chats"], [])
         }
     }
 
@@ -84,6 +77,7 @@ class Arrendador{
                 case "C" : objeto = new Casa(objeto); break
                 case "A" : objeto = new Apartamento(objeto); break
                 case "H" : objeto = new Habitacion(objeto); break
+                default : console.log("Tipo de Inmueble no permitido : " + objeto.tipo + "\t" + objeto.idFirebase)
             }
             listaInmuebles[i] = objeto
         }
@@ -123,7 +117,6 @@ class Arrendador{
         if ( inmuebleModificado == null ){
             return {respuesta: false, idError: 1, mensaje: "Inmueble no encontrado"}
         }
-        delete inmuebleModificado.idFirebase
         await ManejadorBD.actualizarInformacion(Arrendador.TABLA_INMUEBLES, idInmueble, {...inmuebleModificado, ...camposModificados})
         return {respuesta: true, idError: 0, mensaje: "Modificación realizada"}
     }
