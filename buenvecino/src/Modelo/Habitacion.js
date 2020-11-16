@@ -4,7 +4,6 @@ class Habitacion extends Inmueble{
     
     constructor(infoInmueble){
         super(infoInmueble)
-        console.log("HERE HHAHAHA")
     }
     
     static validarEstructuraObjeto(infoInmueble){

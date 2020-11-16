@@ -1,8 +1,6 @@
 import Utils from './Utils'
 
-
 class Inmueble{
-
 
     //TODO REVISAR TEMA DE LAS FOTOS
     static ESTRUCTURA_JSON = {

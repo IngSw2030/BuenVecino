@@ -89,9 +89,10 @@ class PaginaTest extends Component{
   }
 
   async pruebaInmuebles(e){
+    console.log("ENTRO : ", e)
     let c = Controlador.getControlador()
     let res2 = await c.iniciarSesionUsuario("prueba112@prueba.com", "123456")
-
+    console.log("HERE : ", res2)
     let inmueble = {
       tipo: "H",
       nombre: "EFSFSDFS",

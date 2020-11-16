@@ -132,64 +132,20 @@ class SistemaBV{
     }
     
     async registrarInmueble(infoInmueble, fotos=null){
-        try {
-            let errores = this.validarEstructuraObjetoInmueble(infoInmueble)
-            if ( errores.errors.length > 0 ){
-                //REVISAR ERROR ID ERROR
-                return {respuesta: false, idError: 3, mensaje: errores}
-            }let inmueble = this.crearInmueble(infoInmueble)
-            let idInmueble = await ManejadorBD.escribirInformacion("Inmuebles2", inmueble.state)
-            await this.state.arrendador.agregarInmueble(inmueble, idInmueble)
-            return {respuesta: true, idError: 0, mensaje: "Inmueble registrado exitosamente"}
-        }
-        catch (error) {
-            return error
-        }
-    }
-
-    crearInmueble(infoInmueble){
-        if ( infoInmueble.tipo == "C" ){
-            return new Casa(infoInmueble)
-        }
-        else if ( infoInmueble.tipo == "A" ) {
-            return new Apartamento(infoInmueble)
-        }
-        else{
-            return new Habitacion(infoInmueble)
-        }
-    }
-
-    validarEstructuraObjetoInmueble(infoInmueble){
-        if ( infoInmueble.tipo == "C" ){
-            return Casa.validarEstructuraObjeto(infoInmueble)
-        }
-        else if ( infoInmueble.tipo == "A" ) {
-            return Apartamento.validarEstructuraObjeto(infoInmueble)
-        }
-        else{
-            return Habitacion.validarEstructuraObjeto(infoInmueble)
-        }
-    }
-
-    async buscarArrendador( idArrendador ){
-        return ManejadorBD.leerInformacionDocumento( "Arrendadores", idArrendador )
-    }
-
-    async buscarArrendatario( idArrendatario ){
-        return ManejadorBD.leerInformacionDocumento( "Arrendatarios", idArrendatario )
+        return await this.state.arrendador.registrarInmueble(infoInmueble, fotos)
     }
 
     async iniciarSesionUsuario(email, contrasena){
         try {
             let idRespuesta = await Autenticador.iniciarSesionUsuario(email, contrasena)
             idRespuesta = idRespuesta.uid
-            let arrendador = await this.buscarArrendador( idRespuesta )
+            let arrendador = await ManejadorBD.leerInformacionDocumento( "Arrendadores", idRespuesta )
             if ( arrendador != null){
                 await this.establecerUsuario(arrendador, false)
                 return this.state.arrendador
             }
             else{
-                let arrendatario = await this.buscarArrendatario( idRespuesta )
+                let arrendatario = await ManejadorBD.leerInformacionDocumento( "Arrendatarios", idRespuesta )
                 await this.establecerUsuario(arrendatario, true)
                 return this.state.arrendatario
             }
@@ -200,7 +156,6 @@ class SistemaBV{
     }
 
     async modificarInmueble(idInmueble, camposModificados){
-        console.log("ARRENDADOR ", this.state.arrendador)
         return await this.state.arrendador.modificarInmueble(idInmueble, camposModificados)
     }
 

@@ -21,6 +21,24 @@ class ManejadorBD{
         }
     }
 
+    static escucharActualizacionesColeccion(coleccion, metodoRecuperacion){
+        try {
+            db.collection(coleccion).onSnapshot( metodoRecuperacion )
+        }
+        catch (error) {
+            throw error
+        }
+    }
+
+    static escucharActualizacionesDocumento(coleccion, documento, metodoRecuperacion){
+        try {
+            db.collection(coleccion).doc(documento).onSnapshot( metodoRecuperacion )
+        }
+        catch (error) {
+            throw error
+        }
+    }
+
     static async escribirInformacion(coleccion, objeto){
         try {
             let nuevoObjeto = await db.collection(coleccion).add(objeto)
@@ -55,8 +73,14 @@ class ManejadorBD{
     static async leerInformacionDocumento(coleccion, idDocumento){
         try {
             const infoLeida = await db.collection(coleccion).doc(idDocumento).get()
-            return {idFirebase: idDocumento, ...infoLeida.data() };
-        } catch (error) {
+            if ( infoLeida.data() != undefined ){
+                return {idFirebase: idDocumento, ...infoLeida.data() }
+            }
+            else{
+                return null
+            }
+        }
+        catch (error) {
             throw error
         }
     }

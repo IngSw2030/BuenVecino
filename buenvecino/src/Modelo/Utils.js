@@ -25,7 +25,6 @@ class Utils{
     static eliminarDuplicadosDeArray(array, funcionComparacion=Utils.compararIdFirebase){
         for(let i=0; i<array.length-1; i++){
             for(let j=i+1; j<array.length; j++){
-                console.log(array[i].idFirebase, " ", array[j].idFirebase)
                 if ( funcionComparacion(array[i], array[j]) ){
                     array.splice(j, 1)
                     j--
