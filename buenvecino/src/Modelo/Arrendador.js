@@ -4,6 +4,7 @@ import Habitacion from './Habitacion';
 import ManejadorBD from './Firebase/ManejadorBD';
 import Utils from './Utils';
 import Inmueble from './Inmueble';
+import Chat from './Chat';
 
 class Arrendador{
 
@@ -64,38 +65,66 @@ class Arrendador{
         }
     }
 
-    agregarIdFirebase(idFirebase){
-        this.state = {
-            ...this.state,
-            idFirebase: idFirebase,
-        }
-    }
-
     async registrarInmueble(infoInmueble, fotos){
         try {
             let errores = Arrendador.validarEstructuraObjetoInmueble(infoInmueble)
             if ( errores.errors.length > 0 ){
                 //REVISAR ERROR ID ERROR
-                return {respuesta: false, idError: 3, mensaje: errores}
+                return {idError: 3, mensaje: errores}
             }
             console.log("MODIFICAR TABLA INMUEBLES 2 POR INMUEBLES")
             let idInmueble = await ManejadorBD.escribirInformacion("Inmuebles2", infoInmueble)
             let inmueble = Arrendador.crearObjetoInmueble(infoInmueble, idInmueble)
-            await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: [...this.state.inmuebles, idInmueble]})
+            let clausulaAgregar = Utils.clausulaAgregarElementoArrayFirebase(idInmueble)
+            await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: clausulaAgregar})
             this.state.listaInmuebles.push(inmueble)
-            return {respuesta: true, idError: 0, mensaje: "Inmueble registrado exitosamente"}
+            return {idError: 0, mensaje: "Inmueble registrado exitosamente"}
         }
         catch (error) {
             throw error
-        }
-
-
-
-        
+        }        
     }
 
-    //Carga los inmuebles y otros datos (aun no definidos) dentro del objeto del arrendador actual
+    //Carga los inmuebles, los chats y otros datos (aun no definidos) dentro del objeto del arrendador actual
     async cargarInformacionAdicional(){
+        await this.cargarInformacionAdicionalInmuebles()
+        await this.cargarInformacionAdicionalChats()
+    }
+
+    async cargarInformacionAdicionalChats(){
+        let chatsArray = this.state.chats
+        let listaChats = []
+        for(let i in chatsArray ){
+            let objeto = await ManejadorBD.leerInformacionDocumento("Chats", chatsArray[i])
+            listaChats[i] = new Chat(objeto, this.state.idFirebase)
+            listaChats[i].iniciarChat()
+        }
+        this.state = {
+            ...this.state,
+            listaChats : listaChats
+        }
+    }
+
+    async agregarMensajeChat(idChat, mensaje){
+        for(let i in this.state.listaChats){
+            if ( this.state.listaChats[i].state.idFirebase == idChat ){
+                return await this.state.listaChats[i].agregarMensajeChat(mensaje, this.state.idFirebase)
+            }
+        }
+    }
+
+    establecerReceptorMensajesChat(idChat, metodoReceptor){
+        let chatsArray = this.state.listaChats
+        for(let i in chatsArray ){
+            if ( chatsArray[i].state.idFirebase == idChat ){
+                console.log( chatsArray[i].state.idFirebase )
+                return chatsArray[i].establecerReceptorMensajesChat(metodoReceptor)
+            }
+        }
+        return {idError: 1, mensaje: "Chat no encontrado"}
+    }
+
+    async cargarInformacionAdicionalInmuebles(){
         let listaInmuebles = []
         let inmueblesAux = this.state.inmuebles
         for(let i in inmueblesAux ){
@@ -136,12 +165,13 @@ class Arrendador{
                 this.state.listaInmuebles.splice(i, 1)
                 this.state =  {...this.state, inmuebles: inmueblesAux} 
                 let objauxiliar = await ManejadorBD.leerInformacionDocumento(Arrendador.TABLA_INMUEBLES, auxiliar)
-                await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: inmueblesAux})
+                let clausulaEliminar = Utils.clausulaEliminarElementoArrayFirebase(idInmueble)
+                await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: clausulaEliminar})
                 await ManejadorBD.borrarInformacion(Arrendador.TABLA_INMUEBLES, idInmueble)
-                return {respuesta: true, idError: 0, mensaje: "Inmueble eliminado exitosamente", auxiliar: objauxiliar, auxiliar2: auxiliar}
+                return {idError: 0, mensaje: "Inmueble eliminado exitosamente", auxiliar: objauxiliar, auxiliar2: auxiliar}
             }
         }
-        return {respuesta: false, idError: 1, mensaje: "Inmueble no encontrado"}
+        return {idError: 1, mensaje: "Inmueble no encontrado"}
     }
 
     async modificarInmueble(idInmueble, camposModificados){
@@ -155,10 +185,10 @@ class Arrendador{
             }
         }
         if ( inmuebleModificado == null ){
-            return {respuesta: false, idError: 1, mensaje: "Inmueble no encontrado"}
+            return {idError: 1, mensaje: "Inmueble no encontrado"}
         }
         await ManejadorBD.actualizarInformacion(Arrendador.TABLA_INMUEBLES, idInmueble, {...inmuebleModificado, ...camposModificados})
-        return {respuesta: true, idError: 0, mensaje: "Modificación realizada"}
+        return {idError: 0, mensaje: "Modificación realizada"}
     }
 
     static validarEstructuraObjeto(infoArrendatario){

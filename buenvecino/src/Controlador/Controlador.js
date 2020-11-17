@@ -8,6 +8,11 @@ class Controlador{
         this.modelo = new SistemaBV()
     }
 
+
+    async agregarMensajeChat(idChat, mensaje){
+        return await this.modelo.agregarMensajeChat(idChat, mensaje)
+    }
+
     async iniciarSesionUsuario(email, contrasena){
         return await this.modelo.iniciarSesionUsuario(email, contrasena)
     }
@@ -36,8 +41,8 @@ class Controlador{
         this.modelo.cerrarSesion()
     }
 
-    async registrarInmueble(infoInmueble){
-        return this.modelo.registrarInmueble(infoInmueble)
+    establecerReceptorMensajesChat(idChat, metodoReceptor){
+        this.modelo.establecerReceptorMensajesChat(idChat, metodoReceptor)
     }
 
     static getControlador(){
@@ -51,12 +56,24 @@ class Controlador{
         return await this.modelo.eliminarInmueble(idInmueble)
     }
 
+    establecerReceptorMensajesChat(idChat, metodoReceptor){
+        return this.modelo.establecerReceptorMensajesChat(idChat, metodoReceptor)
+    }
+
     async modificarInmueble(idInmueble, camposModificados){
         return await this.modelo.modificarInmueble(idInmueble, camposModificados)
     }
 
+    obtenerUsuarioActivo(){
+        return this.modelo.obtenerUsuarioActivo().state
+    }
+
     async pruebaX(param=null){
         return await this.modelo.pruebaX(param)
+    }
+
+    async registrarInmueble(infoInmueble){
+        return this.modelo.registrarInmueble(infoInmueble)
     }
 
 }

@@ -1,3 +1,5 @@
+import Chat from './Chat'
+import ManejadorBD from './Firebase/ManejadorBD'
 import Utils from './Utils'
 
 class Arrendatario{
@@ -50,7 +52,40 @@ class Arrendatario{
     }
 
     async cargarInformacionAdicional(){
-        console.log("INFORMACION ADICIONAL ARRENDATARIO AUN NO IMPLEMENTADA")
+        console.log("INFORMACION ADICIONAL ARRENDATARIO AUN NO IMPLEMENTADA TOTALEMENTE")
+        await this.cargarInformacionAdicionalChats()
+    }
+
+    async cargarInformacionAdicionalChats(){
+        let chatsArray = this.state.chats
+        let listaChats = []
+        for(let i in chatsArray ){
+            let objeto = await ManejadorBD.leerInformacionDocumento("Chats", chatsArray[i])
+            listaChats[i] = new Chat(objeto, this.state.idFirebase)
+            listaChats[i].iniciarChat()
+        }
+        this.state = {
+            ...this.state,
+            listaChats : listaChats
+        }
+    }
+
+    establecerReceptorMensajesChat(idChat, metodoReceptor){
+        let chatsArray = this.state.listaChats
+        for(let i in chatsArray ){
+            if ( chatsArray[i].state.idFirebase == idChat ){
+                return chatsArray[i].establecerReceptorMensajesChat(metodoReceptor)
+            }
+        }
+        return {idError: 1, mensaje: "Chat no encontrado"}
+    }
+
+    async agregarMensajeChat(idChat, mensaje){
+        for(let i in this.state.listaChats){
+            if ( this.state.listaChats[i].state.idFirebase == idChat ){
+                return this.state.listaChats[i].agregarMensajeChat(mensaje, this.state.idFirebase)
+            }
+        }
     }
 
     static validarEstructuraObjeto(infoArrendatario){

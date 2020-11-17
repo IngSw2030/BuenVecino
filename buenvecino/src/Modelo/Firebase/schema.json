@@ -272,16 +272,23 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "miembro1": {
+                "usuario1": {
                     "type": "string"
                 },
-                "miembro2": {
+                "usuario2": {
                     "type": "string"
+                },
+                "mensajes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "uniqueItems": true
+                    }
                 }
             },
             "required": [
-                "miembro1",
-                "miembro2"
+                "usuario1",
+                "usuario2"
             ],
             "title": "ChatsIDChat"
         },

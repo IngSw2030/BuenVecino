@@ -15,8 +15,16 @@ class SistemaBV{
     constructor(){
         this.state = {
             arrendador : null,
-            usuario : null
+            arrendatario : null
         }
+    }
+
+    async agregarMensajeChat(idChat, mensaje){
+        return await this.obtenerUsuarioActivo().agregarMensajeChat(idChat, mensaje)
+    }
+
+    obtenerUsuarioActivo(){
+        return this.state.arrendatario != null ? this.state.arrendatario : this.state.arrendador
     }
 
     async buscarUsuariosPorDni(dni, tipoDni){
@@ -33,7 +41,6 @@ class SistemaBV{
 
     //Que coincida con el barrio o con la localidad
     //
-
     async buscarInmueblesIniciales(cantInmuebles = 3){
         return await ManejadorBD.leerInformacionColeccion("Inmuebles", cantInmuebles)
     }
@@ -64,7 +71,9 @@ class SistemaBV{
         }
     }
 
-    crearUsuario(infoUsuario, esArrendatario){
+    crearObjetoUsuario(infoUsuario, idFirebase, esArrendatario){
+        infoUsuario = {...infoUsuario, idFirebase}
+        console.log(infoUsuario)
         if ( esArrendatario ){
             return new Arrendatario(infoUsuario)
         }
@@ -100,26 +109,32 @@ class SistemaBV{
 
     async registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
         try {
-            if ( await this.emailEstaRegistrado(email) ){
-                return {respuesta: false, idError: 1, mensaje: "El email ingreasdo ya se encuentra registrado"}
-            }
-            if ( await this.buscarUsuariosPorDni(infoUsuario.dni, infoUsuario.tipoDni, SistemaBV.ARRENDATARIO) != null ){
-                return {respuesta: false, idError: 2, mensaje: "Ya existe un usuario registrado con ese numero de documento"}
-            }
             let errores = this.validarEstructuraObjetoUsuario(infoUsuario, esArrendatario)
             if ( errores.errors.length > 0 ){
-                return {respuesta: false, idError: 3, mensaje: errores}
+                return {idError: 3, mensaje: errores}
             }
-            let usuario = this.crearUsuario(infoUsuario, esArrendatario)
+            if ( await this.emailEstaRegistrado(email) ){
+                return {idError: 1, mensaje: "El email ingreasdo ya se encuentra registrado"}
+            }
+            if ( await this.buscarUsuariosPorDni(infoUsuario.dni, infoUsuario.tipoDni, SistemaBV.ARRENDATARIO) != null ){
+                return {idError: 2, mensaje: "Ya existe un usuario registrado con ese numero de documento"}
+            }
+            console.log("HERE :V")
             let idUsuario = await Autenticador.registrarUsuario(email, contrasena)
             idUsuario = idUsuario.uid
+            let usuario = this.crearObjetoUsuario(infoUsuario, idUsuario, esArrendatario)
             let ruta = esArrendatario ? "Arrendatarios" : "Arrendadores"
             await ManejadorBD.escribirInformacionIdManual(ruta, idUsuario, usuario.state)
-            return {respuesta: true, idError: 0, mensaje: "Usuario registrado exitosamente"}
+            this.establecerUsuario(usuario, esArrendatario)
+            return {idError: 0, mensaje: "Usuario registrado exitosamente"}
         }
         catch (error) {
             return error
         }        
+    }
+
+    establecerReceptorMensajesChat(idChat, metodoReceptor){
+        return this.obtenerUsuarioActivo().establecerReceptorMensajesChat(idChat, metodoReceptor)
     }
 
     validarEstructuraObjetoUsuario(infoUsuario, esArrendatario){
@@ -151,7 +166,7 @@ class SistemaBV{
             }
         }
         catch (error) {
-            return error
+            throw error
         }
     }
 
@@ -160,6 +175,9 @@ class SistemaBV{
     }
 
     async eliminarInmueble(idInmueble){
+        console.log(idInmueble, " PRO ELMINAR")
+        console.log( this.obtenerUsuarioActivo() )
+        console.log("\n\n")
         return await this.state.arrendador.eliminarInmueble(idInmueble)
     }
 
