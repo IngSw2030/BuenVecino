@@ -79,6 +79,7 @@ class Arrendador{
             await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: clausulaAgregar})
             this.state.listaInmuebles.push(inmueble)
             return {idError: 0, mensaje: "Inmueble registrado exitosamente"}
+            
         }
         catch (error) {
             throw error

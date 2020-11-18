@@ -137,6 +137,12 @@ class SistemaBV{
         return this.obtenerUsuarioActivo().establecerReceptorMensajesChat(idChat, metodoReceptor)
     }
 
+    /*validarArrendatario(infoUsuario){
+        if (this.state.arrendatario != NULL){
+            return Arrendatario.validarArrendatario()
+        }
+    }*/
+
     validarEstructuraObjetoUsuario(infoUsuario, esArrendatario){
         if ( esArrendatario ){
             return Arrendatario.validarEstructuraObjeto(infoUsuario)
@@ -196,6 +202,7 @@ class SistemaBV{
             await ManejadorBD.actualizarInformacion("Inmuebles", inmuebles[i].idFirebase, {ubicacion: {...nubicacion}})
         }
     }
+    
 
 }
 

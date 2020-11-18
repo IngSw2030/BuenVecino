@@ -8,6 +8,7 @@ import SistemaBV from '../../Modelo/SistemaBV'
 
 import Inmueble from '../../Modelo/Inmueble'
 import Controlador from '../../Controlador/Controlador'
+import Arrendatario from '../../Modelo/Arrendatario'
 
 class PaginaTest extends Component{
 
@@ -20,7 +21,10 @@ class PaginaTest extends Component{
             <button onClick={ (e) => this.pruebaInmuebles(e)}>
               PRUEBA AGREGAR INMUEBLES
             </button>
-
+            <br/>
+            <button onClick={ (e) => this.pruebaFavorito(e)}>
+              PRUEBA AGREGAR FAVORITO
+            </button>
             <br/>
             <button onClick={ (e) => this.pruebaBorrarInmueble(e)}>
               PRUEBA BORRADO DE UN INMUEBLE
@@ -213,6 +217,20 @@ class PaginaTest extends Component{
     }
     let res = await c.registrarInmueble(inmueble)
     console.log( res )
+  }
+
+  async pruebaFavorito(e){
+    console.log("Entro a favorito: ", e)
+    let c = Controlador.getControlador()
+    let res2 = await c.iniciarSesionUsuario("prueba1123d@prueba.com", "123456")
+    console.log("Llego a favorito: ", res2)  
+    let favorito = {
+      fechaAgregado: "5555",
+      Comentario: "Me gusta mucho",
+      idInmueble: "1hXHBQdB8AyPRgWBPGiJ"
+    }
+    let res = await c.agregarFavorito(favorito)
+    console.log(res)
   }
 
   async pruebaBorrarInmueble(e){
