@@ -236,6 +236,8 @@ class PaginaTest extends Component{
     console.log( res )
   }
 
+  
+
   async pruebaFavorito(e){
     console.log("Entro a favorito: ", e)
     let c = Controlador.getControlador()
@@ -243,11 +245,13 @@ class PaginaTest extends Component{
     console.log("Llego a favorito: ", res2)  
     let favorito = {
       fechaAgregado: Date.now(),
-      Comentario: "Me gusta mucho",
-      idInmueble: "1hXHBQdB8AyPRgWBPGiJ"
+      Comentario: "Favorito de prueba 2",
+      idInmueble: "sjdV16ET2lTdtnVCdELP"
     }
+    
     let res = await c.agregarFavorito(favorito)
-    console.log(res)
+    console.log(res.aux)
+
   }
 
   async pruebaBorrarInmueble(e){

@@ -107,15 +107,13 @@ class Arrendador extends Usuario{
         for(let i in this.state.inmuebles){
             if ( this.state.inmuebles[i] == idInmueble ){
                 let auxiliar = this.state.inmuebles[i]
-                let inmueblesAux = this.state.inmuebles
-                inmueblesAux.splice(i, 1)
+                this.state.inmuebles.splice(i, 1)
                 this.state.listaInmuebles.splice(i, 1)
-                this.state =  {...this.state, inmuebles: inmueblesAux} 
                 let objauxiliar = await ManejadorBD.leerInformacionDocumento(Arrendador.TABLA_INMUEBLES, auxiliar)
                 let clausulaEliminar = Utils.clausulaEliminarElementoArrayFirebase(idInmueble)
                 await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: clausulaEliminar})
                 await ManejadorBD.borrarInformacion(Arrendador.TABLA_INMUEBLES, idInmueble)
-                return {idError: 0, mensaje: "Inmueble eliminado exitosamente", auxiliar: objauxiliar, auxiliar2: auxiliar}
+                return {idError: 0, mensaje: "Inmueble eliminado exitosamente"}
             }
         }
         return {idError: 1, mensaje: "Inmueble no encontrado"}

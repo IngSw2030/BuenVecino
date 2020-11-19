@@ -44,6 +44,10 @@ class Controlador{
         return await this.modelo.eliminarInmueble(idInmueble)
     }
 
+    eliminarFavorito(idFavorito){
+        return this.modelo.eliminarFavorito(idFavorito)
+    }
+
     eliminarMensajeChat(idChat, idMensaje){
         return this.modelo.eliminarMensajeChat(idChat, idMensaje)
     }

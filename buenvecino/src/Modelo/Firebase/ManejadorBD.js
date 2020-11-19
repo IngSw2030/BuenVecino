@@ -4,6 +4,7 @@ class ManejadorBD{
 
     static async actualizarInformacion(coleccion, id, nuevoDato){
         try {
+            console.log(coleccion, id, nuevoDato, " MMM ")
             delete nuevoDato.idFirebase
             await db.collection(coleccion).doc(id).update(nuevoDato)
         }

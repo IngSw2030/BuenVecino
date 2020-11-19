@@ -112,6 +112,10 @@ class SistemaBV{
         return await this.state.arrendador.eliminarInmueble(idInmueble)
     }
 
+    eliminarFavorito(idFavorito){
+        return this.obtenerUsuarioActivo().eliminarFavorito(idFavorito)
+    }
+
     eliminarMensajeChat(idChat, idInmueble){
         return this.obtenerUsuarioActivo().eliminarMensajeChat(idChat, idInmueble) 
     }

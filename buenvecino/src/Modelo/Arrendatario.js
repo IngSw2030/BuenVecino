@@ -1,4 +1,3 @@
-import { InfoRounded } from '@material-ui/icons';
 import Utils from './Utils'
 import SistemaBV from './SistemaBV'
 import Arrendador from './Arrendador';
@@ -74,6 +73,7 @@ class Arrendatario extends Usuario{
             let favorito = Arrendatario.crearObjetoFavorito(infoFavorito, idFavorito)
             let clausulaAgregar = Utils.clausulaAgregarElementoArrayFirebase(idFavorito)
             await ManejadorBD.actualizarInformacion("Arrendatarios", this.state.idFirebase, {favoritos: clausulaAgregar})
+            this.state.favoritos.push(idFavorito)
             this.state.listaFavoritos.push(favorito)
             return {idError: 0, mensaje: "Inmueble agregado a favoritos"}
         }
@@ -106,22 +106,19 @@ class Arrendatario extends Usuario{
         return new Favorito(infoFavorito)
     }
 
-    async eliminarFavorito (idFavorito){
-        for(let i in this.state.favorito){
-            if(this.state.favorito[i] == idFavorito){
-                let auxiliar = this.state.favorito[i]
-                let favoritoAux = this.state.favorito
-                favoritoAux.splice(i, 1)
+    eliminarFavorito (idFavorito){
+        for(let i in this.state.favoritos){
+            if(this.state.favoritos[i] == idFavorito){
+                this.state.favoritos.splice(i, 1)
                 this.state.listaFavoritos.splice(i, 1)
-                this.state = {...this.state, favorito: favoritoAux}
-                let objauxiliar = await ManejadorBD.leerInformacionDocumento(Arrendatario.TABLA_FAVORITOS, auxiliar)
                 let clausulaEliminar = Utils.clausulaEliminarElementoArrayFirebase(idFavorito)
-                await ManejadorBD.actualizarInformacion("Arrendatario", this.state.idFirebase, {favorito: clausulaEliminar})
-                await ManejadorBD.borrarInformacion(Arrendatario.TABLA_Favoritos, idFavorito)
-                return {idError: 0, mensaje: "Inmueble eliminado exitosamente de favoritos", auxiliar: objauxiliar, auxiliar2: auxiliar}
+                ManejadorBD.actualizarInformacion("Arrendatarios", this.state.idFirebase, {favoritos: clausulaEliminar})
+                ManejadorBD.borrarInformacion(Arrendatario.TABLA_FAVORITOS, idFavorito)
+                
+                return {idError: 0, mensaje: "Favorito eliminado exitosamente"}
             }
         }
-        return {idError: 1, mensaje: "Inmueble no encontrado"}
+        return {idError: 1, mensaje: "Favorito no encontrado"}
     }
 
     static validarEstructuraObjeto(infoArrendatario){
