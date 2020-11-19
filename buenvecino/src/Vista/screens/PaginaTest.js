@@ -1,14 +1,5 @@
 import React, { Component } from 'react'
-import DataBaseTest from '../DataBaseTest'
-import {db as DataBase} from '../../Modelo/Firebase/Firebase'
-import Autenticador from '../../Modelo/Firebase/Autenticador'
-import ManejadorBD from '../../Modelo/Firebase/ManejadorBD'
-
-import SistemaBV from '../../Modelo/SistemaBV'
-
-import Inmueble from '../../Modelo/Inmueble'
 import Controlador from '../../Controlador/Controlador'
-import Arrendatario from '../../Modelo/Arrendatario'
 
 class PaginaTest extends Component{
 
@@ -79,9 +70,18 @@ class PaginaTest extends Component{
                 } }>
               PRUEBA CHAT
             </button>
+            <button onClick={ (e) => {
+                this.pruebaEliminar(e)
+                } }>
+              PRUEBA ELIMINAR MENSAJE
+            </button>
+            <hr/>
             {
-              this.state.mensajes.map( (item) => {
-                console.log( item.remitente , " vs. ", Controlador.getControlador().obtenerUsuarioActivo().idFirebase )
+              <div>{this.state.ress}</div> 
+            }
+            <hr/>
+            {
+              this.state.mensajes.slice(0).reverse().map( (item) => {
                 if ( item.remitente == Controlador.getControlador().obtenerUsuarioActivo().idFirebase ){
                   return (
                     <>
@@ -105,6 +105,16 @@ class PaginaTest extends Component{
       )
   }
 
+  //PROBAR FAVORITO, CREAR CHAT, AGREGAR MENSAJE, ELIMINAR MENSAJE
+
+  async pruebaEliminar(e){
+    let c = Controlador.getControlador()
+    let res = await c.eliminarMensajeChat("lk", this.state.mensajes[this.state.mensajes.length-1].idFirebase)
+    this.setState({
+      ress: res.mensaje
+    })
+  }
+
   async iniciarSesionUsuarioParaChat(texto){
     
     this.setState({
@@ -123,9 +133,14 @@ class PaginaTest extends Component{
     let c = Controlador.getControlador()
     c.cerrarSesion()
     await c.iniciarSesionUsuario(email, contrasena)
+    
     this.recibirNuevoMensaje = this.recibirNuevoMensaje.bind(this)
     let res = await c.establecerReceptorMensajesChat( "lk", this.recibirNuevoMensaje )
-    console.log(res)
+    
+    let res3 = c.obtenerMensajesCargadosChat("lk")
+    this.setState({
+      mensajes: res3.mensaje
+    })
   }
 
   async pruebaChat(e){
@@ -137,7 +152,8 @@ class PaginaTest extends Component{
 
     }
     else{
-      await c.agregarMensajeChat("lk", texto)
+      let k = await c.agregarMensajeChat("lk", texto)
+      console.log(k)
     }
 
 
@@ -151,6 +167,7 @@ class PaginaTest extends Component{
       let listaTot = this.state.mensajes
       listaTot.push( nuevo.mensajes )
       this.setState( {mensajes: nuevo} )
+      
     }
     else{
       console.log(idChat, " ", nuevo)
@@ -225,7 +242,7 @@ class PaginaTest extends Component{
     let res2 = await c.iniciarSesionUsuario("prueba1123d@prueba.com", "123456")
     console.log("Llego a favorito: ", res2)  
     let favorito = {
-      fechaAgregado: "5555",
+      fechaAgregado: Date.now(),
       Comentario: "Me gusta mucho",
       idInmueble: "1hXHBQdB8AyPRgWBPGiJ"
     }
@@ -257,7 +274,7 @@ class PaginaTest extends Component{
     super()
     this.state = {
       inm: [],
-      mensajes : []
+      mensajes : [],
     }
     this.inputChat = React.createRef()
   }

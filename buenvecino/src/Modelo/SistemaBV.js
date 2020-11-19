@@ -19,34 +19,18 @@ class SistemaBV{
         }
     }
 
+    async agregarFavorito(favorito){
+        return await this.obtenerUsuarioActivo().agregarFavorito(favorito)
+    }
+
     async agregarMensajeChat(idChat, mensaje){
         return await this.obtenerUsuarioActivo().agregarMensajeChat(idChat, mensaje)
-    }
-
-    obtenerUsuarioActivo(){
-        return this.state.arrendatario != null ? this.state.arrendatario : this.state.arrendador
-    }
-
-    async buscarUsuariosPorDni(dni, tipoDni){
-        let usuarios1 = await ManejadorBD.realizarConsulta("Arrendatarios", ["dni", "tipoDni"], ["==","=="], [dni, tipoDni])
-        let usuarios2 = await ManejadorBD.realizarConsulta("Arrendadores", ["dni", "tipoDni"], ["==","=="], [dni, tipoDni])
-        let usuarios3 = [...usuarios1, ...usuarios2]
-        if (usuarios3.length > 0){
-            return usuarios3
-        }
-        else{
-            return null
-        }
     }
 
     //Que coincida con el barrio o con la localidad
     //
     async buscarInmueblesIniciales(cantInmuebles = 3){
         return await ManejadorBD.leerInformacionColeccion("Inmuebles", cantInmuebles)
-    }
-
-    async buscarInmueblePorTipo(tipoInmueble){
-        return await ManejadorBD.realizarConsulta("Inmuebles", "tipo", "==", tipoInmueble)
     }
 
     async buscarInmueblesPorBarrioLocalidad(sitio){
@@ -63,11 +47,50 @@ class SistemaBV{
         }
     }
 
+    async buscarInmueblePorTipo(tipoInmueble){
+        return await ManejadorBD.realizarConsulta("Inmuebles", "tipo", "==", tipoInmueble)
+    }
+
     async buscarTodosInmuebles(){
         try {
             return await ManejadorBD.leerInformacionColeccion("Inmuebles")
         } catch (error) {
             return error
+        }
+    }
+
+    async buscarUsuariosPorDni(dni, tipoDni){
+        let usuarios1 = await ManejadorBD.realizarConsulta("Arrendatarios", ["dni", "tipoDni"], ["==","=="], [dni, tipoDni])
+        let usuarios2 = await ManejadorBD.realizarConsulta("Arrendadores", ["dni", "tipoDni"], ["==","=="], [dni, tipoDni])
+        let usuarios3 = [...usuarios1, ...usuarios2]
+        if (usuarios3.length > 0){
+            return usuarios3
+        }
+        else{
+            return null
+        }
+    }
+
+    async cerrarSesion(){
+        Autenticador.cerrarSesionUsuario()
+    }
+
+    async crearChat(idUsuario2, primerMensaje){
+        let tipoUsuario2 = await this.obtenerColeccionCorrespondienteUsuario(idUsuario2)
+        if ( idUsuario2 == this.state.obtenerUsuarioActivo().state.idFirebase ){
+            return {idError: 1, mensaje: "Está tratando de crear un chat consigo mismo"}
+        }
+        else if ( tipoUsuario2 == null ){
+            return {idError: 2, mensaje: "El usuario con quien intenta crear el chat no existe"}
+        }
+        else{
+            let respuesta = this.state.obtenerUsuarioActivo().crearChat(idUsuario2)
+            if ( respuesta.idError == 0 ){
+                let clausulaActualizar = { chats : Utils.clausulaAgregarElementoArrayFirebase( respuesta.idNuevoChat ) }
+                await ManejadorBD.actualizarInformacion( tipoUsuario2, idUsuario2, clausulaActualizar )
+                await this.agregarMensajeChat(respuesta.idNuevoChat, primerMensaje)
+            }
+            return respuesta
         }
     }
 
@@ -82,8 +105,27 @@ class SistemaBV{
         }
     }
 
+    async eliminarInmueble(idInmueble){
+        console.log(idInmueble, " PRO ELMINAR")
+        console.log( this.obtenerUsuarioActivo() )
+        console.log("\n\n")
+        return await this.state.arrendador.eliminarInmueble(idInmueble)
+    }
+
+    eliminarMensajeChat(idChat, idInmueble){
+        return this.obtenerUsuarioActivo().eliminarMensajeChat(idChat, idInmueble) 
+    }
+
     emailEstaRegistrado(email){
         return Autenticador.emailEstaRegistrado(email)
+    }
+
+    establecerReceptorChats(metodoReceptor){
+        return this.obtenerUsuarioActivo().establecerReceptorChats(metodoReceptor)
+    }
+
+    establecerReceptorMensajesChat(idChat, metodoReceptor){
+        return this.obtenerUsuarioActivo().establecerReceptorMensajesChat(idChat, metodoReceptor)
     }
 
     async establecerUsuario(usuario, esArrendatario){
@@ -95,8 +137,10 @@ class SistemaBV{
                 arrendatario: usuario,
                 arrendador: null
             }
+            
         }
         else {
+            let tt = Date.now()
             usuario = new Arrendador(usuario)
             await usuario.cargarInformacionAdicional()
             this.state = {
@@ -105,6 +149,52 @@ class SistemaBV{
                 arrendador: usuario
             }
         }
+    }
+
+    async iniciarSesionUsuario(email, contrasena){
+        try {
+            let idRespuesta = await Autenticador.iniciarSesionUsuario(email, contrasena)
+            idRespuesta = idRespuesta.uid
+            let arrendador = await ManejadorBD.leerInformacionDocumento( "Arrendadores", idRespuesta )
+            if ( arrendador != null){
+                await this.establecerUsuario(arrendador, false)
+                return this.state.arrendador
+            }
+            else{
+                let arrendatario = await ManejadorBD.leerInformacionDocumento( "Arrendatarios", idRespuesta )
+                await this.establecerUsuario(arrendatario, true)
+                return this.state.arrendatario
+            }
+        }
+        catch (error) {
+            throw error
+        }
+    }
+
+    async modificarInmueble(idInmueble, camposModificados){
+        return await this.state.arrendador.modificarInmueble(idInmueble, camposModificados)
+    }
+
+    async obtenerColeccionCorrespondienteUsuario(idUsuario){
+        if  (await ManejadorBD.leerInformacionDocumento("Arrendador", idUsuario) != null ){
+            return "Arrendador"
+        }
+        else if ( await ManejadorBD.leerInformacionDocumento("Arrendatario", idUsuario) != null ){
+            return "Arrendatario"
+        }
+        return null
+    }
+
+    obtenerMensajesCargadosChat(idChat){
+        return this.obtenerUsuarioActivo().obtenerMensajesCargadosChat(idChat)
+    }
+
+    obtenerUsuarioActivo(){
+        return this.state.arrendatario != null ? this.state.arrendatario : this.state.arrendador
+    }
+    
+    async registrarInmueble(infoInmueble, fotos=null){
+        return await this.state.arrendador.registrarInmueble(infoInmueble, fotos)
     }
 
     async registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
@@ -133,10 +223,6 @@ class SistemaBV{
         }        
     }
 
-    establecerReceptorMensajesChat(idChat, metodoReceptor){
-        return this.obtenerUsuarioActivo().establecerReceptorMensajesChat(idChat, metodoReceptor)
-    }
-
     /*validarArrendatario(infoUsuario){
         if (this.state.arrendatario != NULL){
             return Arrendatario.validarArrendatario()
@@ -150,46 +236,7 @@ class SistemaBV{
         else{
             return Arrendador.validarEstructuraObjeto(infoUsuario)
         }
-    }
-    
-    async registrarInmueble(infoInmueble, fotos=null){
-        return await this.state.arrendador.registrarInmueble(infoInmueble, fotos)
-    }
-
-    async iniciarSesionUsuario(email, contrasena){
-        try {
-            let idRespuesta = await Autenticador.iniciarSesionUsuario(email, contrasena)
-            idRespuesta = idRespuesta.uid
-            let arrendador = await ManejadorBD.leerInformacionDocumento( "Arrendadores", idRespuesta )
-            if ( arrendador != null){
-                await this.establecerUsuario(arrendador, false)
-                return this.state.arrendador
-            }
-            else{
-                let arrendatario = await ManejadorBD.leerInformacionDocumento( "Arrendatarios", idRespuesta )
-                await this.establecerUsuario(arrendatario, true)
-                return this.state.arrendatario
-            }
-        }
-        catch (error) {
-            throw error
-        }
-    }
-
-    async modificarInmueble(idInmueble, camposModificados){
-        return await this.state.arrendador.modificarInmueble(idInmueble, camposModificados)
-    }
-
-    async eliminarInmueble(idInmueble){
-        console.log(idInmueble, " PRO ELMINAR")
-        console.log( this.obtenerUsuarioActivo() )
-        console.log("\n\n")
-        return await this.state.arrendador.eliminarInmueble(idInmueble)
-    }
-
-    async cerrarSesion(){
-        Autenticador.cerrarSesionUsuario()
-    }
+    }    
 
     async pruebaX(param){
         let inmuebles = await ManejadorBD.leerInformacionColeccion("Inmuebles")

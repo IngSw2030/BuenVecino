@@ -3,10 +3,9 @@ import Casa from './Casa';
 import Habitacion from './Habitacion';
 import ManejadorBD from './Firebase/ManejadorBD';
 import Utils from './Utils';
-import Inmueble from './Inmueble';
-import Chat from './Chat';
+import Usuario from './Usuario'
 
-class Arrendador{
+class Arrendador extends Usuario{
 
     static TABLA_INMUEBLES = "Inmuebles2"
 
@@ -59,77 +58,24 @@ class Arrendador{
     }
 
     constructor(infoUsuario){   
+        super(infoUsuario)
         this.state = {
             ...infoUsuario,
             ...Utils.agregarCamposSiNoExisten(infoUsuario, ["inmuebles", "chats"], [])
         }
     }
 
-    async registrarInmueble(infoInmueble, fotos){
-        try {
-            let errores = Arrendador.validarEstructuraObjetoInmueble(infoInmueble)
-            if ( errores.errors.length > 0 ){
-                //REVISAR ERROR ID ERROR
-                return {idError: 3, mensaje: errores}
-            }
-            console.log("MODIFICAR TABLA INMUEBLES 2 POR INMUEBLES")
-            let idInmueble = await ManejadorBD.escribirInformacion("Inmuebles2", infoInmueble)
-            let inmueble = Arrendador.crearObjetoInmueble(infoInmueble, idInmueble)
-            let clausulaAgregar = Utils.clausulaAgregarElementoArrayFirebase(idInmueble)
-            await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: clausulaAgregar})
-            this.state.listaInmuebles.push(inmueble)
-            return {idError: 0, mensaje: "Inmueble registrado exitosamente"}
-            
-        }
-        catch (error) {
-            throw error
-        }        
-    }
-
-    //Carga los inmuebles, los chats y otros datos (aun no definidos) dentro del objeto del arrendador actual
     async cargarInformacionAdicional(){
+        await super.cargarInformacionAdicional()
         await this.cargarInformacionAdicionalInmuebles()
-        await this.cargarInformacionAdicionalChats()
-    }
-
-    async cargarInformacionAdicionalChats(){
-        let chatsArray = this.state.chats
-        let listaChats = []
-        for(let i in chatsArray ){
-            let objeto = await ManejadorBD.leerInformacionDocumento("Chats", chatsArray[i])
-            listaChats[i] = new Chat(objeto, this.state.idFirebase)
-            listaChats[i].iniciarChat()
-        }
-        this.state = {
-            ...this.state,
-            listaChats : listaChats
-        }
-    }
-
-    async agregarMensajeChat(idChat, mensaje){
-        for(let i in this.state.listaChats){
-            if ( this.state.listaChats[i].state.idFirebase == idChat ){
-                return await this.state.listaChats[i].agregarMensajeChat(mensaje, this.state.idFirebase)
-            }
-        }
-    }
-
-    establecerReceptorMensajesChat(idChat, metodoReceptor){
-        let chatsArray = this.state.listaChats
-        for(let i in chatsArray ){
-            if ( chatsArray[i].state.idFirebase == idChat ){
-                console.log( chatsArray[i].state.idFirebase )
-                return chatsArray[i].establecerReceptorMensajesChat(metodoReceptor)
-            }
-        }
-        return {idError: 1, mensaje: "Chat no encontrado"}
     }
 
     async cargarInformacionAdicionalInmuebles(){
         let listaInmuebles = []
         let inmueblesAux = this.state.inmuebles
-        for(let i in inmueblesAux ){
-            let objeto = await ManejadorBD.leerInformacionDocumento(Arrendador.TABLA_INMUEBLES, inmueblesAux[i])
+        let consulta = await ManejadorBD.realizarConsulta(Arrendador.TABLA_INMUEBLES, ["idPropietario"], ["=="], [this.state.idFirebase])
+        for( let i in consulta ){
+            let objeto = consulta[i]
             switch( objeto.tipo ){
                 case "C" : objeto = new Casa(objeto); break
                 case "A" : objeto = new Apartamento(objeto); break
@@ -188,8 +134,28 @@ class Arrendador{
         if ( inmuebleModificado == null ){
             return {idError: 1, mensaje: "Inmueble no encontrado"}
         }
-        await ManejadorBD.actualizarInformacion(Arrendador.TABLA_INMUEBLES, idInmueble, {...inmuebleModificado, ...camposModificados})
+        await ManejadorBD.actualizarInformacion(Arrendador.TABLA_INMUEBLES, idInmueble, camposModificados)
         return {idError: 0, mensaje: "Modificación realizada"}
+    }
+
+    async registrarInmueble(infoInmueble, fotos){
+        try {
+            let errores = Arrendador.validarEstructuraObjetoInmueble(infoInmueble)
+            if ( errores.errors.length > 0 ){
+                return {idError: 3, mensaje: errores}
+            }
+            console.log("MODIFICAR TABLA INMUEBLES 2 POR INMUEBLES")
+            let idInmueble = await ManejadorBD.escribirInformacion("Inmuebles2", infoInmueble)
+            let inmueble = Arrendador.crearObjetoInmueble(infoInmueble, idInmueble)
+            let clausulaAgregar = Utils.clausulaAgregarElementoArrayFirebase(idInmueble)
+            await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: clausulaAgregar})
+            this.state.listaInmuebles.push(inmueble)
+            return {idError: 0, mensaje: "Inmueble registrado exitosamente"}
+            
+        }
+        catch (error) {
+            throw error
+        }        
     }
 
     static validarEstructuraObjeto(infoArrendatario){

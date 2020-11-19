@@ -18,7 +18,7 @@ class Favorito {
             
         },
         "required": [
-            "fechaAgredado",
+            "fechaAgregado",
             "Comentario",
             "idInmueble"
         ],
@@ -29,6 +29,16 @@ class Favorito {
         this.state = {
             ...infoFavorito
         }
+    }
+
+    estaAsociadoMismoInmueble(idInmueble){
+        return this.state.idInmueble === idInmueble
+    }
+
+    static validarEstructuraObjeto(infoFavorito){
+        var Validator = require('jsonschema').Validator;
+        var v = new Validator();
+        return v.validate(infoFavorito, this.ESTRUCTURA_JSON)
     }
 }
 

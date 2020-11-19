@@ -26,93 +26,118 @@ class Chat{
             "usuario1",
             "usuario2"
         ],
-        "title": "ESTRUCTURA-JSOn"
+        "title": "ESTRUCTURA-JSON"
     }
 
 
-    constructor(infoChat, idUsuarioLocal){
+    constructor(infoChat){
         this.state = {
             ...infoChat,
             listaMensajes: [],
-            receptoresMensajes : [],
-            idUsuarioLocal : idUsuarioLocal,
+            receptorMensajes : null,
         }
     }
 
-    async cargarMensajes(){
-        //let mensajesChat = await ManejadorBD.realizarConsulta("Mensajes", ["idChat"], ["=="], [this.state.idFirebase])
-        for(let i in this.state.mensajes){
-            let mensajeActual = await ManejadorBD.leerInformacionDocumento("Mensajes", this.state.mensajes[i])
-            let objMensajeActual = new Mensaje( mensajeActual )
-            this.state.listaMensajes.push( objMensajeActual )
+    async actualizarChat(chatActualizado){  
+        let mensajesActualizados = chatActualizado.mensajes
+        let tamanoActualizado = mensajesActualizados.length
+        let tamanoLocal = this.state.mensajes.length
+        //Se agregó un mensaje
+        if ( tamanoActualizado > tamanoLocal ){
+            let nuevoMensaje = mensajesActualizados[tamanoActualizado - 1]
+            this.state.mensajes[tamanoLocal] = nuevoMensaje
+            nuevoMensaje = await ManejadorBD.leerInformacionDocumento("Mensajes", nuevoMensaje)
+            this.state.listaMensajes[tamanoLocal] = new Mensaje( nuevoMensaje )
         }
-        console.log("TOTAL MENSAJES : " + this.state.listaMensajes)
+        //Se eliminó un mensaje
+        else if ( tamanoActualizado < tamanoLocal ){
+            for(let i=0; i<tamanoLocal; i++){
+                let persiste = false
+                for(let j=0;  j<tamanoActualizado; j++){
+                    if ( this.state.mensajes[i] == mensajesActualizados[j] ){
+                        persiste = true
+                        break
+                    }
+                }
+                if ( !persiste ){
+                    this.state.mensajes.splice(i, 1)
+                    this.state.listaMensajes.splice(i, 1)
+                    break
+                }
+            }
+        }
+        if ( this.state.receptorMensajes != null ){
+            let retorno = this.state.listaMensajes.map( (actual) => {return actual.state} )
+            this.state.receptorMensajes( this.state.idFirebase, retorno )
+        }
     }
 
     async agregarMensajeChat(mensaje, idRemitente){
         let objMensaje = {
-            fecha : Date.now(),
+            momento : Date.now(),
             mensaje : mensaje,
             idChat : this.state.idFirebase,
             remitente : idRemitente
         }
+        let erroresObjeto = Mensaje.validarEstructuraObjeto(objMensaje)
+        if ( erroresObjeto.errors.length > 0 ){
+            return {idError: 2, mensaje: erroresObjeto}
+        }
         let idMensaje = await ManejadorBD.escribirInformacion("Mensajes", objMensaje)
-        objMensaje = new Mensaje({...objMensaje, idFirebase: idMensaje})
-
-        console.log("OBJETO ESCRITO : ", objMensaje)
-
-        console.log("ANTES DE ", this.state.mensajes)
-        this.state.mensajes.push( idMensaje )
-        this.state.listaMensajes.push( objMensaje )
-        console.log("DESPUES DE ", this.state.mensajes)
         let clausulaAgregar = Utils.clausulaAgregarElementoArrayFirebase(idMensaje)
         await ManejadorBD.actualizarInformacion("Chats", this.state.idFirebase, {mensajes: clausulaAgregar})
     }
 
-    establecerReceptorMensajesChat(metodoReceptor){
-        this.state.receptoresMensajes.push( metodoReceptor )
-        return {idError: 0, mensaje: "Receptor de mensajes enlazado exitosamente"}
+    async cargarMensajes(){
+        let mensajes = await ManejadorBD.realizarConsulta("Mensajes", ["idChat"], ["=="], [this.state.idFirebase])
+        Utils.ordenarArray(mensajes, this.compararMensajes)
+        for(let i in mensajes){
+            this.state.listaMensajes.push( new Mensaje(mensajes[i]) )
+        }
     }
-
 
     compararMensajes(mensaje1, mensaje2){
-        if ( mensaje1.fecha < mensaje2.fecha ){
-            return true
-        }
-        return false
+        return mensaje1.momento > mensaje2.momento
     }
 
-    async actualizarChat(chatActualizado){  
-        let retornoMensaje = []
-
-        console.log(chatActualizado.mensajes)
-        console.log(this.state.listaMensajes)
-
-        for( let i in chatActualizado.mensajes){
-            if ( this.state.listaMensajes[i] != undefined ){
-                retornoMensaje[i] = this.state.listaMensajes[i].state
-                console.log("TENGO EL : ", retornoMensaje[i].idFirebase, ": ", this.state.listaMensajes[i])
-            }
-            else{
-                retornoMensaje[i] = await ManejadorBD.leerInformacionDocumento("Mensajes", chatActualizado.mensajes[i])
-                this.state.listaMensajes[i] = new Mensaje( retornoMensaje[i] )
-                this.state.mensajes[i] = retornoMensaje[i].idFirebase
-                console.log("NO TENGO EL : ", retornoMensaje[i].idFirebase)
+    eliminarMensajeChat(idMensaje, idSolicitante){
+        for(let i in this.state.mensajes){
+            if ( this.state.mensajes[i] == idMensaje ){
+                if ( !this.state.listaMensajes[i].perteneceA(idSolicitante) ){
+                    return {idError: 4, mensaje: "El mensaje no pertenece a quien lo intenta eliminar"}
+                }
+                if ( !this.state.listaMensajes[i].vencioTiempoEliminacion() ){
+                    let clausulaBorrado = { mensajes: Utils.clausulaEliminarElementoArrayFirebase( idMensaje ) }
+                    ManejadorBD.actualizarInformacion("Chats", this.state.idFirebase, clausulaBorrado)
+                    ManejadorBD.borrarInformacion( "Mensajes", idMensaje )
+                    return {idError: 0, mensaje: "Mensaje eliminado exitosamente"}
+                }
+                else{
+                    return {idError: 3, mensaje: "Tiempo de eliminación excedido"}
+                }
             }
         }
-        console.log("IMPLEMENTAR ACTUALIZADO INTELIGENTE")
-        for(let i in this.state.receptoresMensajes){
-            this.state.receptoresMensajes[i](this.state.idFirebase, retornoMensaje)
-        }
+        return {idError: 2, mensaje: "Mensaje no encontrado"}
     }
 
+    establecerReceptorMensajesChat(metodoReceptor){
+        this.state.receptorMensajes = metodoReceptor
+        return {idError: 0, mensaje: "Receptor de mensajes enlazado exitosamente"}
+    }
+   
     async iniciarChat(){
         await this.cargarMensajes()
         this.actualizarChat = this.actualizarChat.bind(this)
-        console.log("CUIDADO CON COMO SE LEEN LOS MENSAJE, TAL VEZ NO HAGA FALTA")
         ManejadorBD.escucharActualizacionesDocumento("Chats", this.state.idFirebase, this.actualizarChat)
     }
 
+    obtenerMensajesCargadosChat(){
+        let respuesta = {
+            idError: 0,
+            mensaje: this.state.listaMensajes.map( (mensaje) =>{ return mensaje.state } )
+        }
+        return respuesta
+    }
     
     static validarEstructuraObjeto(infoChat){
         var Validator = require('jsonschema').Validator
