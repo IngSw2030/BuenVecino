@@ -1,0 +1,39 @@
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=number] { -moz-appearance:textfield; }
+
+.RegistrarUsuario{
+    width: 50%;
+    height: 30em;
+    overflow-y: scroll;
+    transform: translate(50%,20%);
+
+}
+img{
+    width: 30%;
+}
+.ingresar{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+label{
+    margin-top: 1%;
+    align-self: center;
+}
+
+.botones{
+    padding: 3%;
+    display: flex;
+    justify-content: space-around;
+}

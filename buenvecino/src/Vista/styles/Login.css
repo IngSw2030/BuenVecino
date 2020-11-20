@@ -2,9 +2,11 @@
   background: white;
   border-radius: 50px;
   width: 50%;
+  transform: translate(50%,10%);
 }
 .Login .ingresar {
   display: flex;
+  border-radius: 50px 50px 0px 0px;
   background: #24243c;
   align-items: center;
   justify-content: space-around;
