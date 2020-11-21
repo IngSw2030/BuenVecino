@@ -8,8 +8,6 @@ input[type=number] { -moz-appearance:textfield; }
 
 .RegistrarUsuario{
     width: 50%;
-    height: 30em;
-    overflow-y: scroll;
     transform: translate(50%,20%);
 
 }

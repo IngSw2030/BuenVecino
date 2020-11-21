@@ -38,9 +38,9 @@ class Header extends Component {
 					<nav>
 						<ul className="nav-items">
 							{/* <li onClick={this.handleOpen}>Ingresar</li> */}
-							<button type="button" onClick={this.handleOpen}>
+							<li type="button" onClick={this.handleOpen}>
 								Ingresar
-     						 </button>
+     						 </li>
 							<Modal
 								open={this.state.open}
 								onClose={this.handleClose}
