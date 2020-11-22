@@ -171,7 +171,7 @@ class RegistrarVivienda extends Component {
 
                             <div>
                                 <label>Imagenes del Inmueble</label>
-                                <input type="file"/>
+                                <input type="file" name="file[]" multiple/>
                             </div>
 
                         </div>

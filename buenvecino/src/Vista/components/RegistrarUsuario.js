@@ -20,6 +20,9 @@ class RegistrarUsuario extends Component {
                             required
                         />
 
+                        <label>Foto de perfil</label>
+                        <input type="file" />
+
                         <label for="Tdni">Tipo de DNI</label>
                         <select name="Tdni" required>
                             <option selected value=""> Tipo de DNI</option>
