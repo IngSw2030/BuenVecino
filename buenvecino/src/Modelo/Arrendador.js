@@ -60,9 +60,18 @@ class Arrendador extends Usuario{
     constructor(infoUsuario){   
         super(infoUsuario)
         this.state = {
-            ...infoUsuario,
-            ...Utils.agregarCamposSiNoExisten(infoUsuario, ["inmuebles", "chats"], [])
+            ...this.state,
+            ...Utils.agregarCamposSiNoExisten(infoUsuario, ["inmuebles"], [])
         }
+    }
+
+    aceptarSolicitudReserva(idSolicitud){
+        let respuesta = this.cambiarEstadoSolicitudLocalmente(idSolicitud, "A")
+        if ( respuesta.idError != 0 ){
+            return respuesta
+        }
+        this.cambiarEstadoSolicitudBaseDatos(idSolicitud, "A") 
+        return {idError: 0, mensaje: "Solicitud aceptada exitosamente"}
     }
 
     async cargarInformacionAdicional(){
@@ -134,6 +143,15 @@ class Arrendador extends Usuario{
         }
         await ManejadorBD.actualizarInformacion(Arrendador.TABLA_INMUEBLES, idInmueble, camposModificados)
         return {idError: 0, mensaje: "Modificación realizada"}
+    }
+
+    rechazarSolicitudReserva(idSolicitud){
+        let respuesta = this.cambiarEstadoSolicitudLocalmente(idSolicitud, "R")
+        if ( respuesta.idError != 0 ){
+            return respuesta
+        }
+        this.cambiarEstadoSolicitudBaseDatos(idSolicitud, "R") 
+        return {idError: 0, mensaje: "Solicitud rechazada exitosamente"} 
     }
 
     async registrarInmueble(infoInmueble, fotos){

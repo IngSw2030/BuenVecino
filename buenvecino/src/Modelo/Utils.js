@@ -20,6 +20,14 @@ class Utils{
         return res
     }
 
+    static clausulaAgregarElementoArrayFirebase(elemento){
+        return firebase.firestore.FieldValue.arrayUnion(elemento)
+    }
+
+    static clausulaEliminarElementoArrayFirebase(elemento){
+        return firebase.firestore.FieldValue.arrayRemove(elemento)
+    }
+
     static compararIdFirebase(dato1, dato2){
         return dato1.idFirebase == dato2.idFirebase
     }
@@ -34,6 +42,14 @@ class Utils{
             }
         }
         return array
+    }
+
+    static fechasSeCruzan(fechaInicial1, fechaFinal1, fechaInicial2, fechaFinal2){
+        let caso1 = fechaInicial1 >= fechaInicial2 && fechaFinal1 <= fechaFinal2
+        let caso2 = fechaInicial2 >= fechaInicial1 && fechaFinal2 <= fechaFinal1
+        let caso3 = fechaInicial1 <= fechaInicial2 && fechaFinal1 >= fechaInicial2
+        let caso4 = fechaInicial1 <= fechaFinal2 && fechaFinal1 >= fechaFinal2
+        return caso1 || caso2 || caso3 || caso4
     }
 
     static normalizarString(cadena){
@@ -51,14 +67,7 @@ class Utils{
             }
         }
     }
-
-    static clausulaAgregarElementoArrayFirebase(elemento){
-        return firebase.firestore.FieldValue.arrayUnion(elemento)
-    }
-
-    static clausulaEliminarElementoArrayFirebase(elemento){
-        return firebase.firestore.FieldValue.arrayRemove(elemento)
-    }
+    
 }
 
 export default Utils

@@ -33,6 +33,9 @@ class Inmueble{
             },
             "idPropietario" : {
                 "type": "string"
+            },
+            "ubicacion" : {
+                "type": "object"
             }
             //TO DO
             /*"ubicacion": {
@@ -54,14 +57,48 @@ class Inmueble{
             "nombre",
             "precio",
             "tipo",
-            "idPropietario"
-            //"ubicacion"
+            "idPropietario",
+            "ubicacion"
         ],
         "title": "ESTRUCTURA_JSON"
     }
 
-    objeto(nombre, objeto, valorDefecto = []){
-        return ( objeto.state[nombre] != undefined ? objeto[nombre] : valorDefecto )
+    static ESTRUCTURA_JSON_UBICACION = {
+        "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "direccion": {
+                    "type": "string"
+                },
+                "localidad": {
+                    "type": "string"
+                },
+                "latitud": {
+                    "type": "number"
+                },
+                "longitud": {
+                    "type": "number"
+                },
+                "barrio": {
+                    "type": "string"
+                },
+                "tagBarrio": {
+                    "type": "string"
+                },
+                "tagLocalidad": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "barrio",
+                "direccion",
+                "latitud",
+                "localidad",
+                "longitud",
+                "tagBarrio",
+                "tagLocalidad"
+            ],
+            "title": "ESTRUCTURA_JSON_UBICACION"
     }
 
     constructor(infoInmueble){
@@ -69,13 +106,7 @@ class Inmueble{
             ...infoInmueble,
             ...Utils.agregarCamposSiNoExisten(infoInmueble, ["servicios", "ubicacion", "historialArrendatarios"], [[],[],{}])
         }
-    }
-    
-    static validarEstructuraObjeto(infoInmueble){
-        var Validator = require('jsonschema').Validator
-        var v = new Validator()
-        return v.validate(infoInmueble, this.ESTRUCTURA_JSON)
-    }
+    }    
 
     static obtenerCadenaBusqueda(barrio, localidad){
         barrio = Utils.normalizarString(barrio).toUpperCase()
@@ -94,6 +125,22 @@ class Inmueble{
                 Math.cos(enRadianes(punto2.latitud)) * Math.pow(Math.sin( dLon / 2 ), 2)
         let c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) )
         return r * c
+    }
+
+    static validarEstructuraObjeto(infoInmueble){
+        var Validator = require('jsonschema').Validator
+        var v = new Validator()
+        var erroresInmuebles = v.validate(infoInmueble, this.ESTRUCTURA_JSON)
+        if ( erroresInmuebles.errors.length > 0 ){
+            return erroresInmuebles
+        }
+        return this.validarEstructuraObjetoUbicacion(infoInmueble.ubicacion) 
+    }
+
+    static validarEstructuraObjetoUbicacion(infoUbicacion){
+        var Validator = require('jsonschema').Validator
+        var v = new Validator()
+        return v.validate(infoUbicacion, this.ESTRUCTURA_JSON_UBICACION)
     }
 
     

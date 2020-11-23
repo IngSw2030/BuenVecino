@@ -27,8 +27,8 @@
                 "Favorito": {
                     "$ref": "#/definitions/Favorito"
                 },
-                "PeriodoEstadia": {
-                    "$ref": "#/definitions/PeriodoEstadia"
+                "Reserva": {
+                    "$ref": "#/definitions/Reserva"
                 },
                 "Notificaciones": {
                     "$ref": "#/definitions/Notificaciones"
@@ -46,7 +46,7 @@
                 "Inmuebles",
                 "Mensajes",
                 "Notificaciones",
-                "PeriodoEstadia",
+                "Reserva",
                 "Servicios"
             ],
             "title": "BuenVecino"
@@ -187,7 +187,14 @@
                 "historialInmuebles": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/PeriodoEstadia",
+                        "$ref": "#/definitions/Reserva",
+                        "uniqueItems": true,
+                        "default" : []
+                    }
+                },
+                "historialPagos": {
+                    "type": "array",
+                    "items": {
                         "uniqueItems": true,
                         "default" : []
                     }
@@ -394,12 +401,15 @@
                 "historialArrendatarios": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/PeriodoEstadia",
+                        "$ref": "#/definitions/Reserva",
                         "uniqueItems": true
                     }
                 },
                 "idPropietario" : {
                     "type": "string"
+                },
+                "estaDisponible" : {
+                    "type": "boolean"
                 }
             },
             "required": [
@@ -417,7 +427,8 @@
                 "servicios",
                 "tipo",
                 "ubicacion",
-                "idPropietario"
+                "idPropietario",
+                "estaDisponible"
             ],
             "title": "IDInmueble"
         },
@@ -439,6 +450,12 @@
                 },
                 "barrio": {
                     "type": "string"
+                },
+                "tagBarrio": {
+                    "type": "string"
+                },
+                "tagLocalidad": {
+                    "type": "string"
                 }
             },
             "required": [
@@ -446,7 +463,9 @@
                 "direccion",
                 "latitud",
                 "localidad",
-                "longitud"
+                "longitud",
+                "tagBarrio",
+                "tagLocalidad"
             ],
             "title": "Ubicacion"
         },
@@ -544,20 +563,20 @@
             ],
             "title": "IDNotificacion"
         },
-        "PeriodoEstadia": {
+        "Reserva": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "$idPeriodo": {
-                    "$ref": "#/definitions/IDPeriodo"
+                "$IDReserva": {
+                    "$ref": "#/definitions/IDReserva"
                 }
             },
             "required": [
-                "$idPeriodo"
+                "$IDReserva"
             ],
-            "title": "PeriodoEstadia"
+            "title": "Reserva"
         },
-        "IDPeriodo": {
+        "IDReserva": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -592,7 +611,7 @@
                 "valor",
                 "valoración"
             ],
-            "title": "IDPeriodo"
+            "title": "IDReserva"
         },
         "Valoracion": {
             "type": "object",
@@ -644,6 +663,64 @@
                 "precioExtra"
             ],
             "title": "IDServicio"
+        },
+        "SolicitudArrendamiento": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "idArrendatario": {
+                    "type": "string"
+                },
+                "idArrendador": {
+                    "type": "string"
+                },
+                "idInmueble": {
+                    "type": "string"
+                },
+                "fechaInicio": {
+                    "type": "integer"
+                },
+                "fechaFin": {
+                    "type": "integer"
+                },
+                "estado":{
+                    "type": "string",
+                    "enum": ["A", "C", "D", "R", "CC", "O"],
+                    "$comment": "D: desconocido, A: Aceptado por Arrendatario, R: rechazado por Arrendatario, C: Cancelado por Arrendador, CC: Confirmado por Arrendador, O: EL inmueble ya fue ocupado"
+                }
+            },
+            "required": [
+                "idArrendatario",
+                "idArrendador",
+                "idInmueble",
+                "fechaInicio",
+                "fechaFin",
+                "estado"
+            ],
+            "title": "SolicitudArrendamiento"
+        },
+        "Pago": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "idSolicitud": {
+                    "type": "string"
+                },
+                "estado":{
+                    "type": "string",
+                    "enum": ["A", "D", "R"],
+                    "$comment": "D: desconocido, A: Aceptado por la entidad R: rechazado por la entidad"
+                },
+                "informacionAdicional":{
+                    "type": "object"
+                }
+            },
+            "required": [
+                "idSolicitud",
+                "estado",
+                "informacionAdicional"
+            ],
+            "title": "Pago"
         }
     }
 }

@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import Controlador from '../../Controlador/Controlador'
+import ManejadorBD from '../../Modelo/Firebase/ManejadorBD'
+import Utils from '../../Modelo/Utils'
+import {firebase} from '../../Modelo/Firebase/Firebase'
 
 class PaginaTest extends Component{
 
@@ -62,6 +65,40 @@ class PaginaTest extends Component{
                 } }>
               PRUEBA Registrar Usuario
             </button>
+            <br/><br/>
+
+
+                {
+                  this.state.tipo == undefined ? <div>INICIO SESION</div> : <div>{this.state.tipo + " " + this.state.usuario.idFirebase}</div>
+                }
+
+            <input type="text" name="chat"  placeholder="IdInmueble/Solicitud" ref={this.inputSolicitudes}/>
+            <input type="text" name="dsda" placeholder="Respuesta" ref={this.inputResponder}/>
+            <input type="text" name="fecha" placeholder="Respuesta" ref={this.inputFecha}/>
+            <button onClick={(e) => {this.pruebaSolicitud(e)} }>
+              SIMULAR SOLICITUD
+            </button>
+            <hr/>
+            {
+              this.state.respuestaEstadoSolicitud != undefined ? 
+              ( <div>{this.state.respuestaEstadoSolicitud}</div> ) :
+              (<div> {"NO HAY RESPUESTA"}</div>)
+            }
+            <hr/>
+            {
+              this.state.sols.map( (item, ind) =>{
+              return <div key={ind}><table><tr><td>{item.idFirebase}</td><td>| {item.idInmueble }</td><td> | { item.estado}</td><td>| {item.idArrendatario}</td> </tr></table></div>
+              } )
+            }
+            <hr/>{
+              this.state.sols2.map( (item, ind) =>{
+                return <div key={ind}><table><tr><td> {item.idFirebase}</td><td> | {item.idInmueble}</td><td>  | {item.estado}</td></tr></table>  </div>
+              } )
+            }
+            <hr/>
+
+
+
 
             <br/><br/>
             <input type="text" name="chat" onChange={ (e)=>{this.actualizarCampo(e)} } ref={this.inputChat}/>
@@ -100,9 +137,174 @@ class PaginaTest extends Component{
                 }
               })
             }
+          <button onClick={async (e)=>{
+            //let atributo = {estaDisponible: true }
+            
+            
+            
+            let atributo = {historialPagos: [], reservaciones: [], solicitudes: []}
+            await this.agregarAtributo("Arrendatarios", atributo)
+            
+            atributo = {solicitudes: []}
+            await this.agregarAtributo("Arrendadores", atributo)
+                        
+            await this.borrarInformacionColeccion("Solicitudes")
+            await this.borrarInformacionColeccion("Pagos")
+            await this.borrarInformacionColeccion("Reservaciones")
 
+          }}>
+            RESETEAR INFORMACION
+          </button>
+
+          <button onClick={async (e)=>{
+
+          }}>
+            FUNCION VARIA
+          </button>
           </div>
       )
+
+  }
+
+
+  async agregarAtributo(tabla, atributo){
+    let res = await ManejadorBD.leerInformacionColeccion(tabla)
+    for(let i in res){
+      ManejadorBD.actualizarInformacion(tabla, res[i].idFirebase, atributo)
+    }    
+  }
+
+  async borrarInformacionColeccion(tabla){
+    let res1 = await ManejadorBD.leerInformacionColeccion(tabla)
+    res1.map( async (item) => { await ManejadorBD.borrarInformacion( tabla, item.idFirebase ) } )
+  }
+
+  rebibirSolicitudes(nueva){
+    let arrayAux = this.state.sols
+    for(let i in arrayAux){
+      if ( nueva.idFirebase == arrayAux[i].idFirebase ){
+        arrayAux[i] = nueva
+        this.setState( {sols: arrayAux} )
+        return;
+      }
+    }
+    this.setState( {sols: [...this.state.sols, nueva]} )
+    
+    
+  }
+
+  cambiosListaSolicitudes(nuevas){
+    this.setState( {sols2: nuevas} )
+  }
+
+  async inicioSesionSolicitud(c){
+    let texto = this.inputSolicitudes.current.value
+    if ( texto == "1" ){
+      let res = await c.iniciarSesionUsuario("prueba112@prueba.com","123456") //ARRENDADOR
+      await this.setState({tipo: "DUENO", usuario: res.usuario})  
+    }
+    else if (texto == "2"){
+      let res = await c.iniciarSesionUsuario("prueba1123d@prueba.com","123456") //ARRENDATARIO
+      await this.setState({tipo: "INQUILINO", usuario: res.usuario})
+    }
+    else {
+      let res = await c.iniciarSesionUsuario("johnjgm@prueba.com","123456") //ARRENDATARIO
+      await this.setState({tipo: "INQUILINO", usuario: res.usuario})
+    }
+    this.rebibirSolicitudes = this.rebibirSolicitudes.bind(this)
+    this.cambiosListaSolicitudes = this.cambiosListaSolicitudes.bind(this)
+    let res = await c.establecerReceptorSolicitudes(this.rebibirSolicitudes)
+    console.log("RESPUESTA 1 INICIAR SESION : ", res)
+    let res2 = await c.establecerReceptorListaSolicitudes(this.cambiosListaSolicitudes)
+    this.setState( {init2: 3} )
+    console.log("RESPUESTA 2 INICIAR SESION : ", res2)
+    
+    this.inputSolicitudes.current.value = ""
+    let rrr = c.obtenerSolicitudesCargadas()
+
+    this.setState( {sols: rrr} )
+
+  }
+
+  async pruebaSolicitud(e){
+    let c = Controlador.getControlador()
+
+    if (this.state.init2 == undefined){
+      this.inicioSesionSolicitud(c)
+    }
+    else{
+      let idInmueble = this.inputSolicitudes.current.value
+      let respuesta = this.inputResponder.current.value.toUpperCase()
+      let res = {}
+      if ( this.state.tipo == "DUENO" ){
+        if ( respuesta == "A" ){
+          res = await c.aceptarSolicitudReserva(idInmueble)
+        }
+        else if ( respuesta == "R" ){
+          res = await c.rechazarSolicitudReserva(idInmueble)
+        }
+        console.log("ARRENDADOR: ", res)
+        await this.setState( {respuestaEstadoSolicitud: res.mensaje} )
+      }
+      else{
+        //21-nov
+        //1-dic
+        if ( respuesta== "D" ){
+
+          let fechas = this.inputFecha.current.value
+          fechas = fechas.split(" ")
+          let fecha1 = fechas[0].split("-")
+          let fecha2 = fechas[1].split("-")
+
+          fecha1 = fecha1.map( (item) => {return parseInt(item)} )
+          fecha2 = fecha2.map( (item) => {return parseInt(item)} )
+
+          fecha1 = new Date( fecha1[2], fecha1[1], fecha1[0] )
+          fecha2 = new Date( fecha2[2], fecha2[1], fecha2[0] )
+
+          console.log( fecha1.toString() )
+          console.log( fecha2.toString() )
+
+          fecha1[1]--
+          fecha2[1]--
+
+          let infoSolicitud = {
+            //ENVUELVE INTERNAMENTE
+            fechaInicio: fecha1,
+            fechaFin: fecha2,
+            idInmueble: idInmueble,
+            idArrendatario: this.state.usuario.idFirebase,
+            idArrendador: "wKOO7g9hQuVlDeHPjoMljX53Ryr2"
+          }
+
+          res = await c.crearSolicitudReserva(infoSolicitud)
+          
+        }
+        else if ( respuesta == "C" ){
+          res = await c.cancelarSolicitudReserva(idInmueble)
+        }
+        else if ( respuesta == "CC" ){
+          console.log("HERE CC: ")
+          res = await c.realizarPago(idInmueble, {idSolicitud: idInmueble, valor: 50000, informacionAdicional:{basura1:"1",basura2:"2"}})
+          console.log("RESPUESTA PARCIAL : ", res)
+          this.setState( {respuestaEstadoSolicitud: res.mensaje} )
+          if ( res.idError == 0 || res.idError == 4  ){
+            res = await c.confirmarSolicitudReserva(idInmueble)
+          }
+          
+        }        
+      }
+      this.inputSolicitudes.current.value = ""
+      this.inputResponder.current.value = ""
+      console.log(res.mensaje, " RESPUESTA FINAL")
+      this.setState( {respuestaEstadoSolicitud: res.mensaje} )
+      
+      
+      
+      
+    }
+    
+    
   }
 
   //PROBAR FAVORITO, CREAR CHAT, AGREGAR MENSAJE, ELIMINAR MENSAJE
@@ -110,14 +312,14 @@ class PaginaTest extends Component{
   async pruebaEliminar(e){
     let c = Controlador.getControlador()
     let res = await c.eliminarMensajeChat("lk", this.state.mensajes[this.state.mensajes.length-1].idFirebase)
-    this.setState({
+    await this.setState({
       ress: res.mensaje
     })
   }
 
   async iniciarSesionUsuarioParaChat(texto){
     
-    this.setState({
+    await this.setState({
       init: 5
     })
     let email = {}
@@ -138,7 +340,7 @@ class PaginaTest extends Component{
     let res = await c.establecerReceptorMensajesChat( "lk", this.recibirNuevoMensaje )
     
     let res3 = c.obtenerMensajesCargadosChat("lk")
-    this.setState({
+    await this.setState({
       mensajes: res3.mensaje
     })
   }
@@ -161,16 +363,14 @@ class PaginaTest extends Component{
     this.inputChat.current.value = ""
   }
 
-  recibirNuevoMensaje(idChat, nuevo){
+  async recibirNuevoMensaje(idChat, nuevo){
     if ( nuevo != undefined ){
-      console.log("NUEVO RECIBIDO : ", nuevo)
       let listaTot = this.state.mensajes
       listaTot.push( nuevo.mensajes )
-      this.setState( {mensajes: nuevo} )
+      await this.setState( {mensajes: nuevo} )
       
     }
     else{
-      console.log(idChat, " ", nuevo)
     }
     
 
@@ -205,7 +405,7 @@ class PaginaTest extends Component{
     let c = Controlador.getControlador()
     let res = await c.buscarInmueblesPorBarrioLocalidad(texto)
     console.log(res) 
-    this.setState(
+    await this.setState(
       {
         inm: res
       }
@@ -279,8 +479,15 @@ class PaginaTest extends Component{
     this.state = {
       inm: [],
       mensajes : [],
+      sols: [],
+      sols2: []
     }
     this.inputChat = React.createRef()
+    this.inputSolicitudes = React.createRef()
+    this.inputResponder = React.createRef()
+    this.inputFecha = React.createRef()
+
+    console.log("this: ", this.state)
   }
 
   async actualizarCampo(e){

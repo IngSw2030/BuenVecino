@@ -8,6 +8,10 @@ class Controlador{
         this.modelo = new SistemaBV()
     }
 
+    async aceptarSolicitudReserva(idSolicitud){
+        return this.modelo.aceptarSolicitudReserva(idSolicitud)
+    }
+
     async agregarFavorito(favorito){
         return await this.modelo.agregarFavorito(favorito)
     }
@@ -32,12 +36,26 @@ class Controlador{
         return this.modelo.buscarTodosInmuebles()
     }
 
+    cancelarSolicitudReserva(idSolicitud){
+        return this.modelo.cancelarSolicitudReserva(idSolicitud)
+    }
+
     async cerrarSesion(){
         this.modelo.cerrarSesion()
     }
 
+    async confirmarSolicitudReserva(idSolicitud){
+        return await this.modelo.confirmarSolicitudReserva(idSolicitud)
+    }
+
     async crearChat(idUsuario2, primerMensaje){
         return await this.modelo.crearChat(idUsuario2, primerMensaje)
+    }
+
+    async crearSolicitudReserva(infoReserva){
+        infoReserva.fechaInicio = infoReserva.fechaInicio.getTime()
+        infoReserva.fechaFin = infoReserva.fechaFin.getTime()
+        return await this.modelo.crearSolicitudReserva(infoReserva);
     }
 
     async eliminarInmueble(idInmueble){
@@ -53,11 +71,19 @@ class Controlador{
     }
 
     establecerReceptorChats(metodoReceptor){
-        this.modelo.establecerReceptorChats(metodoReceptor)
+        return this.modelo.establecerReceptorChats(metodoReceptor)
     }   
+
+    establecerReceptorListaSolicitudes(metodoReceptor){
+        return this.modelo.establecerReceptorListaSolicitudes(metodoReceptor)
+    }
 
     establecerReceptorMensajesChat(idChat, metodoReceptor){
         return this.modelo.establecerReceptorMensajesChat(idChat, metodoReceptor)
+    }
+
+    establecerReceptorSolicitudes(metodoReceptor){
+        return this.modelo.establecerReceptorSolicitudes(metodoReceptor)
     }
 
     async iniciarSesionUsuario(email, contrasena){
@@ -72,8 +98,20 @@ class Controlador{
         return this.modelo.obtenerMensajesCargadosChat(idChat)
     }
 
+    obtenerSolicitudesCargadas(){
+        return this.modelo.obtenerSolicitudesCargadas()
+    }
+
     obtenerUsuarioActivo(){
         return this.modelo.obtenerUsuarioActivo().state
+    }
+
+    async realizarPago(idSolicitud, infoPago){
+        return await this.modelo.realizarPago(idSolicitud, infoPago)
+    }
+
+    rechazarSolicitudReserva(idSolicitud){
+        return this.modelo.rechazarSolicitudReserva(idSolicitud)
     }
 
     async registrarInmueble(infoInmueble){
@@ -83,9 +121,6 @@ class Controlador{
     async registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
         return await this.modelo.registrarUsuario(infoUsuario, esArrendatario, email, contrasena)
     }
-
-
-
 
     static getControlador(){
         if ( this.instanciaControlador == null ){

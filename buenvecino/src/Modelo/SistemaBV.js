@@ -9,6 +9,7 @@ import Casa from './Casa'
 import Inmueble from './Inmueble'
 import Habitacion from './Habitacion'
 import Utils from './Utils'
+import Reservacion from './Reservacion'
 
 class SistemaBV{
 
@@ -17,6 +18,10 @@ class SistemaBV{
             arrendador : null,
             arrendatario : null
         }
+    }
+
+    aceptarSolicitudReserva(idSolicitud){
+        return this.obtenerUsuarioActivo().aceptarSolicitudReserva(idSolicitud)
     }
 
     async agregarFavorito(favorito){
@@ -71,20 +76,28 @@ class SistemaBV{
         }
     }
 
+    cancelarSolicitudReserva(idSolicitud){
+        return this.obtenerUsuarioActivo().cancelarSolicitudReserva(idSolicitud)
+    }
+
     async cerrarSesion(){
         Autenticador.cerrarSesionUsuario()
     }
 
+    async confirmarSolicitudReserva(idSolicitud){
+        return await this.obtenerUsuarioActivo().confirmarSolicitudReserva(idSolicitud)
+    }
+
     async crearChat(idUsuario2, primerMensaje){
         let tipoUsuario2 = await this.obtenerColeccionCorrespondienteUsuario(idUsuario2)
-        if ( idUsuario2 == this.state.obtenerUsuarioActivo().state.idFirebase ){
+        if ( idUsuario2 == this.obtenerUsuarioActivo().state.idFirebase ){
             return {idError: 1, mensaje: "Está tratando de crear un chat consigo mismo"}
         }
         else if ( tipoUsuario2 == null ){
             return {idError: 2, mensaje: "El usuario con quien intenta crear el chat no existe"}
         }
         else{
-            let respuesta = this.state.obtenerUsuarioActivo().crearChat(idUsuario2)
+            let respuesta = this.obtenerUsuarioActivo().crearChat(idUsuario2)
             if ( respuesta.idError == 0 ){
                 let clausulaActualizar = { chats : Utils.clausulaAgregarElementoArrayFirebase( respuesta.idNuevoChat ) }
                 await ManejadorBD.actualizarInformacion( tipoUsuario2, idUsuario2, clausulaActualizar )
@@ -103,6 +116,15 @@ class SistemaBV{
         else{
             return new Arrendador(infoUsuario)
         }
+    }
+
+    async crearSolicitudReserva(infoReserva){
+        console.log("CAMBIAR TABLA Inmuebles2 X Inmuebles")
+        let inmueble = await ManejadorBD.leerInformacionDocumento("Inmuebles2", infoReserva.idInmueble)
+        if ( inmueble == null ){
+            return {idError: 1, mensaje: "El inmueble no existe"}
+        }
+        return await this.obtenerUsuarioActivo().crearSolicitudReserva(infoReserva);
     }
 
     async eliminarInmueble(idInmueble){
@@ -128,8 +150,17 @@ class SistemaBV{
         return this.obtenerUsuarioActivo().establecerReceptorChats(metodoReceptor)
     }
 
+    establecerReceptorListaSolicitudes(metodoReceptor){
+        this.state.receptorListaSolicitudes = metodoReceptor
+        return this.obtenerUsuarioActivo().establecerReceptorListaSolicitudes(metodoReceptor)
+    }
+
     establecerReceptorMensajesChat(idChat, metodoReceptor){
         return this.obtenerUsuarioActivo().establecerReceptorMensajesChat(idChat, metodoReceptor)
+    }
+
+    establecerReceptorSolicitudes(metodoReceptor){
+        return this.obtenerUsuarioActivo().establecerReceptorSolicitudes(metodoReceptor)
     }
 
     async establecerUsuario(usuario, esArrendatario){
@@ -144,7 +175,6 @@ class SistemaBV{
             
         }
         else {
-            let tt = Date.now()
             usuario = new Arrendador(usuario)
             await usuario.cargarInformacionAdicional()
             this.state = {
@@ -162,12 +192,12 @@ class SistemaBV{
             let arrendador = await ManejadorBD.leerInformacionDocumento( "Arrendadores", idRespuesta )
             if ( arrendador != null){
                 await this.establecerUsuario(arrendador, false)
-                return this.state.arrendador
+                return {idError: 0, mensaje: "inicio de sesión exitoso", usuario: this.state.arrendador.state, tipo: "Arrendador"}
             }
             else{
                 let arrendatario = await ManejadorBD.leerInformacionDocumento( "Arrendatarios", idRespuesta )
                 await this.establecerUsuario(arrendatario, true)
-                return this.state.arrendatario
+                return {idError: 0, mensaje: "inicio de sesión exitoso", usuario: this.state.arrendatario.state, tipo: "Arrendatario"}
             }
         }
         catch (error) {
@@ -193,10 +223,22 @@ class SistemaBV{
         return this.obtenerUsuarioActivo().obtenerMensajesCargadosChat(idChat)
     }
 
+    obtenerSolicitudesCargadas(){
+        return this.obtenerUsuarioActivo().obtenerSolicitudesCargadas()
+    }
+
     obtenerUsuarioActivo(){
         return this.state.arrendatario != null ? this.state.arrendatario : this.state.arrendador
     }
     
+    async realizarPago(idSolicitud, infoPago){
+        return await this.obtenerUsuarioActivo().realizarPago(idSolicitud, infoPago)
+    }
+
+    rechazarSolicitudReserva(idSolicitud){
+        return this.obtenerUsuarioActivo().rechazarSolicitudReserva(idSolicitud)
+    }
+
     async registrarInmueble(infoInmueble, fotos=null){
         return await this.state.arrendador.registrarInmueble(infoInmueble, fotos)
     }

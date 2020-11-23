@@ -4,7 +4,6 @@ class ManejadorBD{
 
     static async actualizarInformacion(coleccion, id, nuevoDato){
         try {
-            console.log(coleccion, id, nuevoDato, " MMM ")
             delete nuevoDato.idFirebase
             await db.collection(coleccion).doc(id).update(nuevoDato)
         }
@@ -50,9 +49,21 @@ class ManejadorBD{
 
     static escucharActualizacionesDocumento(coleccion, documento, metodoRecuperacion){
         try {
-            db.collection(coleccion).doc(documento).onSnapshot( (data) =>{
-                metodoRecuperacion( data.data() )
-            })
+            //db.collection(coleccion).doc(documento).onSnapshot( metodoRecuperacion )
+            db.collection(coleccion).doc(documento).onSnapshot( function(doc) {
+                metodoRecuperacion( {...doc.data(), idFirebase: doc.id} )
+            } )
+
+            
+        }
+        catch (error) {
+            throw error
+        }
+    }
+
+    static detenerEscuchaActualizacionesDocumento(coleccion, documento){
+        try {
+            db.collection(coleccion).doc(documento).unsubscribe()
         }
         catch (error) {
             throw error
