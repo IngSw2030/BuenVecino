@@ -20,9 +20,12 @@ class RegistrarUsuario extends Component {
                             required
                         />
 
+                        <label>Foto de perfil</label>
+                        <input type="file" />
+
                         <label for="Tdni">Tipo de DNI</label>
-                        <select name="Tdni">
-                            <option selected> Tipo de DNI</option>
+                        <select name="Tdni" required>
+                            <option selected value=""> Tipo de DNI</option>
                             <option>CC</option>
                             <option>CE</option>
                             <option>TI</option>
@@ -34,20 +37,20 @@ class RegistrarUsuario extends Component {
                         <input type="number" placeholder="Ingrese su DNI" name="dni" required></input>
 
                         <label for="tipo">Rol</label>
-                        <select name="tipo">
-                            <option selected>Seleccione un rol</option>
+                        <select name="tipo" required>
+                            <option selected value="">Seleccione un rol</option>
                             <option>Arrendador</option>
                             <option>Arrendatario</option>
                         </select>
                         
 
                         <label for="genero">Genero</label>
-                        <select name="genero">
-                            <option>Seleccione su genero</option>
-                            <option>M</option>
-                            <option>F</option>
-                            <option>O</option>
-                            <option>N</option>
+                        <select name="genero" required>
+                            <option selected value="">Seleccione su genero</option>
+                            <option>Masculino</option>
+                            <option>Femenino</option>
+                            <option>Otro</option>
+                            <option>No indica</option>
                         </select>
                         <label for="myDate">Fecha de nacimiento</label>
                         <input type="date" name="myDate" step="7" id="myDate" required />
@@ -60,7 +63,7 @@ class RegistrarUsuario extends Component {
                             required
                         />
 
-                        <label for="psw">Contrasena</label>
+                        <label for="psw">Contraseña</label>
                         <input
                             type="password"
                             placeholder=" Ingrese su contraseña "

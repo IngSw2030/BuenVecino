@@ -5,6 +5,10 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import PaginaTests from './screens/PaginaTest'
 import Mapas from './screens/mapas'
 import InfoInmueble from './screens/infoInmueble'
+import GestionarInmueble from "./screens/GestionarInmueble";
+import RegistrarInmueble from "./screens/RegistrarInmueble";
+import RegistrarUsuario from "./components/RegistrarUsuario";
+
 
 // import Header from './components/Header';
 // import Main from './Main';
@@ -32,7 +36,15 @@ class App extends Component {
             <Route path="/inmueble" exact>
               <InfoInmueble/>
             </Route>
-						
+						<Route path="/gestionar" exact>
+              <GestionarInmueble/>
+            </Route>
+            <Route path="/registrarInmueble" exact>
+              <RegistrarInmueble/>
+            </Route>
+            <Route path="/registrarUsuario" exact>
+              <RegistrarUsuario/>
+            </Route>
 						{/*Pagina para pruebas de cualquier cosa, en el archivo screens/PaginaTests.js*/}
 						<Route path="/test" exact>
 							<PaginaTests/>
