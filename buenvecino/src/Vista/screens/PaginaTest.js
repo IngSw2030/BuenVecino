@@ -653,14 +653,24 @@ class PaginaTest extends Component{
     this.refArchivo.current.addEventListener("change", this.cargarImagen, false)
   }
 
+  
+
   async cargarImagen(e){
     const fileList = e.target.files;
     console.log( fileList )
     for(let i=0; i< fileList.length; i++){
       console.log("fileList : ", fileList[i])
+
+      let extension = fileList[i].type.substring(5, fileList[i].type.length)
+      console.log( extension )
+
       //let url = await ManejadorSg.cargarImagen("HOLA1", fileList[i])
       //console.log( url )
     }   
+    let c = Controlador.getControlador()
+    let res = await c.cargarFotosInmueble("Inmueble1", fileList)
+    console.log( res )
+    this.state.setState( {archivos: [...this.state.archivos, ...fileList]} )
   }
 
   

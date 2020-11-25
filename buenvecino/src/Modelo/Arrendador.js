@@ -4,6 +4,7 @@ import Habitacion from './Habitacion';
 import ManejadorBD from './Firebase/ManejadorBD';
 import Utils from './Utils';
 import Usuario from './Usuario'
+import ManejadorSg from './Firebase/ManjadorSg';
 
 class Arrendador extends Usuario{
 
@@ -72,6 +73,49 @@ class Arrendador extends Usuario{
         }
         this.cambiarEstadoSolicitudBaseDatos(idSolicitud, "A") 
         return {idError: 0, mensaje: "Solicitud aceptada exitosamente"}
+    }
+
+    agregarServiciosInmueble(idInmueble, idServicios){
+        for(let i in this.state.listaInmuebles){
+            if ( this.state.listaInmuebles.state.idFirebase === idInmueble ){
+                return this.state.listaInmuebles.agregarServicios(idServicios)
+            }
+        }
+        return {idError: 1, mensaje: "El inmueble no existe"}
+    }
+
+
+    async cargarFotosInmueble(idInmueble, archivos){
+        for(let i in this.state.listaInmuebles){
+            if ( this.state.listaInmuebles[i].state.idFirebase === idInmueble ){
+                let imagenesRechazadas = []
+                let consecutivo = 1
+                let urls = []
+                for( let i=0; i<archivos.length; i++ ){
+                    if ( !archivos[i].type.startsWith("image/") ){
+                        imagenesRechazadas.push( archivos[i].name )
+                    }
+                    else{
+                        let nombre = "FOTO" + consecutivo
+                        let url = await ManejadorSg.cargarImagenInmueble(idInmueble, nombre, archivos[i])
+                        urls.push( url )
+                        consecutivo++
+                    }
+                }
+                if ( imagenesRechazadas.length === archivos.length ){
+                    return {idError: 3, mensaje: "Los archivos fueron cargados", rechazados: imagenesRechazadas}
+                }
+                else if ( imagenesRechazadas.length !== 0 ){
+                    this.state.listaInmuebles[i].agregarUrlsFotos(urls)
+                    return {idError: -1, mensaje: "Algunos archivos fueron rechazados", rechazados: imagenesRechazadas}
+                }
+                else{
+                    this.state.listaInmuebles[i].agregarUrlsFotos(urls)
+                    return {idError: 0, mensaje: "Las imagenes fueron cargadas exitosamente"}
+                }  
+            }
+        }
+        return {idError: 2, mensaje: "El inmueble no existe"}
     }
 
     async cargarInformacionAdicional(){

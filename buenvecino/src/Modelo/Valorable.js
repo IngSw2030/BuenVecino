@@ -15,6 +15,17 @@ class Valorable{
         }
     }
 
+    //Esta función tiene como objetivo disparar el evento de actualización de una valoración de forma artificial
+    // de forma tal que no sea necesario que cada valoración esté a la escucha de actualizaciones desde Firebase
+    async actualizarValoracionArtificialmente(index){
+        let valoracion = this.state.listaValoraciones[index]
+        let agregar = {valoraciones: Utils.clausulaAgregarElementoArrayFirebase(valoracion.state.idFirebase)}   
+        let eliminar = {valoraciones: Utils.clausulaEliminarElementoArrayFirebase(valoracion.state.idFirebase)}
+        let coleccion = valoracion.obtenerColeccionAsociadaValorado()
+        await ManejadorBD.actualizarInformacion( coleccion, valoracion.state.idValorado, eliminar )
+        await ManejadorBD.actualizarInformacion( coleccion, valoracion.state.idValorado, agregar )
+    }
+
     async actualizarListaValoraciones(actualizacionValoraciones){
         if ( actualizacionValoraciones === undefined ){
             console.log("UNDEFINED EN ACTUALIAR VALORACIONES")
@@ -38,7 +49,6 @@ class Valorable{
         this.state.valoraciones[posicion] = idNuevaValoracion
         let valoracionDesconocida = await ManejadorBD.leerInformacionDocumento("Valoraciones", idNuevaValoracion)
         let nuevoObjetoValoracion = new Valoracion( valoracionDesconocida )
-        nuevoObjetoValoracion.iniciarEscuchaActualizaciones()
         this.state.listaValoraciones[posicion] = nuevoObjetoValoracion
     }
 
@@ -50,7 +60,6 @@ class Valorable{
         valoracionesBD = Utils.emparejarArrayIds( valoracionesBD, this.state.valoraciones )
         for(let i in valoracionesBD){
             let nuevaValoracion = new Valoracion(valoracionesBD[i])
-            nuevaValoracion.iniciarEscuchaActualizaciones()
             listaValoraciones.push( nuevaValoracion )
         }
         this.state = {

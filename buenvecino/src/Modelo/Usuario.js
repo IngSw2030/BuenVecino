@@ -1,5 +1,6 @@
 import Chat from './Chat'
 import ManejadorBD from './Firebase/ManejadorBD'
+import ManejadorSg from './Firebase/ManjadorSg'
 import SolicitudReserva from './SolicitudReserva'
 
 import Utils from './Utils'
@@ -19,6 +20,7 @@ class Usuario extends Valorable{
             ...Utils.agregarCamposSiNoExisten(infoUsuario, ["chats", "solicitudes", "valoraciones"], []),
             receptorChat: null,
             receptorListaSolicitudes: null,
+            fotoPerfil: null,
             
         }
     }
@@ -107,11 +109,16 @@ class Usuario extends Valorable{
         ManejadorBD.actualizarInformacion("Solicitudes", idSolicitud, cambio)
     }
 
+    async cargarFotoPerfil(){
+        this.state.fotoPerfil = await ManejadorSg.obtenerImagenPerfil(this.state.idFirebase)
+    }
+
     async cargarInformacionAdicional(){
         this.actualizarEstado = this.actualizarEstado.bind(this)  
         await this.cargarInformacionAdicionalChats()
         await this.cargarInformacionAdicionalSolicitudes()
         await this.cargarInformacionAdicionalValoraciones()
+        await this.cargarFotoPerfil()
 
         //Escuchar actualizaciones desde la BD
         let coleccion = this.obtenerColeccionCorrespondienteUsuario()
@@ -249,7 +256,10 @@ class Usuario extends Valorable{
                 if ( this.state.listaValoraciones[i].perteneceA(this.state.idFirebase) ){
                     //VALIDAR MODIFICACION
                     camposModificados.fecha = Date.now()
-                    ManejadorBD.actualizarInformacion("Valoraciones", idValoracion, camposModificados)
+                    
+                    await ManejadorBD.actualizarInformacion("Valoraciones", idValoracion, camposModificados)
+                    await this.actualizarValoracionArtificialmente(i)
+                    this.actualizarListaValoraciones(this.state.valoraciones)
                     return {idError: 0, mensaje: "Valoración modificada exitosamente"}
                 }
                 else{

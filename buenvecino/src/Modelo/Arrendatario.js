@@ -264,11 +264,6 @@ class Arrendatario extends Usuario{
         return {idError: 1, mensaje: "Favorito no encontrado"}
     }
 
-    printF(aaa){
-        let f = new Date(aaa)
-        return f.getFullYear() + "/" + (f.getMonth()+1) + "/" + f.getDate() + "  " + f.getHours() + ":" + f.getMinutes()
-    }
-
     existeReservacionEnMismaFechaArrendatario(fechaInicio, fechaFin){
         
         for(let i in this.state.listaReservaciones){

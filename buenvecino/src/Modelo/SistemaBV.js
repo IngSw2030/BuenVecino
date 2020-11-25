@@ -2,6 +2,7 @@ import Arrendador from './Arrendador'
 import Arrendatario from './Arrendatario'
 import Autenticador from './Firebase/Autenticador'
 import ManejadorBD from './Firebase/ManejadorBD'
+import ManejadorSg from './Firebase/ManjadorSg'
 import Inmueble from './Inmueble'
 import Utils from './Utils'
 
@@ -26,8 +27,11 @@ class SistemaBV{
         return await this.obtenerUsuarioActivo().agregarMensajeChat(idChat, mensaje)
     }
 
+    agregarServiciosInmueble(idInmueble, idServicios){
+        return this.obtenerUsuarioActivo().agregarServiciosInmueble(idInmueble, idServicios)
+    }
+
     //Que coincida con el barrio o con la localidad
-    //
     async buscarInmueblesIniciales(cantInmuebles = 3){
         return await ManejadorBD.leerInformacionColeccion("Inmuebles", cantInmuebles)
     }
@@ -75,15 +79,7 @@ class SistemaBV{
     }
 
     async cargarFotosInmueble(idInmueble, archivos){
-        let mensajeExito = {idError: 0, mensaje: "Imagenes cargadas exitosamente"}
-        let imagenesRechazadas = null
-        let cargada = false
-        for( let i in archivos ){
-            if ( !archivos[i].type.startsWith("image/") ){
-                mensajeExito = {idError: -1, mensaje: ""}
-            }
-        }
-        return await this.obtenerUsuarioActivo().cargarFotosInmueble(idInmueble, archivos)
+        this.obtenerUsuarioActivo().cargarFotosInmueble(idInmueble, archivos)  
     }
 
     async cerrarSesion(){
@@ -198,6 +194,10 @@ class SistemaBV{
         }
     }
 
+    existeUsuarioSesionActiva(){
+        return this.obtenerUsuarioActivo() !== null
+    }
+
     async iniciarSesionUsuario(email, contrasena){
         try {
             let idRespuesta = await Autenticador.iniciarSesionUsuario(email, contrasena)
@@ -301,12 +301,6 @@ class SistemaBV{
             return error
         }        
     }
-
-    /*validarArrendatario(infoUsuario){
-        if (this.state.arrendatario !== NULL){
-            return Arrendatario.validarArrendatario()
-        }
-    }*/
 
     validarEstructuraObjetoUsuario(infoUsuario, esArrendatario){
         if ( esArrendatario ){

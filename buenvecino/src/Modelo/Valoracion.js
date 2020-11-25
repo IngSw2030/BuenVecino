@@ -61,10 +61,6 @@ class Valoracion{
         return {idError: 0, mensaje: "Receptor de Valoración establecido exitosamente"}
     }
 
-    iniciarEscuchaActualizaciones(){
-        ManejadorBD.escucharActualizacionesDocumento("Valoraciones", this.state.idFirebase, this.actualizarValoracion)
-    }
-
     obtenerColeccionAsociadaAutor(){
         return Valoracion.obtenerColeccionDelAutorSegunTipo(this.state.tipo)
     }
