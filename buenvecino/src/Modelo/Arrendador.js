@@ -67,7 +67,7 @@ class Arrendador extends Usuario{
 
     aceptarSolicitudReserva(idSolicitud){
         let respuesta = this.cambiarEstadoSolicitudLocalmente(idSolicitud, "A")
-        if ( respuesta.idError != 0 ){
+        if ( respuesta.idError !== 0 ){
             return respuesta
         }
         this.cambiarEstadoSolicitudBaseDatos(idSolicitud, "A") 
@@ -83,6 +83,7 @@ class Arrendador extends Usuario{
         let listaInmuebles = []
         let inmueblesAux = this.state.inmuebles
         let consulta = await ManejadorBD.realizarConsulta(Arrendador.TABLA_INMUEBLES, ["idPropietario"], ["=="], [this.state.idFirebase])
+        consulta = Utils.emparejarArrayIds( consulta, this.state.inmuebles )
         for( let i in consulta ){
             let objeto = consulta[i]
             switch( objeto.tipo ){
@@ -92,6 +93,7 @@ class Arrendador extends Usuario{
                 default : console.log("Tipo de Inmueble no permitido : " + objeto.tipo + "\t" + objeto.idFirebase)
             }
             listaInmuebles[i] = objeto
+            listaInmuebles[i].cargarInformacionAdicional()
         }
         this.state = {
             ...this.state,
@@ -101,10 +103,10 @@ class Arrendador extends Usuario{
 
     static crearObjetoInmueble(infoInmueble, idFirebase){
         infoInmueble = {...infoInmueble, idFirebase}
-        if ( infoInmueble.tipo == "C" ){
+        if ( infoInmueble.tipo === "C" ){
             return new Casa(infoInmueble)
         }
-        else if ( infoInmueble.tipo == "A" ) {
+        else if ( infoInmueble.tipo === "A" ) {
             return new Apartamento(infoInmueble)
         }
         else{
@@ -114,7 +116,7 @@ class Arrendador extends Usuario{
 
     async eliminarInmueble(idInmueble){
         for(let i in this.state.inmuebles){
-            if ( this.state.inmuebles[i] == idInmueble ){
+            if ( this.state.inmuebles[i] === idInmueble ){
                 let auxiliar = this.state.inmuebles[i]
                 this.state.inmuebles.splice(i, 1)
                 this.state.listaInmuebles.splice(i, 1)
@@ -133,21 +135,26 @@ class Arrendador extends Usuario{
         let inmuebleModificado = null
         for( let i in this.state.listaInmuebles ){
             let idAInmuebleAux = this.state.listaInmuebles[i].state.idFirebase
-            if ( idAInmuebleAux == idInmueble  ){
+            if ( idAInmuebleAux === idInmueble  ){
                 inmuebleModificado = this.state.listaInmuebles[i].state
                 break
             }
         }
-        if ( inmuebleModificado == null ){
+        if ( inmuebleModificado === null ){
             return {idError: 1, mensaje: "Inmueble no encontrado"}
         }
         await ManejadorBD.actualizarInformacion(Arrendador.TABLA_INMUEBLES, idInmueble, camposModificados)
         return {idError: 0, mensaje: "Modificación realizada"}
     }
 
+    obtenerInmueblesCargados(){
+        let respuesta = this.state.listaInmuebles.map( (item) => item.state )
+        return respuesta
+    }
+
     rechazarSolicitudReserva(idSolicitud){
         let respuesta = this.cambiarEstadoSolicitudLocalmente(idSolicitud, "R")
-        if ( respuesta.idError != 0 ){
+        if ( respuesta.idError !== 0 ){
             return respuesta
         }
         this.cambiarEstadoSolicitudBaseDatos(idSolicitud, "R") 
@@ -183,10 +190,10 @@ class Arrendador extends Usuario{
     //NOTA IMPORTANTE: Este método no lo puede implementar la clase Inmueble porque se generaría una dependencia
     //circular entre la clase Inmueble y las que heredan de ella 
     static validarEstructuraObjetoInmueble(infoInmueble){
-        if ( infoInmueble.tipo == "C" ){
+        if ( infoInmueble.tipo === "C" ){
             return Casa.validarEstructuraObjeto(infoInmueble)
         }
-        else if ( infoInmueble.tipo == "A" ) {
+        else if ( infoInmueble.tipo === "A" ) {
             return Apartamento.validarEstructuraObjeto(infoInmueble)
         }
         else{

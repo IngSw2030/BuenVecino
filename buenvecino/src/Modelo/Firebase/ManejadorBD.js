@@ -104,7 +104,7 @@ class ManejadorBD{
     static async leerInformacionDocumento(coleccion, idDocumento){
         try {
             const infoLeida = await db.collection(coleccion).doc(idDocumento).get()
-            if ( infoLeida.data() != undefined ){
+            if ( infoLeida.data() !== undefined ){
                 return {idFirebase: idDocumento, ...infoLeida.data() }
             }
             else{

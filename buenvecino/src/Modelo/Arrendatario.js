@@ -1,10 +1,7 @@
 import Utils from './Utils'
-import SistemaBV from './SistemaBV'
-import Arrendador from './Arrendador';
 import Favorito from './Favorito';
 import ManejadorBD from './Firebase/ManejadorBD';
 import Usuario from './Usuario'
-import Chat from './Chat'
 import SolicitudReserva from './SolicitudReserva';
 import Pago from './Pago';
 import Reservacion from './Reservacion';
@@ -93,7 +90,7 @@ class Arrendatario extends Usuario{
         for(let i in this.state.listaSolicitudes){
             let solActual = this.state.listaSolicitudes[i]
             let estaAbierta = solActual.estaAbierta()
-            let noEsLaNueva = solActual.state.idFirebase != idSolicitudAceptada
+            let noEsLaNueva = solActual.state.idFirebase !== idSolicitudAceptada
             let coincideFecha = solActual.fechasSeCruzan(fecha1, fecha2)
             if ( estaAbierta && noEsLaNueva && coincideFecha ){
                 this.cambiarEstadoSolicitudLocalmente(solActual.state.idFirebase, "C")
@@ -104,7 +101,7 @@ class Arrendatario extends Usuario{
 
     cancelarSolicitudReserva(idSolicitud){
         let respuesta = this.cambiarEstadoSolicitudLocalmente(idSolicitud, "C")
-        if ( respuesta.idError != 0 ){
+        if ( respuesta.idError !== 0 ){
             return respuesta
         }
         this.cambiarEstadoSolicitudBaseDatos(idSolicitud, "C") 
@@ -119,7 +116,7 @@ class Arrendatario extends Usuario{
         let fecha2 = infoSolicitud.fechaFin
         let respuesta = await ManejadorBD.realizarConsulta("Solicitudes", ["idInmueble"], ["=="], [idInmueble])
         for(let i in respuesta){
-            if ( respuesta[i].idFirebase != idSolicitudAprobada ){
+            if ( respuesta[i].idFirebase !== idSolicitudAprobada ){
                 let objRervaAux = new SolicitudReserva( respuesta[i] )
                 if ( objRervaAux.estaAbierta() && objRervaAux.fechasSeCruzan(fecha1, fecha2) ){
                     this.cambiarEstadoSolicitudBaseDatos(respuesta[i].idFirebase, "O" )
@@ -176,7 +173,7 @@ class Arrendatario extends Usuario{
 
     async confirmarSolicitudReserva(idSolicitud){
         for(let i in this.state.solicitudes){
-            if ( this.state.solicitudes[i] == idSolicitud ){
+            if ( this.state.solicitudes[i] === idSolicitud ){
                 let pagoEfectuado = null
                 for(let j in this.state.historialPagos){
                     if ( this.state.listaPagos[j].perteneceSolicitud(idSolicitud) ){
@@ -184,7 +181,7 @@ class Arrendatario extends Usuario{
                         break
                     }
                 }
-                if ( pagoEfectuado == null ){
+                if ( pagoEfectuado === null ){
                     return {idError: 2, mensaje: "Aun no hay un pago para la solicitud"}
                 }
                 let objSolicitud = this.state.listaSolicitudes[i].state
@@ -254,7 +251,7 @@ class Arrendatario extends Usuario{
 
     eliminarFavorito (idFavorito){
         for(let i in this.state.favoritos){
-            if(this.state.favoritos[i] == idFavorito){
+            if(this.state.favoritos[i] === idFavorito){
                 this.state.favoritos.splice(i, 1)
                 this.state.listaFavoritos.splice(i, 1)
                 let clausulaEliminar = Utils.clausulaEliminarElementoArrayFirebase(idFavorito)
@@ -309,12 +306,12 @@ class Arrendatario extends Usuario{
     //Por el momento es una simulación, como mensaje de exito retorna la misma información del pago recibida
     async realizarPago(idSolicitud, infoPago){
         for(let i in this.state.listaPagos){
-            if ( this.state.listaPagos[i].state.idSolicitud == idSolicitud ){
+            if ( this.state.listaPagos[i].state.idSolicitud === idSolicitud ){
                 return {idError: 4, mensaje: "Pago ya efectuado para dicha solicitud"}
             }
         }
         for(let i in this.state.solicitudes){
-            if ( this.state.solicitudes[i] == idSolicitud ){
+            if ( this.state.solicitudes[i] === idSolicitud ){
                 
                 infoPago = {...infoPago, estado: "D"}
                 let errores = Pago.validarEstructuraObjeto(infoPago)
@@ -323,7 +320,7 @@ class Arrendatario extends Usuario{
                 }
                 //SIMULACIÓN : Deberia ser obtenida desde la entidad Financiera / Pasarela de Pagos
                 let bloqueoSolicitudes = await SolicitudReserva.bloquearSolicitudesTemporalmente(this.state.listaSolicitudes[i])
-                if ( bloqueoSolicitudes.idError != 0 ){
+                if ( bloqueoSolicitudes.idError !== 0 ){
                     return bloqueoSolicitudes
                 }                
                 let informacionPagoSimulado = {

@@ -3,14 +3,20 @@ import ManejadorBD from './Firebase/ManejadorBD'
 import SolicitudReserva from './SolicitudReserva'
 
 import Utils from './Utils'
+import Valorable from './Valorable'
+import Valoracion from './Valoracion'
 
-
-class Usuario{
+/**
+ * Extiende de Valorable para poder manejar las valoraciones de forma mas facil
+ */
+class Usuario extends Valorable{
 
     constructor(infoUsuario){
+        super()
         this.state = {
+            ...this.state,
             ...infoUsuario,
-            ...Utils.agregarCamposSiNoExisten(infoUsuario, ["chats", "solicitudes"], []),
+            ...Utils.agregarCamposSiNoExisten(infoUsuario, ["chats", "solicitudes", "valoraciones"], []),
             receptorChat: null,
             receptorListaSolicitudes: null,
             
@@ -18,19 +24,22 @@ class Usuario{
     }
 
     async actualizarEstado(usuarioActualizado){
-        if ( usuarioActualizado.chats == undefined ){
+        if ( usuarioActualizado.chats === undefined ){
             console.log("UNDEFINED EN ACTUALIZR ESTADO USUARIO")
             return
         }
-        if ( usuarioActualizado.chats.length != this.state.chats.length ){
-            this.actualizacionChats(usuarioActualizado.chats)
+        if ( usuarioActualizado.chats.length !== this.state.chats.length ){
+            this.actualizarListaChats(usuarioActualizado.chats)
         }
-        if( usuarioActualizado.solicitudes.length != this.state.solicitudes.length ){
+        if( usuarioActualizado.solicitudes.length !== this.state.solicitudes.length ){
             this.actualizarListaSolicitudes(usuarioActualizado.solicitudes)
+        }
+        if ( usuarioActualizado.valoraciones.length !== this.state.valoraciones.length ){
+            this.actualizarListaValoraciones(usuarioActualizado.valoraciones)
         }
     }
 
-    async actualizarListaChat(actualizacionChats){
+    async actualizarListaChats(actualizacionChats){
         let tamanoActualizado = actualizacionChats.length
         let tamanoLocal = this.state.chats.length
         //Si hay un nuevo chat en la lista de chats
@@ -45,7 +54,7 @@ class Usuario{
         else if ( tamanoActualizado > tamanoLocal ){
             
         }
-        if ( this.state.receptorChat != null ){
+        if ( this.state.receptorChat !== null ){
             let nuevosChats = this.state.listaChats.map( (chat) => {return chat.state} )
             this.state.receptorChat( nuevosChats )
         }
@@ -67,7 +76,7 @@ class Usuario{
         else if ( tamanoActualizado > tamanoLocal ){
             return
         }
-        if ( this.state.receptorListaSolicitudes != null ){
+        if ( this.state.receptorListaSolicitudes !== null ){
             let nuevasSolicitudes = this.state.listaSolicitudes.map( (solicitud) => {return solicitud.state} )
             this.state.receptorListaSolicitudes( nuevasSolicitudes )
         }
@@ -75,7 +84,7 @@ class Usuario{
 
     async agregarMensajeChat(idChat, mensajeNuevo){
         for(let i in this.state.chats){
-            if ( this.state.chats[i] == idChat ){
+            if ( this.state.chats[i] === idChat ){
                 return await this.state.listaChats[i].agregarMensajeChat(mensajeNuevo, this.state.idFirebase)
             }
         }
@@ -102,6 +111,7 @@ class Usuario{
         this.actualizarEstado = this.actualizarEstado.bind(this)  
         await this.cargarInformacionAdicionalChats()
         await this.cargarInformacionAdicionalSolicitudes()
+        await this.cargarInformacionAdicionalValoraciones()
 
         //Escuchar actualizaciones desde la BD
         let coleccion = this.obtenerColeccionCorrespondienteUsuario()
@@ -128,11 +138,12 @@ class Usuario{
         let listaSolicitudes = []
         let tipoId = this.obtenerTipoIdCorrespondienteUsuario()
         let solicitudesBD = await ManejadorBD.realizarConsulta("Solicitudes", [tipoId], ["=="], [this.state.idFirebase])
+        solicitudesBD = Utils.emparejarArrayIds(solicitudesBD, this.state.solicitudes)
         //Filtrar solo las solicitudes activas
         //Por el momento las eliminadas no se borran de la lista de solicitudes
         for(let i in solicitudesBD){
             for (let j in this.state.solicitudes ){
-                if ( solicitudesBD[i].idFirebase == this.state.solicitudes[j] ){
+                if ( solicitudesBD[i].idFirebase === this.state.solicitudes[j] ){
                     let nuevaSolicitud = new SolicitudReserva(solicitudesBD[i])
                     nuevaSolicitud.iniciarEscuchaActualizaciones()
                     listaSolicitudes.push( nuevaSolicitud )
@@ -164,7 +175,7 @@ class Usuario{
 
     eliminarMensajeChat(idChat, idMensaje){
         for(let i in this.state.chats){
-            if ( this.state.chats[i] == idChat ){
+            if ( this.state.chats[i] === idChat ){
                 return this.state.listaChats[i].eliminarMensajeChat(idMensaje, this.state.idFirebase)
             }
         }
@@ -174,7 +185,7 @@ class Usuario{
     //Se eliminan a nivel personal, la decision no elimina ni la solicitud ni se la elimina al otro usuario
     async eliminarSolicitudReserva(idSolicitud){
         for(let i in this.state.solicitudes){
-            if ( this.state.solicitudes[i] == idSolicitud ){
+            if ( this.state.solicitudes[i] === idSolicitud ){
                 let coleccion = this.obtenerColeccionCorrespondienteUsuario()
                 let clausulaBorrar = {solicitudes: Utils.clausulaEliminarElementoArrayFirebase(idSolicitud)}
                 this.state.solicitudes.splice(i, 1)
@@ -185,6 +196,28 @@ class Usuario{
             }
         }
         return {idError: 1, mensaje: "Solicitud de reserva no encontrada"}
+    }
+
+    eliminarValoracion(idValoracion){
+        for(let i in this.state.listaValoraciones){
+            if ( this.state.listaValoraciones[i].state.idFirebase === idValoracion ){
+                if ( this.state.listaValoraciones[i].perteneceA(this.state.idFirebase) ){
+                    let clausula = {valoraciones: Utils.clausulaEliminarElementoArrayFirebase(idValoracion)}
+                    let coleccionAutor = this.state.listaValoraciones[i].obtenerColeccionAsociadaAutor()
+                    let coleccionValorado = this.state.listaValoraciones[i].obtenerColeccionAsociadaValorado()
+                    this.state.listaValoraciones.splice(i, 1)
+                    this.state.valoraciones.splice(i, 1)
+                    ManejadorBD.actualizarInformacion(coleccionAutor, this.state.idFirebase, clausula)
+                    ManejadorBD.actualizarInformacion(coleccionValorado, this.state.idFirebase, clausula)
+                    this.actualizarListaValoraciones(this.state.listaValoraciones)
+                    return {idError: 0, mensaje: "Valoración eliminada exitosamente"}
+                }
+                else{
+                    return {idError: 2, mensaje: "La valoración solo puede ser eliminada por el autor"}
+                }
+            }
+        }
+        return {idError: 1, mensaje: "La valoración no fue encontrada"}
     }
 
     establecerReceptorChats(metodoReceptor){
@@ -199,7 +232,7 @@ class Usuario{
 
     establecerReceptorMensajesChat(idChat, metodoReceptor){
         for(let i in this.state.chats){
-            if ( this.state.chats[i] == idChat ){
+            if ( this.state.chats[i] === idChat ){
                 return this.state.listaChats[i].establecerReceptorMensajesChat(metodoReceptor)
             }
         }
@@ -209,9 +242,27 @@ class Usuario{
     establecerReceptorSolicitudes(metodoReceptor){
         return SolicitudReserva.establecerReceptorSolicitudes(metodoReceptor) 
     }
+
+    async modificarValoracion(idValoracion, camposModificados){
+        for(let i in this.state.listaValoraciones){
+            if ( this.state.listaValoraciones[i].state.idFirebase === idValoracion ){
+                if ( this.state.listaValoraciones[i].perteneceA(this.state.idFirebase) ){
+                    //VALIDAR MODIFICACION
+                    camposModificados.fecha = Date.now()
+                    ManejadorBD.actualizarInformacion("Valoraciones", idValoracion, camposModificados)
+                    return {idError: 0, mensaje: "Valoración modificada exitosamente"}
+                }
+                else{
+                    return {idError: 2, mensaje: "La valoración solo puede ser modificada por el autor"}
+                }
+            }
+        }
+        return {idError: 1, mensaje: "La valoración no fue encontrada"}
+    }
     
     obtenerColeccionCorrespondienteUsuario(){
-        if  (this.state.inmuebles != undefined ){
+        let tipo = this.obtenerTipoUsuario()
+        if  ( tipo === "AR" ){
             return "Arrendadores"
         }
         else {
@@ -224,7 +275,8 @@ class Usuario{
     }
 
     obtenerTipoIdCorrespondienteUsuario(){
-        if  (this.state.inmuebles != undefined ){
+        let tipo = this.obtenerTipoUsuario()
+        if  ( tipo === "AR" ){
             return "idArrendador"
         }
         else {
@@ -232,16 +284,60 @@ class Usuario{
         }
     }
 
+    obtenerTipoUsuario(){
+        if ( this.state.inmuebles !== undefined ){
+            return "AR"
+        }
+        else if ( this.state.reservaciones !== undefined ){
+            return "AO"
+        }
+        else{
+            throw Error("Tipo de usuario no identificado")
+        }
+    }
+
     obtenerMensajesCargadosChat(idChat){
         for(let i in this.state.chats){
-            if ( this.state.chats[i] == idChat ){
+            if ( this.state.chats[i] === idChat ){
                 return this.state.listaChats[i].obtenerMensajesCargadosChat()
             }
         }
         return {idError: 1, mensaje: "Chat no encontrado"}   
     }
 
-    
+    async realizarValoracion(infoValoracion){
+        infoValoracion.fecha = Date.now()
+        infoValoracion.idAutor = this.state.idFirebase
+        let errores = Valoracion.validarEstructuraObjeto(infoValoracion)
+        if ( errores.errors.length > 0 ){
+            return {idError: 3, mensaje: errores}
+        }
+        let idObjetoValorado = infoValoracion.idValorado
+        let tipoValoracion = infoValoracion.tipo
+        let validacion1 = Valoracion.revisarTipoValoracion( this.obtenerTipoUsuario(), tipoValoracion )
+        if ( validacion1.idError !== 0 ){
+            return validacion1
+        }
+        if ( await Valoracion.existeObjetoValorado(tipoValoracion, idObjetoValorado) === false ){
+            return {idError: 4, mensaje: "El objeto valorado no existe"}
+        }
+        for(let i in this.state.listaValoraciones){
+            if ( this.state.listaValoraciones[i].state.idValorado === idObjetoValorado ){
+                return {idError: 5, mensaje: "Ya ha valorado a dicho objeto"}
+            }
+        }
+        let idFirebase = await ManejadorBD.escribirInformacion("Valoraciones", infoValoracion)
+        let nuevoObjeto = new Valoracion( {...infoValoracion, idFirebase} )
+        this.state.listaValoraciones.push( nuevoObjeto )
+        this.state.valoraciones.push( idFirebase )
+        let coleccionPropia = nuevoObjeto.obtenerColeccionAsociadaAutor()
+        let coleccionValorada = nuevoObjeto.obtenerColeccionAsociadaValorado()
+        let clausula = { valoraciones: Utils.clausulaAgregarElementoArrayFirebase( idFirebase ) }
+        ManejadorBD.actualizarInformacion(coleccionValorada, infoValoracion.idValorado, clausula )
+        ManejadorBD.actualizarInformacion(coleccionPropia, this.state.idFirebase, clausula)
+        this.actualizarListaValoraciones(this.state.valoraciones)
+        return {idError: 0, mensaje: "Valoración realizada correctamente"}
+    }
 
 }
 

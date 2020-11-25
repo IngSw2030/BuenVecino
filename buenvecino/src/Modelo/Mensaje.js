@@ -36,7 +36,7 @@ class Mensaje{
     }
 
     perteneceA(idSupuesto){
-        return this.state.remitente == idSupuesto
+        return this.state.remitente === idSupuesto
     }
 
     vencioTiempoEliminacion(){

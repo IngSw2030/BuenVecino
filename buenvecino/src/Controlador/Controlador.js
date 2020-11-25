@@ -36,6 +36,10 @@ class Controlador{
         return this.modelo.buscarTodosInmuebles()
     }
 
+    async cargarFotosInmueble(idInmueble, archivos){
+        return await this.modelo.cargarFotosInmueble(idInmueble, archivos)
+    }
+
     cancelarSolicitudReserva(idSolicitud){
         return this.modelo.cancelarSolicitudReserva(idSolicitud)
     }
@@ -70,12 +74,20 @@ class Controlador{
         return this.modelo.eliminarMensajeChat(idChat, idMensaje)
     }
 
+    eliminarValoracion(idValoracion){
+        return this.modelo.eliminarValoracion(idValoracion)
+    }
+
     establecerReceptorChats(metodoReceptor){
         return this.modelo.establecerReceptorChats(metodoReceptor)
     }   
 
     establecerReceptorListaSolicitudes(metodoReceptor){
         return this.modelo.establecerReceptorListaSolicitudes(metodoReceptor)
+    }
+
+    establecerReceptorListaValoraciones(metodoReceptor){
+        return this.modelo.establecerReceptorListaValoraciones(metodoReceptor)
     }
 
     establecerReceptorMensajesChat(idChat, metodoReceptor){
@@ -94,6 +106,14 @@ class Controlador{
         return await this.modelo.modificarInmueble(idInmueble, camposModificados)
     }
 
+    async modificarValoracion(idValoracion, camposModificados){
+        return await this.modelo.modificarValoracion(idValoracion, camposModificados)
+    }
+
+    obtenerInmueblesCargados(){
+        return this.modelo.obtenerInmueblesCargados()
+    }
+
     obtenerMensajesCargadosChat(idChat){
         return this.modelo.obtenerMensajesCargadosChat(idChat)
     }
@@ -106,8 +126,20 @@ class Controlador{
         return this.modelo.obtenerUsuarioActivo().state
     }
 
+    obtenerValoracionesHechas(){
+        return this.modelo.obtenerValoracionesHechas()
+    }
+
+    obtenerValoracionesRecibidas(){
+        return this.modelo.obtenerValoracionesRecibidas()
+    }
+
     async realizarPago(idSolicitud, infoPago){
         return await this.modelo.realizarPago(idSolicitud, infoPago)
+    }
+
+    async realizarValoracion(infoValoracion){
+        return await this.modelo.realizarValoracion(infoValoracion)
     }
 
     rechazarSolicitudReserva(idSolicitud){

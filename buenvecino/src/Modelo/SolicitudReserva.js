@@ -53,12 +53,12 @@ class SolicitudReserva{
     }
 
     async actualizarSolicitud(solicitudActualizada){
-        if ( this.state.idFirebase != solicitudActualizada.idFirebase ){
+        if ( this.state.idFirebase !== solicitudActualizada.idFirebase ){
             ManejadorBD.escribirInformacion("ADVERTENCIAS", {mensaje: "Se está disparando la función actualizar solicitud sobre un objeto que no debería"})
             return
         }
         let respuesta = this.cambiarEstado(solicitudActualizada.estado, true)
-        if ( respuesta.idError != 0 ){
+        if ( respuesta.idError !== 0 ){
             ManejadorBD.escribirInformacion("ADVERTENCIAS", {mensaje: "Se está disparando la función actualizar solicitud con un estado prohibido"})
         }
     }
@@ -67,22 +67,22 @@ class SolicitudReserva{
         
         let estado = this.state.estado
         let mensajeExito = "La solicitud ha cambiado de estado exitosamente"
-        if ( nuevoEstado == estado && ignorarSiNoCambia){
+        if ( nuevoEstado === estado && ignorarSiNoCambia){
             mensajeExito = "Solicitud cambiada artificialmente para notificar al receptor"
         }
-        else if ( nuevoEstado == estado ){
+        else if ( nuevoEstado === estado ){
             return {idError: 11, mensaje: "La solicitud ya tenía ese estado previamente"}
         }
-        else if ( nuevoEstado == "D" ){
+        else if ( nuevoEstado === "D" ){
             return {idError: 10, mensaje: "No se puede cambiar al estado Desconocido en una solicitud que ya inició proceso"}
         }
-        else if ( nuevoEstado == "R" && estado != "D" ){
+        else if ( nuevoEstado === "R" && estado !== "D" ){
             return {idError: 11, mensaje: "No se puede rechazar una solicitud que ya fue aceptada"}
         }
-        else if ( nuevoEstado == "A" && estado != "D" ){
+        else if ( nuevoEstado === "A" && estado !== "D" ){
             return {idError: 12, mensaje: "No se puede aceptar una solicitud que no está a la espera de aceptacion"}
         }
-        else if ( nuevoEstado == "CC" && estado != "A" ){
+        else if ( nuevoEstado === "CC" && estado !== "A" ){
             return {idError: 13, mensaje: "No se puede confirmar una solicitud que no ha sido aceptada aun"}
         }
         this.state.estado = nuevoEstado
@@ -94,14 +94,14 @@ class SolicitudReserva{
 
     estaAbierta(){
         let estado = this.state.estado
-        if ( estado == "D" || estado == "A" ){
+        if ( estado === "D" || estado === "A" ){
             return true
         }
         return false
     }
 
     estaAsociadoMismoInmueble(idInmueble){
-        return this.state.idInmueble == idInmueble
+        return this.state.idInmueble === idInmueble
     }
 
     fechasSeCruzan(fecha1, fecha2){

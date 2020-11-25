@@ -54,7 +54,7 @@ class Chat{
             for(let i=0; i<tamanoLocal; i++){
                 let persiste = false
                 for(let j=0;  j<tamanoActualizado; j++){
-                    if ( this.state.mensajes[i] == mensajesActualizados[j] ){
+                    if ( this.state.mensajes[i] === mensajesActualizados[j] ){
                         persiste = true
                         break
                     }
@@ -66,7 +66,7 @@ class Chat{
                 }
             }
         }
-        if ( this.state.receptorMensajes != null ){
+        if ( this.state.receptorMensajes !== null ){
             let retorno = this.state.listaMensajes.map( (actual) => {return actual.state} )
             this.state.receptorMensajes( this.state.idFirebase, retorno )
         }
@@ -102,7 +102,7 @@ class Chat{
 
     eliminarMensajeChat(idMensaje, idSolicitante){
         for(let i in this.state.mensajes){
-            if ( this.state.mensajes[i] == idMensaje ){
+            if ( this.state.mensajes[i] === idMensaje ){
                 if ( !this.state.listaMensajes[i].perteneceA(idSolicitante) ){
                     return {idError: 4, mensaje: "El mensaje no pertenece a quien lo intenta eliminar"}
                 }

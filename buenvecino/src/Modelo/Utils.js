@@ -29,7 +29,7 @@ class Utils{
     }
 
     static compararIdFirebase(dato1, dato2){
-        return dato1.idFirebase == dato2.idFirebase
+        return dato1.idFirebase === dato2.idFirebase
     }
 
     static eliminarDuplicadosDeArray(array, funcionComparacion=Utils.compararIdFirebase){
@@ -42,6 +42,19 @@ class Utils{
             }
         }
         return array
+    }
+
+    static emparejarArrayIds( arrayObjetos, arrayIds ){
+        let arrayEmparejado = []
+        for(let i in arrayIds){
+            for(let j in arrayObjetos){
+                if ( arrayObjetos[j].idFirebase === arrayIds[i] ){
+                    arrayEmparejado[i] = arrayObjetos[j]
+                    break
+                }
+            }
+        }
+        return arrayEmparejado
     }
 
     static fechasSeCruzan(fechaInicial1, fechaFinal1, fechaInicial2, fechaFinal2){
@@ -66,8 +79,7 @@ class Utils{
                 }
             }
         }
-    }
-    
+    }    
 }
 
 export default Utils

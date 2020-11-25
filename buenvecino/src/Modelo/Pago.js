@@ -35,7 +35,7 @@ class Pago {
     }
 
     perteneceSolicitud(idSolicitud){
-        return this.state.idSolicitud == idSolicitud
+        return this.state.idSolicitud === idSolicitud
     }
 
     static validarEstructuraObjeto(infoArrendatario){

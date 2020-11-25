@@ -2,14 +2,8 @@ import Arrendador from './Arrendador'
 import Arrendatario from './Arrendatario'
 import Autenticador from './Firebase/Autenticador'
 import ManejadorBD from './Firebase/ManejadorBD'
-import {firebase} from './Firebase/Firebase'
-import {definitions} from './Firebase/schema.json'
-import Apartamento from './Apartamento'
-import Casa from './Casa'
 import Inmueble from './Inmueble'
-import Habitacion from './Habitacion'
 import Utils from './Utils'
-import Reservacion from './Reservacion'
 
 class SistemaBV{
 
@@ -80,6 +74,18 @@ class SistemaBV{
         return this.obtenerUsuarioActivo().cancelarSolicitudReserva(idSolicitud)
     }
 
+    async cargarFotosInmueble(idInmueble, archivos){
+        let mensajeExito = {idError: 0, mensaje: "Imagenes cargadas exitosamente"}
+        let imagenesRechazadas = null
+        let cargada = false
+        for( let i in archivos ){
+            if ( !archivos[i].type.startsWith("image/") ){
+                mensajeExito = {idError: -1, mensaje: ""}
+            }
+        }
+        return await this.obtenerUsuarioActivo().cargarFotosInmueble(idInmueble, archivos)
+    }
+
     async cerrarSesion(){
         Autenticador.cerrarSesionUsuario()
     }
@@ -90,15 +96,15 @@ class SistemaBV{
 
     async crearChat(idUsuario2, primerMensaje){
         let tipoUsuario2 = await this.obtenerColeccionCorrespondienteUsuario(idUsuario2)
-        if ( idUsuario2 == this.obtenerUsuarioActivo().state.idFirebase ){
+        if ( idUsuario2 === this.obtenerUsuarioActivo().state.idFirebase ){
             return {idError: 1, mensaje: "Está tratando de crear un chat consigo mismo"}
         }
-        else if ( tipoUsuario2 == null ){
+        else if ( tipoUsuario2 === null ){
             return {idError: 2, mensaje: "El usuario con quien intenta crear el chat no existe"}
         }
         else{
             let respuesta = this.obtenerUsuarioActivo().crearChat(idUsuario2)
-            if ( respuesta.idError == 0 ){
+            if ( respuesta.idError === 0 ){
                 let clausulaActualizar = { chats : Utils.clausulaAgregarElementoArrayFirebase( respuesta.idNuevoChat ) }
                 await ManejadorBD.actualizarInformacion( tipoUsuario2, idUsuario2, clausulaActualizar )
                 await this.agregarMensajeChat(respuesta.idNuevoChat, primerMensaje)
@@ -121,7 +127,7 @@ class SistemaBV{
     async crearSolicitudReserva(infoReserva){
         console.log("CAMBIAR TABLA Inmuebles2 X Inmuebles")
         let inmueble = await ManejadorBD.leerInformacionDocumento("Inmuebles2", infoReserva.idInmueble)
-        if ( inmueble == null ){
+        if ( inmueble === null ){
             return {idError: 1, mensaje: "El inmueble no existe"}
         }
         return await this.obtenerUsuarioActivo().crearSolicitudReserva(infoReserva);
@@ -142,6 +148,10 @@ class SistemaBV{
         return this.obtenerUsuarioActivo().eliminarMensajeChat(idChat, idInmueble) 
     }
 
+    eliminarValoracion(idValoracion){
+        return this.obtenerUsuarioActivo().eliminarValoracion(idValoracion)
+    }
+
     emailEstaRegistrado(email){
         return Autenticador.emailEstaRegistrado(email)
     }
@@ -151,8 +161,11 @@ class SistemaBV{
     }
 
     establecerReceptorListaSolicitudes(metodoReceptor){
-        this.state.receptorListaSolicitudes = metodoReceptor
         return this.obtenerUsuarioActivo().establecerReceptorListaSolicitudes(metodoReceptor)
+    }
+
+    establecerReceptorListaValoraciones(metodoReceptor){
+        return this.obtenerUsuarioActivo().establecerReceptorListaValoraciones(metodoReceptor)
     }
 
     establecerReceptorMensajesChat(idChat, metodoReceptor){
@@ -190,7 +203,7 @@ class SistemaBV{
             let idRespuesta = await Autenticador.iniciarSesionUsuario(email, contrasena)
             idRespuesta = idRespuesta.uid
             let arrendador = await ManejadorBD.leerInformacionDocumento( "Arrendadores", idRespuesta )
-            if ( arrendador != null){
+            if ( arrendador !== null){
                 await this.establecerUsuario(arrendador, false)
                 return {idError: 0, mensaje: "inicio de sesión exitoso", usuario: this.state.arrendador.state, tipo: "Arrendador"}
             }
@@ -209,14 +222,22 @@ class SistemaBV{
         return await this.state.arrendador.modificarInmueble(idInmueble, camposModificados)
     }
 
+    async modificarValoracion(idValoracion, camposModificados){
+        return await this.obtenerUsuarioActivo().modificarValoracion(idValoracion, camposModificados)
+    }
+
     async obtenerColeccionCorrespondienteUsuario(idUsuario){
-        if  (await ManejadorBD.leerInformacionDocumento("Arrendador", idUsuario) != null ){
+        if  (await ManejadorBD.leerInformacionDocumento("Arrendador", idUsuario) !== null ){
             return "Arrendador"
         }
-        else if ( await ManejadorBD.leerInformacionDocumento("Arrendatario", idUsuario) != null ){
+        else if ( await ManejadorBD.leerInformacionDocumento("Arrendatario", idUsuario) !== null ){
             return "Arrendatario"
         }
         return null
+    }
+
+    obtenerInmueblesCargados(){
+        return this.obtenerUsuarioActivo().obtenerInmueblesCargados()
     }
 
     obtenerMensajesCargadosChat(idChat){
@@ -228,11 +249,23 @@ class SistemaBV{
     }
 
     obtenerUsuarioActivo(){
-        return this.state.arrendatario != null ? this.state.arrendatario : this.state.arrendador
+        return this.state.arrendatario !== null ? this.state.arrendatario : this.state.arrendador
+    }
+
+    obtenerValoracionesHechas(){
+        return this.obtenerUsuarioActivo().obtenerValoracionesHechas()
+    }
+
+    obtenerValoracionesRecibidas(){
+        return this.obtenerUsuarioActivo().obtenerValoracionesRecibidas()
     }
     
     async realizarPago(idSolicitud, infoPago){
         return await this.obtenerUsuarioActivo().realizarPago(idSolicitud, infoPago)
+    }
+
+    async realizarValoracion(infoValoracion){
+        return this.obtenerUsuarioActivo().realizarValoracion(infoValoracion)
     }
 
     rechazarSolicitudReserva(idSolicitud){
@@ -252,7 +285,7 @@ class SistemaBV{
             if ( await this.emailEstaRegistrado(email) ){
                 return {idError: 1, mensaje: "El email ingreasdo ya se encuentra registrado"}
             }
-            if ( await this.buscarUsuariosPorDni(infoUsuario.dni, infoUsuario.tipoDni, SistemaBV.ARRENDATARIO) != null ){
+            if ( await this.buscarUsuariosPorDni(infoUsuario.dni, infoUsuario.tipoDni, SistemaBV.ARRENDATARIO) !== null ){
                 return {idError: 2, mensaje: "Ya existe un usuario registrado con ese numero de documento"}
             }
             console.log("HERE :V")
@@ -270,7 +303,7 @@ class SistemaBV{
     }
 
     /*validarArrendatario(infoUsuario){
-        if (this.state.arrendatario != NULL){
+        if (this.state.arrendatario !== NULL){
             return Arrendatario.validarArrendatario()
         }
     }*/

@@ -3,6 +3,7 @@ import Controlador from '../../Controlador/Controlador'
 import ManejadorBD from '../../Modelo/Firebase/ManejadorBD'
 import Utils from '../../Modelo/Utils'
 import {firebase} from '../../Modelo/Firebase/Firebase'
+import ManejadorSg from '../../Modelo/Firebase/ManjadorSg'
 
 class PaginaTest extends Component{
 
@@ -69,7 +70,7 @@ class PaginaTest extends Component{
 
 
                 {
-                  this.state.tipo == undefined ? <div>INICIO SESION</div> : <div>{this.state.tipo + " " + this.state.usuario.idFirebase}</div>
+                  this.state.tipo === undefined ? <div>INICIO SESION</div> : <div>{this.state.tipo + " " + this.state.usuario.idFirebase}</div>
                 }
 
             <input type="text" name="chat"  placeholder="IdInmueble/Solicitud" ref={this.inputSolicitudes}/>
@@ -78,9 +79,13 @@ class PaginaTest extends Component{
             <button onClick={(e) => {this.pruebaSolicitud(e)} }>
               SIMULAR SOLICITUD
             </button>
+
+            <button onClick={(e) => {this.pruebaValoracion(e)} }>
+              CREAR VALORACION
+            </button>
             <hr/>
             {
-              this.state.respuestaEstadoSolicitud != undefined ? 
+              this.state.respuestaEstadoSolicitud !== undefined ? 
               ( <div>{this.state.respuestaEstadoSolicitud}</div> ) :
               (<div> {"NO HAY RESPUESTA"}</div>)
             }
@@ -95,9 +100,48 @@ class PaginaTest extends Component{
                 return <div key={ind}><table><tr><td> {item.idFirebase}</td><td> | {item.idInmueble}</td><td>  | {item.estado}</td></tr></table>  </div>
               } )
             }
+            <hr/>{
+              this.state.vals.map( (item, ind) =>{
+                return <div key={ind}><table><tr><td> {item.idFirebase}</td><td> | {item.idValorado}</td><td>  | {item.comentario}</td></tr></table>  </div>
+              } )
+            }
             <hr/>
+            {
+                  this.state.tipo === undefined ? <div>NADA</div> : this.state.tipo === "DUENO" ?
+                  <div>{
+                    this.state.inmuebles.map( (item, inds) =>{
+                    return <div key={inds}>{
+                      <p>
+
+                              {
+                                this.state.kItem.map( (l)=>{
+                                  if ( item.listaValoraciones.length > 0 ){
+                                    console.log( item, " +1 " )
+                                  }
+                                  return <></>
+                                } )
+                              }                 
+                        {
+                          item.idFirebase 
+                        } " "
+                        {
+                          
+                          item.listaValoraciones.map( (item2) =>{
+                            return <h5> {item2.state.comentario} {item2.state.calificacion} </h5>
+                          } )
+                        }
+
+                      </p>
 
 
+
+                    }</div>
+                    } )
+                    
+                  }</div>:<div>NADA INTETESANTE</div>
+            }
+
+            <hr/>
 
 
             <br/><br/>
@@ -119,7 +163,7 @@ class PaginaTest extends Component{
             <hr/>
             {
               this.state.mensajes.slice(0).reverse().map( (item) => {
-                if ( item.remitente == Controlador.getControlador().obtenerUsuarioActivo().idFirebase ){
+                if ( item.remitente === Controlador.getControlador().obtenerUsuarioActivo().idFirebase ){
                   return (
                     <>
                     <div style={{backgroundColor: "#00A000"}}>{item.mensaje }</div>
@@ -153,7 +197,19 @@ class PaginaTest extends Component{
             await this.borrarInformacionColeccion("Reservaciones")
 
           }}>
-            RESETEAR INFORMACION
+            RESETEAR INFORMACION SOLICITUDES
+          </button>
+
+          <button onClick={async (e)=>{
+            let atributo = {valoraciones: []}
+            await this.agregarAtributo("Arrendadores", atributo)
+            await this.agregarAtributo("Arrendatarios", atributo)
+            await this.agregarAtributo("Inmuebles2", atributo)
+                        
+            await this.borrarInformacionColeccion("Valoraciones")
+
+          }}>
+            RESETEAR INFORMACION VALORACIONES
           </button>
 
           <button onClick={async (e)=>{
@@ -161,11 +217,98 @@ class PaginaTest extends Component{
           }}>
             FUNCION VARIA
           </button>
+
+          <button onClick={async (e)=>{
+            let atributo = {valoraciones: []}
+            this.agregarAtributo("Inmuebles2", atributo)
+            //this.agregarAtributo("Arrendadores", atributo)
+            //this.agregarAtributo("Arrendatarios", atributo)
+          }}>
+            AGREGAR CAMPO
+          </button>
+
+
+
+          <br/><br/><br/>
+
+          <input type="file" id="file-selector" multiple ref={this.refArchivo}></input>
+          <br/>
+          <button onClick={
+            (e) =>{
+              ManejadorSg.obtenerImagenesInmueble("HOLA1")
+            }
+          }>
+            PRUEBA OTRA
+          </button>
+
           </div>
+
+
+
       )
 
   }
 
+  recibirValoracion(nuevo){
+    console.log( "ACTUALIZCION : ", nuevo )
+    this.setState({
+      vals: nuevo
+    })
+  }
+
+  async pruebaValoracion(e){
+    let c = Controlador.getControlador()
+    if ( this.state.init2 === undefined ){
+      await this.inicioSesionSolicitud(c)
+      this.recibirValoracion = this.recibirValoracion.bind(this)
+      console.log("C: ", c)
+      c.establecerReceptorListaValoraciones(this.recibirValoracion)
+
+
+      setTimeout( ()=>{
+        if ( this.state.tipo == "DUENO" ){
+          let rrrr = c.obtenerInmueblesCargados()
+          console.log(rrrr)
+          this.setState( {inmuebles: rrrr} )
+          
+        }
+      }, 1000 )
+      
+    }
+    else{
+      let res = null
+      let ids = this.inputSolicitudes.current.value
+      let valor = this.inputResponder.current.value
+      let cantidad = this.inputFecha.current.value
+      valor = valor.toUpperCase()
+      let tipoValoracion = ""
+      if ( valor === "C" ){
+
+
+        let objetoVal = {
+          idValorado : ids,
+          tipo: cantidad.toUpperCase(),
+          calificacion: 5,
+          comentario: "Bonito"
+        }
+        res = await c.realizarValoracion(objetoVal)
+        console.log(res)
+
+      }else if ( valor === "M" ){
+        let modificacion = {
+          comentario: "NO TAN BONITO AHORA >:V",
+          calificacion: parseInt(cantidad)
+
+        }
+        res = await c.modificarValoracion(ids, modificacion)
+      }
+      else if ( valor === "E" ){
+        res = await c.eliminarValoracion(ids)
+      }
+      console.log(res)
+      this.setState( {respuestaEstadoSolicitud: res.mensaje} )
+    }
+  }
 
   async agregarAtributo(tabla, atributo){
     let res = await ManejadorBD.leerInformacionColeccion(tabla)
@@ -182,7 +325,7 @@ class PaginaTest extends Component{
   rebibirSolicitudes(nueva){
     let arrayAux = this.state.sols
     for(let i in arrayAux){
-      if ( nueva.idFirebase == arrayAux[i].idFirebase ){
+      if ( nueva.idFirebase === arrayAux[i].idFirebase ){
         arrayAux[i] = nueva
         this.setState( {sols: arrayAux} )
         return;
@@ -199,11 +342,11 @@ class PaginaTest extends Component{
 
   async inicioSesionSolicitud(c){
     let texto = this.inputSolicitudes.current.value
-    if ( texto == "1" ){
+    if ( texto === "1" ){
       let res = await c.iniciarSesionUsuario("prueba112@prueba.com","123456") //ARRENDADOR
       await this.setState({tipo: "DUENO", usuario: res.usuario})  
     }
-    else if (texto == "2"){
+    else if (texto === "2"){
       let res = await c.iniciarSesionUsuario("prueba1123d@prueba.com","123456") //ARRENDATARIO
       await this.setState({tipo: "INQUILINO", usuario: res.usuario})
     }
@@ -229,18 +372,18 @@ class PaginaTest extends Component{
   async pruebaSolicitud(e){
     let c = Controlador.getControlador()
 
-    if (this.state.init2 == undefined){
+    if (this.state.init2 === undefined){
       this.inicioSesionSolicitud(c)
     }
     else{
       let idInmueble = this.inputSolicitudes.current.value
       let respuesta = this.inputResponder.current.value.toUpperCase()
       let res = {}
-      if ( this.state.tipo == "DUENO" ){
-        if ( respuesta == "A" ){
+      if ( this.state.tipo === "DUENO" ){
+        if ( respuesta === "A" ){
           res = await c.aceptarSolicitudReserva(idInmueble)
         }
-        else if ( respuesta == "R" ){
+        else if ( respuesta === "R" ){
           res = await c.rechazarSolicitudReserva(idInmueble)
         }
         console.log("ARRENDADOR: ", res)
@@ -249,7 +392,7 @@ class PaginaTest extends Component{
       else{
         //21-nov
         //1-dic
-        if ( respuesta== "D" ){
+        if ( respuesta=== "D" ){
 
           let fechas = this.inputFecha.current.value
           fechas = fechas.split(" ")
@@ -280,15 +423,15 @@ class PaginaTest extends Component{
           res = await c.crearSolicitudReserva(infoSolicitud)
           
         }
-        else if ( respuesta == "C" ){
+        else if ( respuesta === "C" ){
           res = await c.cancelarSolicitudReserva(idInmueble)
         }
-        else if ( respuesta == "CC" ){
+        else if ( respuesta === "CC" ){
           console.log("HERE CC: ")
           res = await c.realizarPago(idInmueble, {idSolicitud: idInmueble, valor: 50000, informacionAdicional:{basura1:"1",basura2:"2"}})
           console.log("RESPUESTA PARCIAL : ", res)
           this.setState( {respuestaEstadoSolicitud: res.mensaje} )
-          if ( res.idError == 0 || res.idError == 4  ){
+          if ( res.idError === 0 || res.idError === 4  ){
             res = await c.confirmarSolicitudReserva(idInmueble)
           }
           
@@ -324,7 +467,7 @@ class PaginaTest extends Component{
     })
     let email = {}
     
-    if ( texto == "1" ){
+    if ( texto === "1" ){
       email = "prueba112@prueba.com"
       
     }
@@ -349,7 +492,7 @@ class PaginaTest extends Component{
     let texto = this.inputChat.current.value
     let c = Controlador.getControlador()
     
-    if ( this.state.init == undefined ){
+    if ( this.state.init === undefined ){
       await this.iniciarSesionUsuarioParaChat(texto)
 
     }
@@ -364,7 +507,7 @@ class PaginaTest extends Component{
   }
 
   async recibirNuevoMensaje(idChat, nuevo){
-    if ( nuevo != undefined ){
+    if ( nuevo !== undefined ){
       let listaTot = this.state.mensajes
       listaTot.push( nuevo.mensajes )
       await this.setState( {mensajes: nuevo} )
@@ -400,7 +543,7 @@ class PaginaTest extends Component{
   
   async pruebaConsultaUbicacion(e, campo){
     console.log(this.state[campo])
-    let texto = this.state[campo] == undefined ? "" : this.state[campo] 
+    let texto = this.state[campo] === undefined ? "" : this.state[campo] 
     
     let c = Controlador.getControlador()
     let res = await c.buscarInmueblesPorBarrioLocalidad(texto)
@@ -480,12 +623,16 @@ class PaginaTest extends Component{
       inm: [],
       mensajes : [],
       sols: [],
-      sols2: []
+      sols2: [],
+      vals: [],
+      inmuebles: [],
+      kItem: [1]
     }
     this.inputChat = React.createRef()
     this.inputSolicitudes = React.createRef()
     this.inputResponder = React.createRef()
     this.inputFecha = React.createRef()
+    this.refArchivo = React.createRef()
 
     console.log("this: ", this.state)
   }
@@ -500,6 +647,23 @@ class PaginaTest extends Component{
     )
   }
 
+  async componentDidMount(){
+    let c = Controlador.getControlador()
+    await c.iniciarSesionUsuario("prueba112@prueba.com", "123456")
+    this.refArchivo.current.addEventListener("change", this.cargarImagen, false)
+  }
+
+  async cargarImagen(e){
+    const fileList = e.target.files;
+    console.log( fileList )
+    for(let i=0; i< fileList.length; i++){
+      console.log("fileList : ", fileList[i])
+      //let url = await ManejadorSg.cargarImagen("HOLA1", fileList[i])
+      //console.log( url )
+    }   
+  }
+
+  
 
 }
 

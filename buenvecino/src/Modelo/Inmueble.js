@@ -1,6 +1,8 @@
+import ManejadorBD from './Firebase/ManejadorBD'
 import Utils from './Utils'
+import Valorable from './Valorable'
 
-class Inmueble{
+class Inmueble extends Valorable{
 
     //TODO REVISAR TEMA DE LAS FOTOS
     static ESTRUCTURA_JSON = {
@@ -37,17 +39,6 @@ class Inmueble{
             "ubicacion" : {
                 "type": "object"
             }
-            //TO DO
-            /*"ubicacion": {
-                "$ref": "#/definitions/Ubicacion"
-            }*/
-            /*"historialArrendatarios": {
-                "type": "array",
-                "items": {
-                    "$ref": "#/definitions/PeriodoEstadia",
-                    "uniqueItems": true
-                }
-            }*/
         },
         "required": [
             "area",
@@ -102,11 +93,59 @@ class Inmueble{
     }
 
     constructor(infoInmueble){
+        super()
         this.state = {
+            ...this.state,
             ...infoInmueble,
-            ...Utils.agregarCamposSiNoExisten(infoInmueble, ["servicios", "ubicacion", "historialArrendatarios"], [[],[],{}])
+            ...Utils.agregarCamposSiNoExisten(infoInmueble, ["servicios", "historialArrendatarios", "valoraciones"], []),
         }
-    }    
+    }
+
+    actualizarInmueble(inmuebleActualizado){
+        if ( this.state.listaValoraciones != inmuebleActualizado.valoraciones ){
+            this.actualizarListaValoraciones( inmuebleActualizado.listaValoraciones )
+        }
+    }
+
+    async cargarInformacionAdicional(){
+        await this.cargarInformacionAdicionalFotos()
+        await this.cargarInformacionAdicionalValoraciones()
+    }
+
+    async cargarInformacionAdicionalFotos(){
+
+    }
+
+    async cargarInformacionAdicionalValoraciones(){
+        await super.cargarInformacionAdicionalValoraciones()
+        this.recibirActualizacionValoracion = this.recibirActualizacionValoracion.bind(this)
+        this.actualizarInmueble = this.actualizarInmueble.bind(this)
+        for(let i in this.state.listaValoraciones){
+            this.state.listaValoraciones[i].establecerReceptorValoracion(this.recibirActualizacionValoracion)
+            ManejadorBD.escucharActualizacionesDocumento("Inmuebles2", this.state.idFirebase, this.actualizarInmueble)
+        }
+    }
+
+    obtenerCalificacionPromedio(){
+        if ( this.state.listaValoraciones.length === 0 ){
+            return 0
+        }
+        let prom = 0
+        for(let i in this.state.listaValoraciones){
+            prom += this.state.listaValoraciones[i].state.calificacion
+        }
+        return prom / this.state.listaValoraciones.length
+    }
+
+    recibirActualizacionValoracion(nuevaValoracion){
+        for(let i in this.state.listaValoraciones){
+            if ( this.state.listaValoraciones[i].state.idFirebase === nuevaValoracion.state.idFirebase ){
+                this.state.listaValoraciones[i] = nuevaValoracion
+                this.actualizarListaValoraciones(this.state.listaValoraciones)
+                break
+            }
+        }
+    }
 
     static obtenerCadenaBusqueda(barrio, localidad){
         barrio = Utils.normalizarString(barrio).toUpperCase()

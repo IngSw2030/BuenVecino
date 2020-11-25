@@ -1,4 +1,3 @@
-import Arrendatario from './Arrendatario'
 
 class Favorito {
     static ESTRUCTURA_JSON = {
