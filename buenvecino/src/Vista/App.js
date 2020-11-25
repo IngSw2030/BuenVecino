@@ -8,6 +8,10 @@ import InfoInmueble from './screens/infoInmueble'
 import GestionarInmueble from "./screens/GestionarInmueble";
 import RegistrarInmueble from "./screens/RegistrarInmueble";
 import RegistrarUsuario from "./components/RegistrarUsuario";
+import GestionarPerfil from "./screens/GestionarPerfil";
+import MisFavoritos from "./screens/MisFavoritos";
+import Chat from "./screens/Chat";
+import HistorialPago from "./screens/HistorialPago";
 
 
 // import Header from './components/Header';
@@ -31,7 +35,7 @@ class App extends Component {
               {/* footer */}
             </Route>
             <Route path="/busqueda" exact>
-              <Mapas/>
+              <Mapas/>RegistrarUsuario
             </Route>
             <Route path="/inmueble" exact>
               <InfoInmueble/>
@@ -44,6 +48,18 @@ class App extends Component {
             </Route>
             <Route path="/registrarUsuario" exact>
               <RegistrarUsuario/>
+            </Route>
+            <Route path="/perfil" exact>
+              <GestionarPerfil/>
+            </Route>
+            <Route path="/favoritos" exact>
+              <MisFavoritos/>
+            </Route>
+            <Route path="/chats" exact>
+              <Chat/>
+            </Route>
+            <Route path="/historialpagos" exact>
+              <HistorialPago/>
             </Route>
 						{/*Pagina para pruebas de cualquier cosa, en el archivo screens/PaginaTests.js*/}
 						<Route path="/test" exact>

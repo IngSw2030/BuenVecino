@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Button } from "@material-ui/core";
 import "../styles/Login.css";
+import { Link } from 'react-router-dom'
+import login from "../assets/Login.png"
 
 
 class Login extends Component {
@@ -8,7 +10,7 @@ class Login extends Component {
     return (
       <div className="Login">
           <div className="ingresar">
-              <img src={require("../assets/Login.png")} alt=""/>
+              <img src={login} alt="icono Login"/>
               <h2>INGRESAR</h2>
           </div>
           <div className="formulario">
@@ -16,14 +18,14 @@ class Login extends Component {
                   <label for="correo">Correo Electronico</label>
                   <input type="email" placeholder=" Ingrese su correo " name="correo" required/>
 
-                  <label for="psw">Contrasena</label>
+                  <label for="psw">Contraseña</label>
                   <input type="password" placeholder=" Ingrese su contraseña " name="psw" required/>
 
                   <Button type="submit">Iniciar sesión</Button>
                   
               </form>
               <div className="botones">
-                  <Button> Registrate </Button>
+                  <Button><Link to="/registrarUsuario">Registrate</Link> </Button>
                   <Button> Cancelar </Button>
               </div>
           </div>

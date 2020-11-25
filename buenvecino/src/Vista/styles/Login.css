@@ -3,6 +3,11 @@
   border-radius: 50px;
   width: 50%;
   transform: translate(50%,10%);
+
+}
+
+.Login:focus{
+  border: red 15px;
 }
 .Login .ingresar {
   display: flex;
@@ -47,15 +52,27 @@
   font-family: Saira;
   font-style: normal;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 38px;
   letter-spacing: 0.05em;
   color: #ffffff;
   margin-top: 2%;
-  width: 40%;
+  width: 30%;
 }
 .Login .botones {
   display: flex;
   justify-content: space-around;
   padding: 1%;
+}
+
+.Login Button:hover{
+  background: #24243c;
+}
+
+.Login a{
+  color: #ffffff;
+}
+.Login a:hover{
+  text-decoration: none;
+  color: white;
 }

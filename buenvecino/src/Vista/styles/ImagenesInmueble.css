@@ -1,53 +1,11 @@
 .ImagenesInmueble{
     margin-top: -5%;
     display: flex;
+    width: 100%;
     justify-content: center;
 }
 
-.ImagenesInmueble img {
+.carousel{
   width: 80%;
-
 }
 
-.ImagenesInmueble button{
-    color: #BBBBBB;
-    font-size: 50px;
-}
-
-.ImagenesInmueble .botonIzquierda {
-  position: absolute;
-  width: 1.7em;
-  height: 1.7em;
-  left: 13%;
-  top: 40%;
-  background: #ffffff;
-  border-radius: 100px;
-  
-}
-
-.ImagenesInmueble .botonIzquierda:hover {
-  
-  color:white;
-  background: black;
-  border-radius: 100px;
-  
-}
-
-.ImagenesInmueble .botonDerecha {
-  position: absolute;
-  width: 1.7em;
-  height: 1.7em;
-  right: 13%;
-  top: 40%;
-
-  background: #ffffff;
-  border-radius: 100px;
-}
-
-.ImagenesInmueble .botonDerecha:hover {
-  
-  color:white;
-  background: black;
-  border-radius: 100px;
-  
-}

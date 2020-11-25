@@ -1,16 +1,41 @@
 import React, { Component } from "react";
 import '../styles/ImagenesInmueble.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Carousel from 'react-bootstrap/Carousel'
+import Imagen from "../assets/FotoInmueble.png"
 
 class ImagenesInmueble extends Component {
   render() {
     return (
       <div className="ImagenesInmueble">
-           <img src={require('../assets/FotoInmueble.png')} alt="Logo de la pagina"/> 
-           <button className="botonIzquierda"> {"<"} </button>
-           <button className="botonDerecha"> {">"} </button> 
+        <Carousel>
+          <Carousel.Item>
+            <img
+              className="d-block w-100"
+              src={Imagen}
+              alt="First slide"
+            />
+          </Carousel.Item>
+          <Carousel.Item>
+            <img
+              className="d-block w-100"
+              src={Imagen}
+              alt="Third slide"
+            />
 
-
+          </Carousel.Item>
+          <Carousel.Item>
+            <img
+              className="d-block w-100"
+              src={Imagen}
+              alt="Third slide"
+            />
+          </Carousel.Item>
           
+        </Carousel>
+
+
+
       </div>
     );
   }

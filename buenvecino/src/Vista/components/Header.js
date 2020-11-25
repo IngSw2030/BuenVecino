@@ -5,13 +5,15 @@ import '../styles/Header.css';
 import Modal from '@material-ui/core/Modal'
 import Login from "../components/Login"
 import RegistrarUsuario from "../components/RegistrarUsuario"
+import Logo from "../assets/Logo.png"
+import NavDropdown from 'react-bootstrap/NavDropdown'
 
 class Header extends Component {
 
 	constructor() {
 		super()
 		this.state = {
-			open: false
+			open: false,
 		}
 	}
 
@@ -32,7 +34,7 @@ class Header extends Component {
 	render() {
 		return (
 			<div className="header">
-				<img src={require('../assets/Logo.png')} alt="Logo de la pagina" className="header__icon" />
+				<img src={Logo} alt="Logo de la pagina" className="header__icon" />
 
 				<div className="header__right">
 					<nav>
@@ -44,20 +46,25 @@ class Header extends Component {
 							<Modal
 								open={this.state.open}
 								onClose={this.handleClose}
-								aria-labelledby="simple-modal-title"
-								aria-describedby="simple-modal-description"
+								className="mdl"
 							>
-								
-								<Login/>
-								
+
+								<Login />
+
 
 							</Modal>
-							<li><Link to="/">Registrate</Link></li>
-							<li><Link to="/">Registra tu vivienda</Link></li>
-							<li><Link to="/">Ayuda</Link></li>
+
 						</ul>
 					</nav>
-					<Avatar />
+					<NavDropdown title={<Avatar/>} id="basic-nav-dropdown">
+						<NavDropdown.Item ><Link to="/perfil">Mi Perfil</Link></NavDropdown.Item>
+						<NavDropdown.Item ><Link to="/favoritos">Mis Favoritos</Link></NavDropdown.Item>
+						<NavDropdown.Item ><Link to="/chats">Mis Chats</Link></NavDropdown.Item>
+						<NavDropdown.Item ><Link to="/historialpagos">Historial de Pagos</Link></NavDropdown.Item>
+						<NavDropdown.Divider />
+						<NavDropdown.Item ><Link to="/">Cerrar Sesión</Link></NavDropdown.Item>
+					</NavDropdown>
+
 				</div>
 			</div>
 		);
