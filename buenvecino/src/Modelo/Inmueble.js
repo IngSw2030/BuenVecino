@@ -1,4 +1,6 @@
 import ManejadorBD from './Firebase/ManejadorBD'
+import ManejadorSg from './Firebase/ManjadorSg'
+import Servicio from './Servicio'
 import Utils from './Utils'
 import Valorable from './Valorable'
 
@@ -98,6 +100,8 @@ class Inmueble extends Valorable{
             ...this.state,
             ...infoInmueble,
             ...Utils.agregarCamposSiNoExisten(infoInmueble, ["servicios", "historialArrendatarios", "valoraciones"], []),
+            listaFotos: [],
+            listaServicios: []
         }
     }
 
@@ -107,13 +111,61 @@ class Inmueble extends Valorable{
         }
     }
 
+    agregarServicios(idsServicio){
+        let rechazados = []
+        for(let i in idsServicio){
+            let rechazado = false
+            for(let j in this.state.servicios){
+                if ( this.state.servicios[j] === idsServicio[i] ){
+                    rechazados.push( idsServicio[i] )
+                    rechazado = true
+                    break
+                }
+            }
+            if ( rechazado ){
+                continue
+            }
+            let servicio = Servicio.obtenerServicio( idsServicio[i] )
+            if (servicio === null ){
+                rechazados.push( idsServicio[i] )
+            }
+            else{
+                this.state.listaServicios.push(servicio)
+                this.state.servicios.push(servicio)
+            }
+        }
+        if ( rechazados.length !== idsServicio.length ){
+            let actualizacion = { servicios: this.state.servicios }
+            ManejadorBD.actualizarInformacion( "Inmuebles2", this.state.idFirebase, actualizacion )
+            if ( rechazados.length > 0 ){
+                return {idError: -1, mensaje: "Algunos servicios fueron rechazados", rechazados}
+            }
+            else{
+                return {idError: 0, mensaje: "Servicios agregados exitosamente"}
+            }    
+        }
+        else{
+            return {idError: 2, mensaje: "Los servicios ingresados no existen"}
+        }
+
+        
+    }
+
+
+    agregarUrlsFotos(urls){
+        this.state.listaFotos = [...this.state.listaFotos, ...urls]
+    }
+
     async cargarInformacionAdicional(){
         await this.cargarInformacionAdicionalFotos()
         await this.cargarInformacionAdicionalValoraciones()
+        await Servicio.cargarServicios()
+        this.cargarInformacionAdicionalServicios()
     }
 
     async cargarInformacionAdicionalFotos(){
-
+        let urls = await ManejadorSg.obtenerImagenesInmueble(this.state.idFirebase)
+        this.state.listaFotos = urls
     }
 
     async cargarInformacionAdicionalValoraciones(){
@@ -123,6 +175,24 @@ class Inmueble extends Valorable{
         for(let i in this.state.listaValoraciones){
             this.state.listaValoraciones[i].establecerReceptorValoracion(this.recibirActualizacionValoracion)
             ManejadorBD.escucharActualizacionesDocumento("Inmuebles2", this.state.idFirebase, this.actualizarInmueble)
+        }
+    }
+
+    cargarInformacionAdicionalServicios(){
+        for(let i in this.state.servicios){
+            let servicio = Servicio.obtenerServicio(this.state.servicios[i])
+            this.state.listaServicios.push( servicio )
+        }
+    }
+
+    eliminarServicio(idServicio){
+        for(let i in this.state.servicios){
+            if ( this.state.servicios[i] === idServicio ){
+                this.state.servicios[i].splice(i, 1)
+                this.state.listaServicios[i].splice(i, 1)
+                let clausulaRemover = {servicios: Utils.clausulaEliminarElementoArrayFirebase(idServicio)}
+                ManejadorBD.actualizarInformacion("Inmuebles2", this.state.idFirebase, clausulaRemover )
+            }
         }
     }
 

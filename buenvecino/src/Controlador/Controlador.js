@@ -20,6 +20,10 @@ class Controlador{
         return await this.modelo.agregarMensajeChat(idChat, mensaje)
     }
 
+    agregarServiciosInmueble(idInmueble, idServicios){
+        return this.modelo.agregarServiciosInmueble(idInmueble, idServicios)
+    }
+
     async buscarInmueblesIniciales(cantInmuebles = 3){
         return await this.modelo.buscarInmueblesIniciales(cantInmuebles)
     }    
@@ -96,6 +100,10 @@ class Controlador{
 
     establecerReceptorSolicitudes(metodoReceptor){
         return this.modelo.establecerReceptorSolicitudes(metodoReceptor)
+    }
+
+    existeUsuarioSesionActiva(){
+        return this.modelo.existeUsuarioSesionActiva()
     }
 
     async iniciarSesionUsuario(email, contrasena){

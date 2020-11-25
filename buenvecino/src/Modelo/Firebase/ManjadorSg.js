@@ -45,15 +45,14 @@ class ManejadorSg{
         }        
     }
 
-    static async obtenerImagenesPerfil(idUsuario){
+    static async obtenerImagenPerfil(idUsuario){
         try {
             let referencia = sg.ref().child( this.PATH_FOTOS_PERFIL + idUsuario )
             let referenciasURL = await referencia.listAll()
-            let listaURL = []
             for(let i in referenciasURL.items){
-                listaURL.push( await referenciasURL.items[i].getDownloadURL() )
+                return await referenciasURL.items[i].getDownloadURL() 
             }       
-            return listaURL
+            return null
         }
         catch (error) {
             throw error
