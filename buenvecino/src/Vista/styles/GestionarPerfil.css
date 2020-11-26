@@ -1,0 +1,13 @@
+.GestionarPerfil .head{
+    background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
+    height: 10em;
+    display: flex;
+    flex-direction: column;
+}
+.head h2{
+    display: flex;
+    align-self: center;
+    color: white;
+    font-size: 50px;
+    font-family: Saira;
+}

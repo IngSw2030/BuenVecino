@@ -12,6 +12,7 @@ import GestionarPerfil from "./screens/GestionarPerfil";
 import MisFavoritos from "./screens/MisFavoritos";
 import Chat from "./screens/Chat";
 import HistorialPago from "./screens/HistorialPago";
+import ModificarInmueble from "./screens/ModificarInmueble";
 
 
 // import Header from './components/Header';
@@ -63,6 +64,9 @@ class App extends Component {
             </Route>
             <Route path="/gestionarInmueble" exact>
               <GestionarInmueble/>
+            </Route>
+            <Route path="/modificarInmueble" exact>
+              <ModificarInmueble/>
             </Route>
             
 						{/*Pagina para pruebas de cualquier cosa, en el archivo screens/PaginaTests.js*/}

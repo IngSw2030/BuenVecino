@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import ModificarPerfil from "../components/ModificarPerfil";
+import "../styles/GestionarPerfil.css"
+
 
 class GestionarPerfil extends Component {
   render() {
     return (
-      <div>
-        <Header/>
-        <Footer/>
-        
+      <div className="GestionarPerfil">
+        <div className="head">
+          <Header />
+        </div>
+        <ModificarPerfil />
+        <Footer />
+
       </div>
     );
   }

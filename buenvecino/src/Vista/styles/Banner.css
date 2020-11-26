@@ -1,7 +1,7 @@
 .banner {
 	display: flex;
 	flex-direction: column;
-	height: 100vh;
+	height: 85vh;
 	position: relative;
 	background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
 }

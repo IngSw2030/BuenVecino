@@ -8,6 +8,7 @@ import Modal from "@material-ui/core/Modal";
 import InmuebleGestion from '../components/InmuebleGestion'
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 
 class GestionarInmueble extends Component {
   constructor() {
@@ -37,12 +38,22 @@ class GestionarInmueble extends Component {
     return (
 
       <div className="GestionarInmueble">
-        <Header/>
-        <div className="inmuebles">
-          <InmuebleGestion/>
-          <InmuebleGestion/>
+        <div className="head">
+          <Header />
+          <h2>Gestiona Tus Inmuebles</h2>
         </div>
-        <Footer/>
+        <div className="btnAgregar">
+          <Link to="/registrarInmueble">
+          <Button variant="contained" className="agregar">
+            AGREGAR INMUEBLE
+          </Button>
+          </Link>
+        </div>
+        <div className="inmuebles">
+          <InmuebleGestion />
+          <InmuebleGestion />
+        </div>
+        <Footer />
       </div>
     );
   }

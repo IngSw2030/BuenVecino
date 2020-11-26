@@ -1,0 +1,20 @@
+.MisFavoritos .head{
+    background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
+    height: 12em;
+    display: flex;
+    flex-direction: column;
+}
+.head h2{
+    margin-top: 2%;
+    display: flex;
+    align-self: center;
+    color: white;
+    font-size: 50px;
+    font-family: Saira;
+}
+
+.MisFavoritos .contenido{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

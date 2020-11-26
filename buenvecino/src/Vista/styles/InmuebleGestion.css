@@ -44,6 +44,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: row;
   
     background: #24243c;
     border-radius: 50px 50px 0px 0px;

@@ -2,13 +2,19 @@ import React, { Component } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import RegistrarUsuario from '../components/RegistrarUsuario'
+import "../styles/RegistrarUsuarioS.css"
+
 
 class RegistrarUser extends Component {
   render() {
     return (
-      <div>
+      <div className="RegistrarUser">
+        <div className="head">
         <Header/>
-        <RegistrarUsuario/>
+        </div>
+        <div className="registro">
+        <RegistrarUsuario />
+        </div>
         <Footer/>
       </div>
     );

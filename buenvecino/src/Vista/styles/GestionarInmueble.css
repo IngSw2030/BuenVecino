@@ -1,7 +1,45 @@
+.GestionarInmueble .head{
+  background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
+  height: 12em;
+  display: flex;
+  flex-direction: column;
+}
+.head h2{
+  display: flex;
+  align-self: center;
+  color: white;
+  font-size: 50px;
+  font-family: Saira;
+}
 .inmuebles {
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+.btnAgregar{
+  margin: 2%;
+  display: flex;
+  justify-content: center;
+}
+
+.btnAgregar a{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.btnAgregar a:hover{
+  text-decoration: none;
+}
+
+.btnAgregar Button{
+  font-family: Saira;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 25px;
+  width: 50%;
+  color: #ffffff;
+  background-color: darkgoldenrod;
 }
 
 
