@@ -84,40 +84,6 @@ class Arrendador extends Usuario{
         return {idError: 1, mensaje: "El inmueble no existe"}
     }
 
-
-    async cargarFotosInmueble(idInmueble, archivos){
-        for(let i in this.state.listaInmuebles){
-            if ( this.state.listaInmuebles[i].state.idFirebase === idInmueble ){
-                let imagenesRechazadas = []
-                let consecutivo = 1
-                let urls = []
-                for( let i=0; i<archivos.length; i++ ){
-                    if ( !archivos[i].type.startsWith("image/") ){
-                        imagenesRechazadas.push( archivos[i].name )
-                    }
-                    else{
-                        let nombre = "FOTO" + consecutivo
-                        let url = await ManejadorSg.cargarImagenInmueble(idInmueble, nombre, archivos[i])
-                        urls.push( url )
-                        consecutivo++
-                    }
-                }
-                if ( imagenesRechazadas.length === archivos.length ){
-                    return {idError: 3, mensaje: "Los archivos fueron cargados", rechazados: imagenesRechazadas}
-                }
-                else if ( imagenesRechazadas.length !== 0 ){
-                    this.state.listaInmuebles[i].agregarUrlsFotos(urls)
-                    return {idError: -1, mensaje: "Algunos archivos fueron rechazados", rechazados: imagenesRechazadas}
-                }
-                else{
-                    this.state.listaInmuebles[i].agregarUrlsFotos(urls)
-                    return {idError: 0, mensaje: "Las imagenes fueron cargadas exitosamente"}
-                }  
-            }
-        }
-        return {idError: 2, mensaje: "El inmueble no existe"}
-    }
-
     async cargarInformacionAdicional(){
         await super.cargarInformacionAdicional()
         await this.cargarInformacionAdicionalInmuebles()
@@ -223,6 +189,39 @@ class Arrendador extends Usuario{
         catch (error) {
             throw error
         }        
+    }
+
+    async subirFotosInmueble(idInmueble, archivos){
+        for(let i in this.state.listaInmuebles){
+            if ( this.state.listaInmuebles[i].state.idFirebase === idInmueble ){
+                let imagenesRechazadas = []
+                let consecutivo = 1
+                let urls = []
+                for( let i=0; i<archivos.length; i++ ){
+                    if ( !archivos[i].type.startsWith("image/") ){
+                        imagenesRechazadas.push( archivos[i].name )
+                    }
+                    else{
+                        let nombre = "FOTO" + consecutivo
+                        let url = await ManejadorSg.subirFotoInmueble(idInmueble, nombre, archivos[i])
+                        urls.push( url )
+                        consecutivo++
+                    }
+                }
+                if ( imagenesRechazadas.length === archivos.length ){
+                    return {idError: 3, mensaje: "Los archivos fueron cargados", rechazados: imagenesRechazadas}
+                }
+                else if ( imagenesRechazadas.length !== 0 ){
+                    this.state.listaInmuebles[i].agregarUrlsFotos(urls)
+                    return {idError: -1, mensaje: "Algunos archivos fueron rechazados", rechazados: imagenesRechazadas}
+                }
+                else{
+                    this.state.listaInmuebles[i].agregarUrlsFotos(urls)
+                    return {idError: 0, mensaje: "Las imagenes fueron cargadas exitosamente"}
+                }  
+            }
+        }
+        return {idError: 2, mensaje: "El inmueble no existe"}
     }
 
     static validarEstructuraObjeto(infoArrendatario){

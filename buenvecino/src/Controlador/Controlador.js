@@ -40,10 +40,6 @@ class Controlador{
         return this.modelo.buscarTodosInmuebles()
     }
 
-    async cargarFotosInmueble(idInmueble, archivos){
-        return await this.modelo.cargarFotosInmueble(idInmueble, archivos)
-    }
-
     cancelarSolicitudReserva(idSolicitud){
         return this.modelo.cancelarSolicitudReserva(idSolicitud)
     }
@@ -161,6 +157,18 @@ class Controlador{
     async registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
         return await this.modelo.registrarUsuario(infoUsuario, esArrendatario, email, contrasena)
     }
+
+    
+    async subirFotosInmueble(idInmueble, archivos){
+        return await this.modelo.subirFotosInmueble(idInmueble, archivos)
+    }
+
+    async subirFotoPerfil(archivo){
+        return await this.modelo.subirFotoPerfil(archivo)
+    }
+
+
+    
 
     static getControlador(){
         if ( this.instanciaControlador == null ){

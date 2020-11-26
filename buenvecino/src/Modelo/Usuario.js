@@ -110,10 +110,11 @@ class Usuario extends Valorable{
     }
 
     async cargarFotoPerfil(){
-        this.state.fotoPerfil = await ManejadorSg.obtenerImagenPerfil(this.state.idFirebase)
+        this.state.fotoPerfil = await ManejadorSg.obtenerFotoPerfil(this.state.idFirebase)
     }
 
     async cargarInformacionAdicional(){
+        console.log("this.state : : V ", this.state)
         this.actualizarEstado = this.actualizarEstado.bind(this)  
         await this.cargarInformacionAdicionalChats()
         await this.cargarInformacionAdicionalSolicitudes()
@@ -347,6 +348,23 @@ class Usuario extends Valorable{
         ManejadorBD.actualizarInformacion(coleccionPropia, this.state.idFirebase, clausula)
         this.actualizarListaValoraciones(this.state.valoraciones)
         return {idError: 0, mensaje: "Valoración realizada correctamente"}
+    }
+
+    async subirFotoPerfil(archivo){
+        this.state.fotoPerfil = await ManejadorSg.subirFotoPerfil(this.state.idFirebase, archivo)
+    }
+
+    static obtenerObjetoBD(objUsuario){
+        let usuario = {...objUsuario.state}
+        delete usuario.listaSolicitudes
+        delete usuario.listaValoraciones
+        delete usuario.receptorChat
+        delete usuario.listaChats
+        delete usuario.receptorListaSolicitudes
+        delete usuario.receptorListaValoraciones
+        delete usuario.fotoPerfil
+        delete usuario.idFirebase
+        return usuario
     }
 
 }
