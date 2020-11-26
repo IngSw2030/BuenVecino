@@ -165,7 +165,6 @@ class SistemaBV{
     }
 
     async establecerUsuario(usuario, esArrendatario){
-        console.log("ESTABLECER USUARIO : ", usuario)
         if ( esArrendatario ){
             await usuario.cargarInformacionAdicional()
             this.state = {
@@ -195,12 +194,14 @@ class SistemaBV{
             idRespuesta = idRespuesta.uid
             let arrendador = await ManejadorBD.leerInformacionDocumento( "Arrendadores", idRespuesta )
             if ( arrendador !== null){
-                await this.establecerUsuario(arrendador, false)
+                let usuario = new Arrendador( arrendador )
+                await this.establecerUsuario(usuario, false)
                 return {idError: 0, mensaje: "inicio de sesión exitoso", usuario: this.state.arrendador.state, tipo: "Arrendador"}
             }
             else{
                 let arrendatario = await ManejadorBD.leerInformacionDocumento( "Arrendatarios", idRespuesta )
-                await this.establecerUsuario(arrendatario, true)
+                let usuario = new Arrendador( arrendatario )
+                await this.establecerUsuario(usuario, true)
                 return {idError: 0, mensaje: "inicio de sesión exitoso", usuario: this.state.arrendatario.state, tipo: "Arrendatario"}
             }
         }

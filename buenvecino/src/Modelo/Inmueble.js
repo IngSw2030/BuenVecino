@@ -164,7 +164,7 @@ class Inmueble extends Valorable{
     }
 
     async cargarInformacionAdicionalFotos(){
-        let urls = await ManejadorSg.obtenerImagenesInmueble(this.state.idFirebase)
+        let urls = await ManejadorSg.obtenerFotosInmueble(this.state.idFirebase)
         this.state.listaFotos = urls
     }
 

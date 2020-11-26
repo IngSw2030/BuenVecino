@@ -114,7 +114,6 @@ class Usuario extends Valorable{
     }
 
     async cargarInformacionAdicional(){
-        console.log("this.state : : V ", this.state)
         this.actualizarEstado = this.actualizarEstado.bind(this)  
         await this.cargarInformacionAdicionalChats()
         await this.cargarInformacionAdicionalSolicitudes()
