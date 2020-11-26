@@ -1,8 +1,12 @@
 .banner {
 	display: flex;
-	height: 110vh;
+	flex-direction: column;
+	height: 100vh;
 	position: relative;
 	background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
+}
+.info{
+	display: flex;
 }
 .container {
 	margin: 0;
@@ -49,7 +53,7 @@
 }
 .banner__info {
 	background-color: none;
-	padding-top: 17%;
+	padding-top: 5%;
 	padding-left: 12%;
 	padding-right: 50px;
 	padding-bottom: 40px;
@@ -63,7 +67,7 @@
 	border-radius: 42px;
 	flex-direction: column;
 	width: 52%;
-	height: 50%;
+	height: 80%;
 	align-self: center;
 	margin-right: 8%;
 	margin-top: 7%;

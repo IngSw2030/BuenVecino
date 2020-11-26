@@ -7,7 +7,7 @@ import Mapas from './screens/mapas'
 import InfoInmueble from './screens/infoInmueble'
 import GestionarInmueble from "./screens/GestionarInmueble";
 import RegistrarInmueble from "./screens/RegistrarInmueble";
-import RegistrarUsuario from "./components/RegistrarUsuario";
+import RegistrarUser from "./screens/RegistrarUsuario";
 import GestionarPerfil from "./screens/GestionarPerfil";
 import MisFavoritos from "./screens/MisFavoritos";
 import Chat from "./screens/Chat";
@@ -47,7 +47,7 @@ class App extends Component {
               <RegistrarInmueble/>
             </Route>
             <Route path="/registrarUsuario" exact>
-              <RegistrarUsuario/>
+              <RegistrarUser/>
             </Route>
             <Route path="/perfil" exact>
               <GestionarPerfil/>
@@ -61,6 +61,10 @@ class App extends Component {
             <Route path="/historialpagos" exact>
               <HistorialPago/>
             </Route>
+            <Route path="/gestionarInmueble" exact>
+              <GestionarInmueble/>
+            </Route>
+            
 						{/*Pagina para pruebas de cualquier cosa, en el archivo screens/PaginaTests.js*/}
 						<Route path="/test" exact>
 							<PaginaTests/>

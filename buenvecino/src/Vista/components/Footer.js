@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import "../styles/Footer.css";
+import Logo from '../assets/Logo.png'
 
 class Footer extends Component {
   render() {
     return (
       <div className="Footer">
         <div className="Contacto">
-          <img src={require("../assets/Logo.png")} alt="" />
+          <img src={Logo} alt="" />
           <h4>Contacto</h4>
           <h4>Anuncia tu propiedad</h4>
           <h4>Universidad Javeriana 2020</h4>

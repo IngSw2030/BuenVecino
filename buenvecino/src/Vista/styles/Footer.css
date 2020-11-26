@@ -27,23 +27,7 @@ h4 {
 	margin-top: 5%;
 }
 
-.Suscripcion {
-	margin-top: 3%;
-	text-align: right;
-}
 
-.Suscripcion input {
-	background-color: #24243c;
-	border: 1px solid white;
-	color: white;
-	box-sizing: border-box;
-	border-radius: 15px;
-	font-size: 18px;
-	padding-left: 5%;
-	padding-top: 5%;
-	padding-bottom: 5%;
-	margin-bottom: 5%;
-}
 
 .Suscripcion .fab {
 	font-size: 50px;

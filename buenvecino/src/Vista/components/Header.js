@@ -63,8 +63,10 @@ class Header extends Component {
 					<NavDropdown title={<Avatar/>} id="basic-nav-dropdown">
 						<NavDropdown.Item ><Link to="/perfil">Mi Perfil</Link></NavDropdown.Item>
 						<NavDropdown.Item ><Link to="/favoritos">Mis Favoritos</Link></NavDropdown.Item>
-						<NavDropdown.Item ><Link to="/chats">Mis Chats</Link></NavDropdown.Item>
+						<NavDropdown.Item ><Link to="/gestionarInmueble">Mis Inmuebles</Link></NavDropdown.Item>
+            <NavDropdown.Item ><Link to="/chats">Mis Chats</Link></NavDropdown.Item>
 						<NavDropdown.Item ><Link to="/historialpagos">Historial de Pagos</Link></NavDropdown.Item>
+            <NavDropdown.Item ><Link to="/historialpagos">Mis Notificaciones</Link></NavDropdown.Item>
 						<NavDropdown.Divider />
 						<NavDropdown.Item ><Link to="/">Cerrar Sesión</Link></NavDropdown.Item>
 					</NavDropdown>
