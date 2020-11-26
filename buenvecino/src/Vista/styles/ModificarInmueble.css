@@ -1,0 +1,6 @@
+.ModificarInmueble .head{
+    background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
+    height: 12em;
+    display: flex;
+    flex-direction: column;
+}

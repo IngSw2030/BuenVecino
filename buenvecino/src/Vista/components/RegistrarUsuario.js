@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { Button } from "@material-ui/core"
 import "../styles/RegistrarUsuario.css"
 import Controlador from "../../Controlador/Controlador"
+import login from "../assets/Login.png"
 
 class RegistrarUsuario extends Component {
 
@@ -19,7 +20,7 @@ class RegistrarUsuario extends Component {
         return (
             <div className="RegistrarUsuario">
                 <div className="ingresar">
-                    <img src={require("../assets/Login.png")} alt="" />
+                    <img src={login} alt="" />
                     <h2>REGISTRO</h2>
                 </div>
                 <div className="formulario">
@@ -64,10 +65,6 @@ class RegistrarUsuario extends Component {
                         </select>
                         <label for="myDate">Fecha de nacimiento</label>
                         <input type="date" name="myDate" id="myDate" required />
-<<<<<<< HEAD
-=======
-
->>>>>>> 1d83debefcdd481d29239d92b0143e66dc0bdcca
                         <label for="correo">Correo Electronico</label>
                         <input
                             type="email"

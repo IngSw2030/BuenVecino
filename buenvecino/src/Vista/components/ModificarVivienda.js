@@ -3,12 +3,12 @@ import { Button } from "@material-ui/core";
 import "../styles/RegistrarVivienda.css";
 import Mapa from './Mapa'
 
-class RegistrarVivienda extends Component {
+class ModificarVivienda extends Component {
     render() {
         return (
             <div className="RegistrarVivienda">
                 <div className="titulo" >
-                    <h2>REGISTRA TU VIVIENDA</h2>
+                    <h2>MODIFICA TU INMUEBLE</h2>
                     <p>Buenvecino te la la posibilidad de rentar tu espacio para Universitarios de una manera rápida y amigable.</p>
                 </div>
                 <div className="formulario">
@@ -179,7 +179,7 @@ class RegistrarVivienda extends Component {
                         
                         <div className="botones">
                             <Button> Cancelar </Button>
-                            <Button type="submit"> Registrar Vivienda </Button>
+                            <Button type="submit"> Registrate </Button>
                         </div>
                     </form>
                 </div>
@@ -188,4 +188,4 @@ class RegistrarVivienda extends Component {
     }
 }
 
-export default RegistrarVivienda;
+export default ModificarVivienda;
