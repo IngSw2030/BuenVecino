@@ -1,0 +1,66 @@
+.Mensaje{
+    display: flex;
+    height: 30em;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    
+}
+.Mensaje .mensa{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 3%;
+    display: flex;
+    flex-direction: column;
+    height: 90%;
+    width: 80%;
+    align-self: center;
+}
+
+.mensa .emisor{
+    white-space: nowrap;
+    overflow: hidden;
+    align-self: flex-end;
+    width: 50%;
+    white-space: initial;
+    word-wrap: break-word;
+    text-align: end;
+    background: orangered;
+    border-radius: 10px;
+    color: white;
+    padding: 1%;
+}
+.mensa .receptor{
+    white-space: nowrap;
+    overflow: hidden;
+    align-self: flex-start;
+    width: 20em;
+    white-space: initial;
+    word-wrap: break-word;
+    background: #24243c;
+    border-radius: 10px;
+    color: white;
+    padding: 1%;   
+}
+.Mensaje .Enviar{
+    margin: 2.5%;
+    display: flex;
+    align-self: center;
+    justify-content: space-around;
+    width: 80%;
+    
+}
+.Enviar input{
+    width: 80%;
+}
+.Enviar button{
+    font-family: Saira;
+    font-style: normal;
+    font-size: 18px;
+    color: #ffffff;
+    background: #fd275f;
+}
+.Enviar button:hover{
+    color:#fd275f;
+    border: 1px solid #fd275f;
+}

@@ -64,12 +64,12 @@ class Header extends Component {
 						<NavDropdown.Item ><Link to="/perfil">Mi Perfil</Link></NavDropdown.Item>
 						<NavDropdown.Item ><Link to="/favoritos">Mis Favoritos</Link></NavDropdown.Item>
 						<NavDropdown.Item ><Link to="/gestionarInmueble">Mis Inmuebles</Link></NavDropdown.Item>
-            <NavDropdown.Item ><Link to="/chats">Mis Chats</Link></NavDropdown.Item>
+            			<NavDropdown.Item ><Link to="/chats">Mis Chats</Link></NavDropdown.Item>
 						<NavDropdown.Item ><Link to="/historialpagos">Historial de Pagos</Link></NavDropdown.Item>
-            <NavDropdown.Item ><Link to="/">Mis Notificaciones</Link></NavDropdown.Item>
-						<NavDropdown.Item ><Link to="/">Historial Inmuebles</Link></NavDropdown.Item>
+            			<NavDropdown.Item ><Link to="/notificaciones">Mis Notificaciones</Link></NavDropdown.Item>
+						<NavDropdown.Item ><Link to="/historialInmueble">Historial de Inmuebles</Link></NavDropdown.Item>
 						
-            <NavDropdown.Divider />
+            			<NavDropdown.Divider />
 						<NavDropdown.Item ><Link to="/">Cerrar Sesión</Link></NavDropdown.Item>
 					</NavDropdown>
 
