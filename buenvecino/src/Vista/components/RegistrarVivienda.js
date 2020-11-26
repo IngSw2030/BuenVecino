@@ -2,8 +2,22 @@ import React, { Component } from "react";
 import { Button } from "@material-ui/core";
 import "../styles/RegistrarVivienda.css";
 import Mapa from './Mapa'
+import Controlador from "../../Controlador/Controlador";
 
 class RegistrarVivienda extends Component {
+    
+    constructor(props){
+        super()
+        this.state = {
+            controlador: Controlador.getControlador(),
+            tipoInmueble: "C"
+        }
+        this.refFormulario = React.createRef()
+        this.refTipoInmueble = React.createRef()
+
+        console.log(this.state)
+    }
+
     render() {
         return (
             <div className="RegistrarVivienda">
@@ -12,15 +26,19 @@ class RegistrarVivienda extends Component {
                     <p>Buenvecino te la la posibilidad de rentar tu espacio para Universitarios de una manera rápida y amigable.</p>
                 </div>
                 <div className="formulario">
-                    <form action="">
+                    <form onSubmit={ (e)=>{this.iniciarRegistro(e)} } ref={this.refFormulario} >
                         <div className="formu">
                             <div>
                                 <label for="TInmueble">Tipo de Inmueble</label>
-                                <select name="TInmueble" required>
+                                <select 
+                                    name="TInmueble" required
+                                    onChange = { (e)=>{ this.cambiarTipoInmueble(e) } }
+                                    ref = { this.refTipoInmueble }
+                                >
                                     <option selected value=""> Seleccione Tipo de Inmueble</option>
-                                    <option>Casa</option>
-                                    <option>Apartamento</option>
-                                    <option>Habitación</option>
+                                    <option value="C">Casa</option>
+                                    <option value="A">Apartamento</option>
+                                    <option value="H">Habitación</option>
                                 </select>
                             </div>
 
@@ -72,55 +90,62 @@ class RegistrarVivienda extends Component {
                                 </select>
                             </div>
 
-                            <div>
-                                <label for="nhabitaciones">Habitaciones</label>
-                                <select name="nhabitaciones" required>
-                                    <option selected value="">Seleccione el numero de habitaciones</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
-                                    <option>8</option>
-                                    <option>9</option>
-                                </select>
-                            </div>
+                            {
+                                this.state.tipoInmueble === "C" || this.state.tipoInmueble === "A" ?
+                                <div>
+                                    <div>
+                                        <label for="nhabitaciones">Habitaciones</label>
+                                        <select name="nhabitaciones" required>
+                                            <option selected value="">Seleccione el numero de habitaciones</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                                            <option>8</option>
+                                            <option>9</option>
+                                        </select>
+                                    </div>
 
-                            <div>
-                                <label for="compartido">¿El inmueble se encuentra compartido?</label>
-                                <select name="compartido" required>
-                                    <option selected value="">Seleccione una respuesta</option>
-                                    <option>Si</option>
-                                    <option>No</option>
-                                </select>
-                            </div>
+                                    <div>
+                                        <label for="compartido">¿El inmueble se encuentra compartido?</label>
+                                        <select name="compartido" required>
+                                            <option selected value="">Seleccione una respuesta</option>
+                                            <option>Si</option>
+                                            <option>No</option>
+                                        </select>
+                                    </div>
 
-                            <div>
-                                <label for="nPisos">Pisos</label>
-                                <select name="nPisos" required>
-                                    <option selected value="">Seleccione el numero de pisos</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
+                                    <div>
+                                        <label for="nPisos">Pisos</label>
+                                        <select name="nPisos" required>
+                                            <option selected value="">Seleccione el numero de pisos</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
 
-                            <div>
-                                <label for="nCocinas">Cocinas</label>
-                                <select name="nCocinas" required>
-                                    <option selected value="">Seleccione el numero de cocinas</option>
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
+                                    <div>
+                                        <label for="nCocinas">Cocinas</label>
+                                        <select name="nCocinas" required>
+                                            <option selected value="">Seleccione el numero de cocinas</option>
+                                            <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                :
+                                null
+                            }
 
                             <div>
                                 <label for="direccion">Direccion </label>
@@ -185,6 +210,69 @@ class RegistrarVivienda extends Component {
                 </div>
             </div>
         );
+    }
+
+    cambiarTipoInmueble(e){
+        this.setState( {tipoInmueble: this.refTipoInmueble.current.value })
+        
+    }
+
+    async iniciarRegistro(e){
+        e.preventDefault()
+        let miFormulario = this.refFormulario.current
+        let datos = new FormData( miFormulario )
+
+        let esAmoblado = datos.get("amoblado") === "Si"
+        let tipo = datos.get("TiInmueble")
+
+        let objetoUbicacion = {
+            direccion:      datos.get("direccion"),
+            barrio:         datos.get("barrio"),
+            localidad:      datos.get("localidad"),
+            latitud:        56.34444,
+            longitud:       4.111111
+        }
+
+        let objInmueble = {
+            tipo:           datos.get("TiInmueble"),
+            nombre:         datos.get("name"),
+            precio:         datos.get("precio"),
+            descripcion:    datos.get("descripcion"),
+            area:           datos.get("area"),
+            esAmoblado:     esAmoblado,
+            esCompartido:   datos.get("esCompartido"),
+            ubicacion:      objetoUbicacion
+        }
+
+        if ( tipo === "A" || tipo === "C" ){
+            objInmueble = {
+                ...objInmueble,
+                nHabitaciones:  datos.get("nhabitaciones"),
+                nPisos:         datos.get("nPisos"),
+                nBanos:         datos.get("nbanos"),
+                nCocinas:       datos.get("nCocinas"),
+            }
+        }
+
+        if ( this.state.inicio === undefined ){
+            let res = await this.state.controlador.iniciarSesionUsuario("prueba112@prueba.com","123456")
+            console.log("INICIO SESIÓN RES")
+            this.setState( {inicio: true} )
+        }
+        
+
+        let respuesta = await this.state.controlador.registrarInmueble( objInmueble )
+        console.log( respuesta )
+        if ( respuesta.idError == 0 ){
+            
+            console.log("CARFAR FOTOS")
+
+        }
+        else{
+            console.log("ERROR MISTAKEN :V")
+            console.log( objInmueble )
+            //MOSTRAR MENSAJE EXITO
+        }
     }
 }
 

@@ -65,10 +65,6 @@ class RegistrarUsuario extends Component {
                         </select>
                         <label for="myDate">Fecha de nacimiento</label>
                         <input type="date" name="myDate" id="myDate" required />
-<<<<<<< HEAD
-
-=======
->>>>>>> bca00fa138f2cee4e2dc05590f2b8aa55fb20d11
                         <label for="correo">Correo Electronico</label>
                         <input
                             type="email"

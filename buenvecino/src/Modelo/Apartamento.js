@@ -13,14 +13,19 @@ class Apartamento extends Inmueble{
                 "esCompartido": {
                     "type": "boolean"
                 },
-                /*"nPisos": {
+                "nPisos": {
                     "type": "integer",
                     "minimum": 1
-                },*/
+                },
+                "nCocinas": {
+                    "type": "integer"
+                },
             },
             "required": [
                 "nHabitaciones",
-                "esCompartido"
+                "esCompartido",
+                "nPisos",
+                "nCocinas"
             ],
             "title": "ESTRUCTURA_JSON"
     }
