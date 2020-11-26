@@ -1,0 +1,42 @@
+.Chat .head{
+    background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
+    height: 12em;
+    display: flex;
+    flex-direction: column;
+  }
+  .head h2{
+    display: flex;
+    align-self: center;
+    color: white;
+    font-size: 50px;
+    font-family: Saira;
+  }
+  .Chat .contenido{
+    display: flex;
+    width: 100%;
+    margin: 0%;
+    height: 30em;
+  }
+
+  .contenido .listaCon{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    padding: 3%;
+    border-right: 5px solid #292929;
+
+  }
+  .listaCon h2{
+    display: flex;
+    align-self: center;
+    margin-bottom: 10%;
+  }
+
+  .listaCon .contactos{
+    scroll-behavior: auto;
+    
+  }
+
+  .contenido .mensajes{
+    width: 80%;
+  }

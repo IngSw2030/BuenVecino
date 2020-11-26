@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import '../styles/HistorialPago.css'
+import '../styles/Notificaciones.css'
 
-class HistorialPago extends Component {
+class Notificaciones extends Component {
   render() {
     return (
-      <div className="HistorialPago"> 
+      <div className="Notificaciones"> 
        <div className="head">
         <Header/>
-        <h2>Historial de Pagos</h2>
+        <h2>Mis Notificaciones</h2>
         </div>
         <div className="contenido">
 
@@ -21,4 +21,4 @@ class HistorialPago extends Component {
   }
 }
 
-export default HistorialPago;
+export default Notificaciones;
