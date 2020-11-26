@@ -668,7 +668,7 @@ class PaginaTest extends Component{
       //console.log( url )
     }   
     let c = Controlador.getControlador()
-    let res = await c.cargarFotosInmueble("Inmueble1", fileList)
+    let res = await c.subirFotosInmueble("Inmueble1", fileList)
     console.log( res )
     this.state.setState( {archivos: [...this.state.archivos, ...fileList]} )
   }

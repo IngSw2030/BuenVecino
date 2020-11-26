@@ -5,10 +5,10 @@ class ManejadorSg{
     static PATH_FOTOS_INMUEBLE = "FotosInmuebles/" 
     static PATH_FOTOS_PERFIL = "FotosPerfil/"
 
-    static async cargarImagenInmueble(idInmueble, nombreArchivo, archivo){
+    static async subirFotoInmueble(idInmueble, nombreArchivo, archivo){
         try {       
             let referencia = sg.ref().child( this.PATH_FOTOS_INMUEBLE + idInmueble + "/" + nombreArchivo)
-            referencia.put( archivo )
+            await referencia.put( archivo )
             let url = await referencia.getDownloadURL()
             return url
         }
@@ -17,10 +17,10 @@ class ManejadorSg{
         }
     }
 
-    static async cargarImagenPerfil(idUsuario, nombreArchivo, archivo){
+    static async subirFotoPerfil(idUsuario, archivo){
         try {       
-            let referencia = sg.ref().child( this.PATH_FOTOS_PERFIL )
-            referencia.put( archivo )
+            let referencia = sg.ref().child( this.PATH_FOTOS_PERFIL + idUsuario )
+            await referencia.put( archivo )
             let url = await referencia.getDownloadURL()
             return url
         }
@@ -30,7 +30,7 @@ class ManejadorSg{
         
     }
 
-    static async obtenerImagenesInmueble(idInmueble){
+    static async obtenerFotosInmueble(idInmueble){
         try {
             let referencia = sg.ref().child( this.PATH_FOTOS_INMUEBLE + idInmueble )
             let referenciasURL = await referencia.listAll()
@@ -45,7 +45,7 @@ class ManejadorSg{
         }        
     }
 
-    static async obtenerImagenPerfil(idUsuario){
+    static async obtenerFotoPerfil(idUsuario){
         try {
             let referencia = sg.ref().child( this.PATH_FOTOS_PERFIL + idUsuario )
             let referenciasURL = await referencia.listAll()

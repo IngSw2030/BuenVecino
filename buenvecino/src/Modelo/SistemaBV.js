@@ -2,7 +2,7 @@ import Arrendador from './Arrendador'
 import Arrendatario from './Arrendatario'
 import Autenticador from './Firebase/Autenticador'
 import ManejadorBD from './Firebase/ManejadorBD'
-import ManejadorSg from './Firebase/ManjadorSg'
+import Usuario from './Usuario'
 import Inmueble from './Inmueble'
 import Utils from './Utils'
 
@@ -78,10 +78,6 @@ class SistemaBV{
         return this.obtenerUsuarioActivo().cancelarSolicitudReserva(idSolicitud)
     }
 
-    async cargarFotosInmueble(idInmueble, archivos){
-        this.obtenerUsuarioActivo().cargarFotosInmueble(idInmueble, archivos)  
-    }
-
     async cerrarSesion(){
         Autenticador.cerrarSesionUsuario()
     }
@@ -111,7 +107,6 @@ class SistemaBV{
 
     crearObjetoUsuario(infoUsuario, idFirebase, esArrendatario){
         infoUsuario = {...infoUsuario, idFirebase}
-        console.log(infoUsuario)
         if ( esArrendatario ){
             return new Arrendatario(infoUsuario)
         }
@@ -130,10 +125,7 @@ class SistemaBV{
     }
 
     async eliminarInmueble(idInmueble){
-        console.log(idInmueble, " PRO ELMINAR")
-        console.log( this.obtenerUsuarioActivo() )
-        console.log("\n\n")
-        return await this.state.arrendador.eliminarInmueble(idInmueble)
+        return await this.state.obtenerUsuarioActivo().eliminarInmueble(idInmueble)
     }
 
     eliminarFavorito(idFavorito){
@@ -173,8 +165,8 @@ class SistemaBV{
     }
 
     async establecerUsuario(usuario, esArrendatario){
+        console.log("ESTABLECER USUARIO : ", usuario)
         if ( esArrendatario ){
-            usuario = new Arrendatario(usuario)
             await usuario.cargarInformacionAdicional()
             this.state = {
                 ...this.state,
@@ -184,7 +176,6 @@ class SistemaBV{
             
         }
         else {
-            usuario = new Arrendador(usuario)
             await usuario.cargarInformacionAdicional()
             this.state = {
                 ...this.state,
@@ -288,18 +279,27 @@ class SistemaBV{
             if ( await this.buscarUsuariosPorDni(infoUsuario.dni, infoUsuario.tipoDni, SistemaBV.ARRENDATARIO) !== null ){
                 return {idError: 2, mensaje: "Ya existe un usuario registrado con ese numero de documento"}
             }
-            console.log("HERE :V")
             let idUsuario = await Autenticador.registrarUsuario(email, contrasena)
             idUsuario = idUsuario.uid
             let usuario = this.crearObjetoUsuario(infoUsuario, idUsuario, esArrendatario)
             let ruta = esArrendatario ? "Arrendatarios" : "Arrendadores"
-            await ManejadorBD.escribirInformacionIdManual(ruta, idUsuario, usuario.state)
-            this.establecerUsuario(usuario, esArrendatario)
+            let objUsuarioBD = Usuario.obtenerObjetoBD( usuario )
+            await ManejadorBD.escribirInformacionIdManual(ruta, idUsuario, objUsuarioBD)
+            await this.establecerUsuario(usuario, esArrendatario)
             return {idError: 0, mensaje: "Usuario registrado exitosamente"}
         }
         catch (error) {
             return error
         }        
+    }
+
+    
+    async subirFotosInmueble(idInmueble, archivos){
+        this.obtenerUsuarioActivo().subirFotosInmueble(idInmueble, archivos)  
+    }
+
+    async subirFotoPerfil(archivo){
+        this.obtenerUsuarioActivo().subirFotoPerfil(archivo)
     }
 
     validarEstructuraObjetoUsuario(infoUsuario, esArrendatario){

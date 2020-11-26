@@ -5,6 +5,7 @@ import Descripcion from "../components/Descripcion"
 import Prefooter from "../components/Prefooter"
 import Footer from "../components/Footer"
 import Header from "../components/Header";
+import Controlador from "../../Controlador/Controlador";
 
 class Landing extends Component {
   render() {
@@ -23,6 +24,7 @@ class Landing extends Component {
       </div>
     );
   }
+
 }
 
 export default Landing;
