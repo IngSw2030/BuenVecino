@@ -34,12 +34,8 @@ const AnyReactComponent = ({ text } ) => {
 const MarcadorReactComponent = ({ text } ) => {
   return (
     <div className="propio" >
-      
-        <i class="fas fa-map-marker-alt"></i> 
-      
+        <i className="fas fa-map-marker-alt"></i> 
     </div>
-    
- 
   )
 }
     
@@ -55,16 +51,16 @@ class Mapa extends Component {
   };*/
  
   _onClick = ({x, y, lat, lng, event}) => {
-    console.log(x, y, lat, lng, event)
-    let obj = {
-      lat:lat,
-      lng:lng,
-      text:"Tu Inmueble"
+    if ( this.props.retornarCoordenadas !== undefined ){
+      let obj = {
+        lat:lat,
+        lng:lng,
+        text:"Tu Inmueble"
+      }
+      this.setState({buscar:true})
+      this.setState({registro:obj})
+      this.props.retornarCoordenadas( obj )
     }
-    this.setState({buscar:true})
-    this.setState({registro:obj})
-    
-
   }
 
   render() {

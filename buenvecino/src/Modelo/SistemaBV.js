@@ -125,7 +125,7 @@ class SistemaBV{
     }
 
     async eliminarInmueble(idInmueble){
-        return await this.state.obtenerUsuarioActivo().eliminarInmueble(idInmueble)
+        return await this.obtenerUsuarioActivo().eliminarInmueble(idInmueble)
     }
 
     eliminarFavorito(idFavorito){
@@ -265,7 +265,7 @@ class SistemaBV{
     }
 
     async registrarInmueble(infoInmueble, fotos=null){
-        return await this.state.arrendador.registrarInmueble(infoInmueble, fotos)
+        return await this.obtenerUsuarioActivo().registrarInmueble(infoInmueble, fotos)
     }
 
     async registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
@@ -296,11 +296,11 @@ class SistemaBV{
 
     
     async subirFotosInmueble(idInmueble, archivos){
-        this.obtenerUsuarioActivo().subirFotosInmueble(idInmueble, archivos)  
+        return await this.obtenerUsuarioActivo().subirFotosInmueble(idInmueble, archivos)  
     }
 
     async subirFotoPerfil(archivo){
-        this.obtenerUsuarioActivo().subirFotoPerfil(archivo)
+        return await this.obtenerUsuarioActivo().subirFotoPerfil(archivo)
     }
 
     validarEstructuraObjetoUsuario(infoUsuario, esArrendatario){

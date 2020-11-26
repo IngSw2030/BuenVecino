@@ -10,12 +10,15 @@ class RegistrarVivienda extends Component {
         super()
         this.state = {
             controlador: Controlador.getControlador(),
-            tipoInmueble: "C"
+            tipoInmueble: "C",
+            fotosCargadas: [],
+            estadoFotos: [],
         }
         this.refFormulario = React.createRef()
         this.refTipoInmueble = React.createRef()
+        this.refFotos = React.createRef()
 
-        console.log(this.state)
+        this.establecerCoordenadas = this.establecerCoordenadas.bind(this)
     }
 
     render() {
@@ -59,7 +62,7 @@ class RegistrarVivienda extends Component {
 
                             <div>
                                 <label for="descripcion">Descripción</label>
-                                <textarea type="text" placeholder="Ingrese una descripción acerca del inmueble " name="descripción" required />
+                                <textarea type="text" placeholder="Ingrese una descripción acerca del inmueble " name="descripcion" required />
                             </div>
 
 
@@ -67,7 +70,6 @@ class RegistrarVivienda extends Component {
                                 <label for="nbanos">Baños</label>
                                 <select name="nbanos" required>
                                     <option selected value="">Seleccione el numero de baños</option>
-                                    <option>0</option>
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -78,7 +80,7 @@ class RegistrarVivienda extends Component {
 
                             <div>
                                 <label for="area">Area m2</label>
-                                <input type="number" placeholder="Ingrese area del Inmueble" name="area" required />
+                                <input type="number" placeholder="Ingrese area del Inmueble" name="area" required step="0.01"/>
                             </div>
 
                             <div>
@@ -196,13 +198,47 @@ class RegistrarVivienda extends Component {
 
                             <div>
                                 <label>Imagenes del Inmueble</label>
-                                <input type="file" name="file[]" multiple/>
+                                <input 
+                                    type="file"
+                                    name="fotos"
+                                    multiple
+                                    onChange = { (e)=>{this.actualizarFotos(e)} }
+                                />
                             </div>
 
+                            {
+                                this.state.fotosCargadas.map( (item, index) => {
+                                    if ( this.state.estadoFotos[index] ){
+                                        return <div style={{backgroundColor: "#008000"}} key={index}>
+                                                {item.name} : {item.type}
+                                                <button
+                                                    onClick={ (e)=>{ this.eliminarArchivo( index ) } }
+                                                >
+                                                    ELIMINAR
+                                                </button>
+                                            </div>
+                                    }
+                                    else{
+                                        return <div style={{backgroundColor: "#FFFF00"}} key={index}>
+                                                {item.name} : {item.type}   
+                                                <button
+                                                    onClick={ (e)=>{ this.eliminarArchivo( index ) } }
+                                                >
+                                                    ELIMINAR
+                                                </button>
+                                            </div>   
+                                    }
+                                })
+                            }
                         </div>
 
                         <div>
-                            <Mapa zoom={13} centrar = {{lat: 4.641055, lng: -74.086925}} infoInmuebles={[]} />
+                            <Mapa 
+                                zoom={13} 
+                                centrar = {{lat: 4.641055, lng: -74.086925}} 
+                                infoInmuebles={[]}
+                                retornarCoordenadas = {this.establecerCoordenadas}   
+                            />
                         </div>
                         <div className="botones">
                             <Button> Cancelar </Button>
@@ -214,10 +250,34 @@ class RegistrarVivienda extends Component {
         );
     }
 
+    establecerCoordenadas(coordenadas){
+        this.setState( {coordenadasSeleccionadas: coordenadas} )
+    }
+
+    eliminarArchivo(index){
+        let fotos = this.state.fotosCargadas
+        let estados = this.state.estadoFotos
+        fotos.splice(index, 1)
+        estados.splice(index, 1)
+        this.setState({
+            fotosCargadas: fotos,
+            estadoFotos: estados
+        })
+    }
+    
+    async actualizarFotos(e){
+        let archivos = e.target.files
+        await this.setState( {fotosCargadas: [...this.state.fotosCargadas, ...archivos]} )
+        let aceptadas = this.state.fotosCargadas.map( (item) =>{
+            return item.type.startsWith("image/")
+        } )
+        this.setState( {estadoFotos: aceptadas} )
+    }
+
     cambiarTipoInmueble(e){
         this.setState( {tipoInmueble: this.refTipoInmueble.current.value })
-        
     }
+
 
     async iniciarRegistro(e){
         e.preventDefault()
@@ -225,56 +285,75 @@ class RegistrarVivienda extends Component {
         let datos = new FormData( miFormulario )
 
         let esAmoblado = datos.get("amoblado") === "Si"
-        let tipo = datos.get("TiInmueble")
+        let esCompartido = datos.get("compartido") === "Si"
+        let tipo = datos.get("TInmueble")
+        
+        if ( this.state.fotosCargadas.length === 0 ){
+            this.mostrarError("Las fotos deben ser cargadas")
+            return
+        }
+        for( let i in this.state.fotosCargadas ){
+            if ( !this.state.estadoFotos[i] ){
+                this.mostrarError("Verifique archivos rechazados, no va a continuar :v")
+                return
+            }
+        }
+        if ( this.state.coordenadasSeleccionadas === undefined ){
+            this.mostrarError("Verifique que haya seleccionado en el mapa la ubicación, no va a continuar :v")
+            return
+        }
 
         let objetoUbicacion = {
             direccion:      datos.get("direccion"),
             barrio:         datos.get("barrio"),
             localidad:      datos.get("localidad"),
-            latitud:        56.34444,
-            longitud:       4.111111
+            latitud:        this.state.coordenadasSeleccionadas.lat,
+            longitud:       this.state.coordenadasSeleccionadas.lng
         }
 
         let objInmueble = {
-            tipo:           datos.get("TiInmueble"),
+            tipo:           datos.get("TInmueble"),
             nombre:         datos.get("name"),
-            precio:         datos.get("precio"),
+            precio:         parseInt( datos.get("precio") ),
             descripcion:    datos.get("descripcion"),
-            area:           datos.get("area"),
+            area:           parseFloat( datos.get("area") ),
             esAmoblado:     esAmoblado,
-            esCompartido:   datos.get("esCompartido"),
+            esCompartido:   esCompartido,
             ubicacion:      objetoUbicacion
         }
-
         if ( tipo === "A" || tipo === "C" ){
             objInmueble = {
                 ...objInmueble,
-                nHabitaciones:  datos.get("nhabitaciones"),
-                nPisos:         datos.get("nPisos"),
-                nBanos:         datos.get("nbanos"),
-                nCocinas:       datos.get("nCocinas"),
+                nHabitaciones:  parseInt( datos.get("nhabitaciones") ),
+                nPisos:         parseInt( datos.get("nPisos") ),
+                nBanos:         parseInt( datos.get("nbanos") ),
+                nCocinas:       parseInt( datos.get("nCocinas") ),
             }
         }
-
         if ( this.state.inicio === undefined ){
             let res = await this.state.controlador.iniciarSesionUsuario("prueba112@prueba.com","123456")
             console.log("INICIO SESIÓN RES")
+            console.log( this.state.controlador.obtenerUsuarioActivo(), " :V " )
             this.setState( {inicio: true} )
         }
-        
 
         let respuesta = await this.state.controlador.registrarInmueble( objInmueble )
         console.log( respuesta )
         if ( respuesta.idError == 0 ){
-            
-            console.log("CARFAR FOTOS")
-
+            if ( this.state.fotosCargadas.length > 0 ){
+                let respuestaFotos = await this.state.controlador.subirFotosInmueble(respuesta.idInmueble, this.state.fotosCargadas )
+                if ( respuestaFotos.idError > 0 ){
+                    this.mostrarError(respuestaFotos.mensaje)
+                }
+            }
         }
         else{
-            console.log("ERROR MISTAKEN :V")
-            console.log( objInmueble )
-            //MOSTRAR MENSAJE EXITO
+           this.mostrarError( respuesta.mensaje )
         }
+    }
+
+    mostrarError(e){
+        console.log( e )
     }
 }
 

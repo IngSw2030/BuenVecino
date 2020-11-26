@@ -24,10 +24,6 @@ class Inmueble extends Valorable{
             "descripcion": {
                 "type": "string"
             },
-            "nBanos": {
-                "type": "integer",
-                "minimum": 0
-            },
             "area": {
                 "type": "number",
                 "minimum": 0
@@ -46,7 +42,6 @@ class Inmueble extends Valorable{
             "area",
             "descripcion",
             "esAmoblado",
-            "nBanos",
             "nombre",
             "precio",
             "tipo",

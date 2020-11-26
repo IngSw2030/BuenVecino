@@ -5,6 +5,7 @@ import ManejadorBD from './Firebase/ManejadorBD';
 import Utils from './Utils';
 import Usuario from './Usuario'
 import ManejadorSg from './Firebase/ManjadorSg';
+import Inmueble from './Inmueble';
 
 class Arrendador extends Usuario{
 
@@ -173,6 +174,9 @@ class Arrendador extends Usuario{
 
     async registrarInmueble(infoInmueble, fotos){
         try {
+            infoInmueble.idPropietario = this.state.idFirebase
+            let tagsBusqueda = Inmueble.obtenerCadenaBusqueda( infoInmueble.ubicacion.barrio, infoInmueble.ubicacion.localidad )
+            infoInmueble.ubicacion = { ...infoInmueble.ubicacion, ...tagsBusqueda }
             let errores = Arrendador.validarEstructuraObjetoInmueble(infoInmueble)
             if ( errores.errors.length > 0 ){
                 return {idError: 3, mensaje: errores}
@@ -183,7 +187,7 @@ class Arrendador extends Usuario{
             let clausulaAgregar = Utils.clausulaAgregarElementoArrayFirebase(idInmueble)
             await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: clausulaAgregar})
             this.state.listaInmuebles.push(inmueble)
-            return {idError: 0, mensaje: "Inmueble registrado exitosamente"}
+            return {idError: 0, mensaje: "Inmueble registrado exitosamente", idInmueble: idInmueble}
             
         }
         catch (error) {
@@ -199,7 +203,7 @@ class Arrendador extends Usuario{
                 let urls = []
                 for( let i=0; i<archivos.length; i++ ){
                     if ( !archivos[i].type.startsWith("image/") ){
-                        imagenesRechazadas.push( archivos[i].name )
+                        imagenesRechazadas.push( archivos[i] )
                     }
                     else{
                         let nombre = "FOTO" + consecutivo
