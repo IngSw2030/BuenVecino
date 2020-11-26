@@ -16,6 +16,26 @@
 	letter-spacing: 0.05em;
 	color: #ffffff;
 }
+
+.banner__info a Button{
+	font-family: Saira;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 38px;
+
+	letter-spacing: 0.05em;
+
+	color: #ffffff;
+	background: #f2994a;
+	border-radius: 15px;
+	width: 280px;
+	height: 65px;
+	margin-top: 3%;
+}
+
+
+
 .subtitle_font {
 	width: 80%;
 	font-family: Saira;
@@ -34,22 +54,7 @@
 	padding-right: 50px;
 	padding-bottom: 40px;
 }
-.banner__info > button {
-	font-family: Saira;
-	font-style: normal;
-	font-weight: bold;
-	font-size: 20px;
-	line-height: 38px;
 
-	letter-spacing: 0.05em;
-
-	color: #ffffff;
-	background: #f2994a;
-	border-radius: 15px;
-	width: 280px;
-	height: 65px;
-	margin-top: 3%;
-}
 .banner__search {
 	display: flex;
 	justify-content: space-between;
@@ -109,8 +114,8 @@
 }
 
 .banner .registrate:hover{
-	color:white;
-	background:black ;
+	color:black;
+	background:white ;
 }
 
 .banner .buscar:hover{

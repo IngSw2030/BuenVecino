@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import Inmueble from '../components/Inmueble'
+import img from '../assets/Rectangle7.png'
 
 import "../styles/Localidad.css";
 
@@ -11,9 +12,9 @@ class Localidad extends Component {
             <p>Aquí encontrarás los lugares de Bogotá donde <br/>
                 más se hospendan nuestros clientes</p>
             <div className="InmueblesL">
-            <Inmueble imagen={require('../assets/Rectangle7.png')} nombre="Chia" descripcion="Afueras de Bogotá" precio={123456} />
-            <Inmueble imagen={require('../assets/Rectangle7.png')} nombre="Chapinero" descripcion="Centro de Bogota" precio={3621873}/>
-            <Inmueble imagen={require('../assets/Rectangle7.png')} nombre="Teusaquillo" descripcion="Recomendado" precio={587687}/>
+            <Inmueble imagen={img} nombre="Chia" descripcion="Afueras de Bogotá" precio={123456} />
+            <Inmueble imagen={img} nombre="Chapinero" descripcion="Centro de Bogota" precio={3621873}/>
+            <Inmueble imagen={img} nombre="Teusaquillo" descripcion="Recomendado" precio={587687}/>
             </div>
 
         </div>

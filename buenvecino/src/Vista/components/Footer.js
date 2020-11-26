@@ -13,8 +13,6 @@ class Footer extends Component {
           <p>Hecho con ♥ en Bogotá</p>
         </div>
         <div className="Suscripcion">
-          <h4>Suscribete</h4>
-          <input type="email" />
           <h4>Nuestras redes sociales</h4>
           <a href="https://www.facebook.com/" target="blank"><i className="fab fa-facebook-square"></i></a>
           <a href="https://github.com/IngSw2030/BuenVecino" target="blank"><i className="fab fa-github"></i></a>

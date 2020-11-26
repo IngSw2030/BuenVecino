@@ -14,7 +14,9 @@ class Banner extends Component {
           <h3 className="subtitle_font">
             Reserva o comparte residencias universitarias con nosotros.
           </h3>
-          <Button variant="outlined" className="registrate">Regístrate</Button>
+          <Link to="/registrarUsuario">
+            <Button variant="outlined" className="registrate">Regístrate</Button>
+          </Link>
         </div>
         <div className="banner__search">
           <form>
