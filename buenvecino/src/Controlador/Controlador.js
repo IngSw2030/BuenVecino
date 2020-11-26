@@ -24,6 +24,10 @@ class Controlador{
         return this.modelo.agregarServiciosInmueble(idInmueble, idServicios)
     }
 
+    buscarFavorito(idInmueble){
+        return this.modelo.buscarFavorito(idInmueble)
+    }
+
     async buscarInmueblesIniciales(cantInmuebles = 3){
         return await this.modelo.buscarInmueblesIniciales(cantInmuebles)
     }    
@@ -57,8 +61,6 @@ class Controlador{
     }
 
     async crearSolicitudReserva(infoReserva){
-        infoReserva.fechaInicio = infoReserva.fechaInicio.getTime()
-        infoReserva.fechaFin = infoReserva.fechaFin.getTime()
         return await this.modelo.crearSolicitudReserva(infoReserva);
     }
 
@@ -124,6 +126,10 @@ class Controlador{
 
     obtenerSolicitudesCargadas(){
         return this.modelo.obtenerSolicitudesCargadas()
+    }
+
+    obtenerTipoUsuarioActivo(){
+        return this.modelo.obtenerTipoUsuarioActivo()
     }
 
     obtenerUsuarioActivo(){

@@ -8,46 +8,54 @@ import Logo from "../assets/Logo.png"
 
 
 class Reservar extends Component {
-  constructor() {
-    super()
-    this.state = {
-      open: false,
+    constructor() {
+        super()
+        this.state = {
+            open: false,
+        }
+        this.notificarInicioSesion = this.notificarInicioSesion.bind(this)
+        this.handleClose = this.handleClose.bind( this )
     }
-  }
 
-  setOpen = (valor) => {
-    console.log(valor)
-    console.log(this.state.open)
-    this.setState({ open: valor })
-    console.log(this.state.open)
-  }
-  handleOpen = () => {
-    this.setOpen(true);
-  };
+    setOpen = (valor) => {
+        console.log(valor)
+        console.log(this.state.open)
+        this.setState({ open: valor })
+        console.log(this.state.open)
+    }
+    handleOpen = () => {
+        this.setOpen(true);
+    };
 
-  handleClose = () => {
-    this.setOpen(false);
-  };
+    handleClose = () => {
+        this.setOpen(false);
+        this.notificarInicioSesion()
+    };
 
 
 
-  render() {
-    return (
-      <div className="Reservar">
-        <Button variant="outlined" onClick={this.handleOpen}>Reservar Ahora</Button>
-        <h3>$40.054x15 / NOCHES</h3>
-        <h3>Total $855.000</h3>
+    render() {
+        return (
+            <div className="Reservar">
+                <Button variant="outlined" onClick={this.handleOpen}>Reservar Ahora</Button>
+                <h3>$40.054x15 / NOCHES</h3>
+                <h3>Total $855.000</h3>
 
-        <Modal
-          open={this.state.open}
-          onClose={this.handleClose}
-          className="mdl"
-        >
-          <Login />
-        </Modal>
-      </div>
-    );
-  }
+                <Modal
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    className="mdl"
+                >
+                    <Login cerrar={this.handleClose} />
+                </Modal>
+            </div>
+        );
+    }
+
+    notificarInicioSesion(){
+        console.log("INICIO SESION PARA RESERVAR")
+        return 2
+    }
 }
 
 export default Reservar;

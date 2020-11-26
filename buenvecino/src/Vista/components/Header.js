@@ -16,6 +16,7 @@ class Header extends Component {
 		this.state = {
 			open: false,
 		}
+		this.handleClose = this.handleClose.bind( this )
 	}
 
 	setOpen = (valor) => {
@@ -30,6 +31,7 @@ class Header extends Component {
 
 	handleClose = () => {
 		this.setOpen(false);
+		this.notificarInicioSesion()
 	};
 
 	render() {
@@ -50,10 +52,11 @@ class Header extends Component {
 							<Modal
 								open={this.state.open}
 								onClose={this.handleClose}
+
 								className="mdl"
 							>
 
-								<Login />
+								<Login cerrar={this.handleClose}/>
 
 
 							</Modal>
@@ -76,6 +79,11 @@ class Header extends Component {
 				</div>
 			</div>
 		);
+	}
+
+	notificarInicioSesion(){
+		console.log( "Inicio para header" )
+		return 0
 	}
 }
 

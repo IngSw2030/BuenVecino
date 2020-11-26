@@ -82,6 +82,15 @@ class Arrendatario extends Usuario{
         }
     }
 
+    buscarFavorito(idInmueble){
+        for(let i in this.state.listaFavoritos){
+            if ( this.state.listaFavoritos[i].estaAsociadoMismoInmueble(idInmueble) ){
+                return this.state.listaFavoritos[i]
+            }
+        }
+        return null
+    }
+
     //Cancela las otras solicitudes que el usuario tenía abiertas para la misma fecha
     cancelarOtrasSolicitudes(infoSolicitud){
         let idSolicitudAceptada = infoSolicitud.idFirebase

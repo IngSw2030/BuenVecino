@@ -31,6 +31,15 @@ class SistemaBV{
         return this.obtenerUsuarioActivo().agregarServiciosInmueble(idInmueble, idServicios)
     }
 
+    buscarFavorito(idInmueble){
+        if ( this.obtenerTipoUsuarioActivo() === "Arrendatario" ){
+            return this.arrendatario.buscarFavorito(idInmueble)
+        }
+        else{
+            return null
+        }
+    }
+
     //Que coincida con el barrio o con la localidad
     async buscarInmueblesIniciales(cantInmuebles = 3){
         return await ManejadorBD.leerInformacionColeccion("Inmuebles", cantInmuebles)
@@ -206,7 +215,7 @@ class SistemaBV{
             }
         }
         catch (error) {
-            throw error
+            return {idError: 0, mensaje: Autenticador.obtenerMensajeError( error )}
         }
     }
 
@@ -238,6 +247,18 @@ class SistemaBV{
 
     obtenerSolicitudesCargadas(){
         return this.obtenerUsuarioActivo().obtenerSolicitudesCargadas()
+    }
+
+    obtenerTipoUsuarioActivo(){
+        if ( this.obtenerUsuarioActivo() === null){
+            return null
+        }
+        else if ( this.obtenerUsuarioActivo().obtenerTipoUsuario() === "AO" ){
+            return "Arrendatario"
+        }
+        else{
+            return "Arrendador"
+        }
     }
 
     obtenerUsuarioActivo(){
