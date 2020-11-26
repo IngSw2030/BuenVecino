@@ -64,11 +64,15 @@
 	flex-direction: column;
 	width: 52%;
 	height: 50%;
-	align-items: fl;
 	align-self: center;
 	margin-right: 8%;
 	margin-top: 7%;
 }
+
+.banner__search form{
+	
+}
+
 .banner__search > form > input {
 	background: #ffffff;
 
@@ -84,6 +88,18 @@
 	margin-top: 0px;
 	margin-bottom: 5%;
 }
+.banner__search  form  select {
+	height: 30%;
+	font-size: 18px;
+	font-family: Saira;
+	font-style: normal;
+	font-weight: 300;
+	margin-top: 5%;
+	margin-bottom: 5%;
+	
+
+}
+
 .banner__search  form  button {
 	background: #fd275f;
 	border-radius: 15px;
@@ -111,6 +127,8 @@
 	padding-top: 7%;
 	padding-left: 10%;
 	padding-right: 10%;
+	display: flex;
+	justify-content: space-between;
 }
 
 .banner .registrate:hover{

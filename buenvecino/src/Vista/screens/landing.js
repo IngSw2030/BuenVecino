@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Header from "../components/Header";
+import HeaderLanding from "../components/HeaderLanding";
 import Banner from "../components/Banner";
 import Localidad from "../components/Localidad"
 import Descripcion from "../components/Descripcion"
@@ -11,7 +11,7 @@ class Landing extends Component {
   render() {
     return (
       <div>
-        <Header />
+        <HeaderLanding />
         <Banner />
         <Localidad/>
         <Descripcion/>

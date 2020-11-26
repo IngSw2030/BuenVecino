@@ -1,15 +1,13 @@
-import React, { Component } from "react";
-import '../styles/HeaderG.css';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { Avatar } from '@material-ui/core';
-import '../styles/HeaderG.css';
+import '../styles/Header.css';
 import Modal from '@material-ui/core/Modal'
 import Login from "./Login"
 import Logo from "../assets/Logo.png"
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
-
-class Header extends Component {
+class HeaderLanding extends Component {
 
 	constructor() {
 		super()
@@ -34,13 +32,10 @@ class Header extends Component {
 
 	render() {
 		return (
-			<div className="headerG">
-        <div className="imgH">
-        <Link to="/">  
+			<div className="header">
 				<img src={Logo} alt="Logo de la pagina" className="header__icon" />
-        </Link>
-        </div>
-				<div className="log">
+
+				<div className="header__right">
 					<nav>
 						<ul className="nav-items">
 							{/* <li onClick={this.handleOpen}>Ingresar</li> */}
@@ -75,4 +70,4 @@ class Header extends Component {
 	}
 }
 
-export default Header;
+export default HeaderLanding;

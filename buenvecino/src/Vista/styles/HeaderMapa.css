@@ -10,6 +10,18 @@
     width: 30%;
 }
 
+.headerMapa .localidad{
+    display: flex;
+    width: 30%;
+    justify-content: space-around;
+}
+
+.localidad label{
+    font-family: Saira;
+    font-size: 20px;
+    
+}
+
 .headerMapa .barraBuscar{
     background: #F8F8F8;
     margin: 3%;

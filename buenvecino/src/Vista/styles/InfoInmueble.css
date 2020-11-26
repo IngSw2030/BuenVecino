@@ -11,3 +11,6 @@
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
 }
+.InfoInmueble .headerMapa{
+  height: 12em;
+}
