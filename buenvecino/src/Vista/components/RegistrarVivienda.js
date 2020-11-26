@@ -201,7 +201,9 @@ class RegistrarVivienda extends Component {
 
                         </div>
 
-                        
+                        <div>
+                            <Mapa zoom={13} centrar = {{lat: 4.641055, lng: -74.086925}} infoInmuebles={[]} />
+                        </div>
                         <div className="botones">
                             <Button> Cancelar </Button>
                             <Button type="submit"> Registrar Vivienda </Button>

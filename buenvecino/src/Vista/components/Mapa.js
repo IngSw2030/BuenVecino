@@ -30,6 +30,18 @@ const AnyReactComponent = ({ text } ) => {
  
   )
 }
+
+const MarcadorReactComponent = ({ text } ) => {
+  return (
+    <div className="propio" >
+      
+        <i class="fas fa-map-marker-alt"></i> 
+      
+    </div>
+    
+ 
+  )
+}
     
     
 class Mapa extends Component {
@@ -42,6 +54,19 @@ class Mapa extends Component {
     zoom: 12
   };*/
  
+  _onClick = ({x, y, lat, lng, event}) => {
+    console.log(x, y, lat, lng, event)
+    let obj = {
+      lat:lat,
+      lng:lng,
+      text:"Tu Inmueble"
+    }
+    this.setState({buscar:true})
+    this.setState({registro:obj})
+    
+
+  }
+
   render() {
     return (
       // Important! Always set the container height explicitly
@@ -50,6 +75,7 @@ class Mapa extends Component {
           bootstrapURLKeys={{ key: 'AIzaSyDhsvsEHAbP4WIea6w7U4uXtnDQ9TmFooI' }}
           center={this.props.centrar}
           zoom={this.props.zoom}
+          onClick={this._onClick}
         >
         {
           this.props.infoInmuebles.map( (obj, index) =>{
@@ -61,7 +87,25 @@ class Mapa extends Component {
        
             
           } )
-        }          
+        }
+        {
+            this.state.buscar === true ?
+
+              
+              <MarcadorReactComponent
+                lat={this.state.registro.lat}
+                lng={this.state.registro.lng}
+                text={this.state.registro.text}
+                className="propio"
+              />
+            :
+            null
+            
+       
+            
+          
+        }
+
         </GoogleMapReact>
       </div>
     );
@@ -69,6 +113,15 @@ class Mapa extends Component {
 
   constructor(props){
     super()
+    this.state = {
+			registro: {
+        lat:null,
+        lng:null,
+        text:""
+      },
+      buscar:false,
+    }
+    
   }
 
   
