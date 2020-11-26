@@ -36,7 +36,7 @@ class Mapas extends Component {
 
   async actualizarBusquedaInmuebles(busqueda, coordenadasMapa, busquedaExitosa){
     let controlador = Controlador.getControlador()
-    let resBusqueda = await controlador.buscarInmueblePorBarrioLocalidad(busqueda)
+    let resBusqueda = await controlador.buscarInmueblesPorBarrioLocalidad(busqueda)
     let zoom = 15
     if( busqueda.trim() === "" ){
       resBusqueda = await controlador.buscarInmueblesIniciales(11)

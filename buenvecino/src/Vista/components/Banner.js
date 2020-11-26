@@ -20,10 +20,34 @@ class Banner extends Component {
         </div>
         <div className="banner__search">
           <form>
+          <p>¿En qué barrio quieres hospedarte?</p>
+            
+            <input type="text" />
             <p>¿En qué localidad quieres hospedarte?</p>
-            <input type="text" />
-            <p>Duración en meses en la que planeas hospedarte</p>
-            <input type="text" />
+            
+            <select name="localidad" required>
+              <option selected value="">Seleccione la localidad</option>
+              <option>Antonio Nariño</option>
+              <option>Barrios Unidos</option>
+              <option>Bosa</option>
+              <option>Chapinero</option>
+              <option>Ciudad Bolívar</option>
+              <option>Engativá</option>
+              <option>Fontibón</option>
+              <option>Kennedy</option>
+              <option>La Candelaria</option>
+              <option>Los Mártires</option>
+              <option>Puente Aranda</option>
+              <option>Rafael Uribe Uribe</option>
+              <option>San Cristobal</option>
+              <option>Santa Fe</option>
+              <option>Suba</option>
+              <option>Sumapaz</option>
+              <option>Teusaquillo</option>
+              <option>Tunjuelito</option>
+              <option>Usaquén</option>
+              <option>Usme</option>
+            </select>
             <Link to="/busqueda">
               <Button variant="outlined" className="buscar">Buscar</Button>
             </Link>

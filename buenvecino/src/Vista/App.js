@@ -35,7 +35,7 @@ class App extends Component {
               {/* footer */}
             </Route>
             <Route path="/busqueda" exact>
-              <Mapas/>RegistrarUsuario
+              <Mapas/>
             </Route>
             <Route path="/inmueble" exact>
               <InfoInmueble/>

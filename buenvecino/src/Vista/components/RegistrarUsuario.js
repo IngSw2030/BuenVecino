@@ -53,7 +53,7 @@ class RegistrarUsuario extends Component {
                             <option>No indica</option>
                         </select>
                         <label for="myDate">Fecha de nacimiento</label>
-                        <input type="date" name="myDate" step="7" id="myDate" required />
+                        <input type="date" name="myDate" id="myDate" required />
 
                         <label for="correo">Correo Electronico</label>
                         <input

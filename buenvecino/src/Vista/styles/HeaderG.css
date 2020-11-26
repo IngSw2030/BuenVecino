@@ -1,0 +1,24 @@
+.headerG{
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+}
+ 
+.headerG img{
+    width: 50%;
+}
+.log{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 50%;
+}
+
+.log nav{
+    margin: 0%;
+    padding: 0%;
+}
+.log ul{
+    margin: 0%;
+    padding: 0%;
+}
