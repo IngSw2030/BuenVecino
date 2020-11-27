@@ -19,12 +19,23 @@ class Header extends Component {
 			controlador: Controlador.getControlador(),
 			usuarioActivo: null,
 			foto: "https://image.freepik.com/vector-gratis/perfil-avatar-hombre-icono-redondo_24640-14046.jpg"
-
 		}
 		this.handleClose = this.handleClose.bind( this )
 
-		console.log( Controlador.getControlador(), " ))) " )
-		
+		console.log( Controlador.getControlador(), " ME ESTA LLEGANDO " )
+		console.log( Controlador.getControlador().obtenerUsuarioActivo(), " USUARIO ; " )
+		this.iniciarSesionSiExiste()
+	}
+
+	iniciarSesionSiExiste(){
+		let usuario = Controlador.getControlador().obtenerUsuarioActivo()
+		if ( usuario !== null ){
+			this.setState( {
+				usuario: usuario,
+				foto: usuario.fotoPerfil
+
+			} )
+		}
 	}
 
 	setOpen = (valor) => {

@@ -257,7 +257,6 @@ class SistemaBV{
     }
 
     obtenerChatsCargados(){
-        console.log( this.state, " STATE :V " )
         if ( this.obtenerUsuarioActivo() !== null ){
             return this.obtenerUsuarioActivo().obtenerChatsCargados()
         }
