@@ -36,7 +36,13 @@ class Inmueble extends Valorable{
             },
             "ubicacion" : {
                 "type": "object"
-            }
+            },
+            "nBanos": {
+                "type": "integer"
+            },
+            "esCompartido": {
+                "type": "boolean"
+            },
         },
         "required": [
             "area",
@@ -46,7 +52,9 @@ class Inmueble extends Valorable{
             "precio",
             "tipo",
             "idPropietario",
-            "ubicacion"
+            "ubicacion",
+            "nBanos",
+            "esCompartido"
         ],
         "title": "ESTRUCTURA_JSON"
     }
@@ -75,7 +83,7 @@ class Inmueble extends Valorable{
                 },
                 "tagLocalidad": {
                     "type": "string"
-                }
+                },
             },
             "required": [
                 "barrio",
@@ -84,7 +92,7 @@ class Inmueble extends Valorable{
                 "localidad",
                 "longitud",
                 "tagBarrio",
-                "tagLocalidad"
+                "tagLocalidad",
             ],
             "title": "ESTRUCTURA_JSON_UBICACION"
     }

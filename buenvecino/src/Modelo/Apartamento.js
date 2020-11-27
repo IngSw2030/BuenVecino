@@ -42,7 +42,6 @@ class Apartamento extends Inmueble{
         var Validator = require('jsonschema').Validator;
         var v = new Validator();
         return v.validate(infoInmueble, this.ESTRUCTURA_JSON)
-        
     }
 }
 

@@ -13,6 +13,8 @@ class RegistrarVivienda extends Component {
             tipoInmueble: "C",
             fotosCargadas: [],
             estadoFotos: [],
+
+            mensajeError: ""
         }
         this.refFormulario = React.createRef()
         this.refTipoInmueble = React.createRef()
@@ -92,6 +94,14 @@ class RegistrarVivienda extends Component {
                                 </select>
                             </div>
 
+                            <div>
+                                <label for="compartido">¿El inmueble se encuentra compartido?</label>
+                                <select name="compartido" required>
+                                    <option selected value="">Seleccione una respuesta</option>
+                                    <option>Si</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
                             {
                                 this.state.tipoInmueble === "C" || this.state.tipoInmueble === "A" ?
                                 <div>
@@ -110,16 +120,6 @@ class RegistrarVivienda extends Component {
                                             <option>9</option>
                                         </select>
                                     </div>
-
-                                    <div>
-                                        <label for="compartido">¿El inmueble se encuentra compartido?</label>
-                                        <select name="compartido" required>
-                                            <option selected value="">Seleccione una respuesta</option>
-                                            <option>Si</option>
-                                            <option>No</option>
-                                        </select>
-                                    </div>
-
                                     <div>
                                         <label for="nPisos">Pisos</label>
                                         <select name="nPisos" required>
@@ -146,7 +146,18 @@ class RegistrarVivienda extends Component {
                                     </div>
                                 </div>
                                 :
-                                null
+                                <div>
+                                    <div>
+                                        <label for="nCamas">Camas</label>
+                                        <select name="nCamas" required>
+                                            <option selected value="">Seleccione el numero de camas</option>
+                                            <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </div>
+                                </div>
                             }
 
                             <div>
@@ -244,6 +255,16 @@ class RegistrarVivienda extends Component {
                             <Button> Cancelar </Button>
                             <Button type="submit"> Registrar Vivienda </Button>
                         </div>
+
+                        <div>
+                            {
+                                <div style={{backgroundColor: "#FF0000"}}>
+                                    {
+                                        this.state.mensajeError
+                                    }
+                                </div>
+                            }
+                        </div>
                     </form>
                 </div>
             </div>
@@ -281,6 +302,13 @@ class RegistrarVivienda extends Component {
 
     async iniciarRegistro(e){
         e.preventDefault()
+
+        if ( this.state.controlador.obtenerTipoUsuarioActivo() !== "Arrendatario" ){
+            this.mostrarError("NO ESTA LOGUEADO UN ARRENDADOR")
+            return
+        }
+
+
         let miFormulario = this.refFormulario.current
         let datos = new FormData( miFormulario )
 
@@ -319,26 +347,25 @@ class RegistrarVivienda extends Component {
             area:           parseFloat( datos.get("area") ),
             esAmoblado:     esAmoblado,
             esCompartido:   esCompartido,
-            ubicacion:      objetoUbicacion
+            ubicacion:      objetoUbicacion,
+            nBanos:         parseInt( datos.get("nbanos") ),
         }
         if ( tipo === "A" || tipo === "C" ){
             objInmueble = {
                 ...objInmueble,
                 nHabitaciones:  parseInt( datos.get("nhabitaciones") ),
                 nPisos:         parseInt( datos.get("nPisos") ),
-                nBanos:         parseInt( datos.get("nbanos") ),
                 nCocinas:       parseInt( datos.get("nCocinas") ),
             }
         }
-        if ( this.state.inicio === undefined ){
-            let res = await this.state.controlador.iniciarSesionUsuario("prueba112@prueba.com","123456")
-            console.log("INICIO SESIÓN RES")
-            console.log( this.state.controlador.obtenerUsuarioActivo(), " :V " )
-            this.setState( {inicio: true} )
+        else{
+            objInmueble = {
+                ...objInmueble,
+                nCamas:         parseInt( datos.get("nCamas") )
+            }
         }
 
         let respuesta = await this.state.controlador.registrarInmueble( objInmueble )
-        console.log( respuesta )
         if ( respuesta.idError == 0 ){
             if ( this.state.fotosCargadas.length > 0 ){
                 let respuestaFotos = await this.state.controlador.subirFotosInmueble(respuesta.idInmueble, this.state.fotosCargadas )
@@ -346,8 +373,11 @@ class RegistrarVivienda extends Component {
                     this.mostrarError(respuestaFotos.mensaje)
                 }
             }
+            this.setState( {mensajeError: ""} )
         }
         else{
+            this.setState( {mensajeError: "MIRE LA CONSOLA QUE HUBO UN ERROR"} )
+
            this.mostrarError( respuesta.mensaje )
         }
     }

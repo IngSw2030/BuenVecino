@@ -219,8 +219,10 @@ class PaginaTest extends Component{
           </button>
 
           <button onClick={async (e)=>{
-            let atributo = {valoraciones: []}
-            this.agregarAtributo("Inmuebles2", atributo)
+            //let atributo = {valoraciones: []}
+            let atributo = {nBaños: firebase.firestore.FieldValue.delete()}
+            this.agregarAtributo("Inmuebles", atributo)
+            
             //this.agregarAtributo("Arrendadores", atributo)
             //this.agregarAtributo("Arrendatarios", atributo)
           }}>
@@ -313,7 +315,12 @@ class PaginaTest extends Component{
   async agregarAtributo(tabla, atributo){
     let res = await ManejadorBD.leerInformacionColeccion(tabla)
     for(let i in res){
+      let res1 = res.nBaños
+      
       ManejadorBD.actualizarInformacion(tabla, res[i].idFirebase, atributo)
+      if ( res!==undefined ){
+        ManejadorBD.actualizarInformacion(tabla, res[i].idFirebase, {nBanos: res1})
+      }
     }    
   }
 
