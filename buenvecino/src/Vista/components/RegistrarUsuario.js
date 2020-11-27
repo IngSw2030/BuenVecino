@@ -91,7 +91,8 @@ class RegistrarUsuario extends Component {
                         <input type="number" placeholder="Ingrese su telefono" name="tel" required></input>
                         {
                             this.state.tipoUsuario === "Arrendador" ?
-                            <div>
+                            <div className="visual">
+                                <div>
                                 <label for="direccion">Direccion</label>
                                 <input
                                     type="text"
@@ -99,7 +100,8 @@ class RegistrarUsuario extends Component {
                                     name="direccion"
                                     required
                                 />
-        
+                                </div>
+                                <div>
                                 <label for="ciudad">Ciudad</label>
                                 <input
                                     type="text"
@@ -107,13 +109,14 @@ class RegistrarUsuario extends Component {
                                     name="ciudad"
                                     required
                                 />
+                                </div>
                             </div>
                             :
                             null
                         }
                         <div className="botones">
-                            <Button> Cancelar </Button>
-                            <Button type="submit" > Registrate </Button>
+                            <Button className="Cancelar"> Cancelar </Button>
+                            <Button type="submit" className="Registrarse" > Registrate </Button>
                         </div>
                     </form>
                 </div>

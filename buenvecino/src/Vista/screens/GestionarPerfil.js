@@ -12,7 +12,9 @@ class GestionarPerfil extends Component {
         <div className="head">
           <Header />
         </div>
+        <div className="perfil">
         <ModificarPerfil />
+        </div>
         <Footer />
 
       </div>
