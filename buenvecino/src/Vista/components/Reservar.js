@@ -46,7 +46,8 @@ class Reservar extends Component {
                     onClose={this.handleClose}
                     className="mdl"
                 >
-                    <Login cerrar={this.handleClose} />
+                    {/* <Login cerrar={this.handleClose} /> */}
+                    
                 </Modal>
             </div>
         );

@@ -75,12 +75,36 @@
   width: 100%;
 }
 
+
 .Login Button:hover{
   background: #24243c;
 }
 
-.Login a{
+.Login .botones a:hover{
+  background: #24243c;
+}
+
+.Login .botones a button:hover{
+  background: #24243c;
+  color: white;
+}
+
+.Login .botones a button{
+  color: white;
+  font-family: Saira;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 38px;
+  letter-spacing: 0.05em;
+}
+
+.Login .botones a{
   color: #ffffff;
+  width: 80%;
+  border-radius: 10px;
+  padding: 0%;
+
 }
 .Login a:hover{
   text-decoration: none;
