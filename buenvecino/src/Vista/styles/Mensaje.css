@@ -17,11 +17,13 @@
     align-self: center;
 }
 
+.Mensaje .mensa p{
+    margin-bottom: 1%;
+}
+
 .mensa .emisor{
     white-space: nowrap;
-    overflow: hidden;
     align-self: flex-end;
-    width: 50%;
     white-space: initial;
     word-wrap: break-word;
     text-align: end;
@@ -29,18 +31,18 @@
     border-radius: 10px;
     color: white;
     padding: 1%;
+    max-width: 50%;
 }
 .mensa .receptor{
     white-space: nowrap;
-    overflow: hidden;
     align-self: flex-start;
-    width: 20em;
     white-space: initial;
     word-wrap: break-word;
     background: #24243c;
     border-radius: 10px;
     color: white;
-    padding: 1%;   
+    padding: 1%; 
+    max-width: 50%;  
 }
 .Mensaje .Enviar{
     margin: 2.5%;
