@@ -5,6 +5,7 @@ import ManejadorBD from './Firebase/ManejadorBD'
 import Usuario from './Usuario'
 import Inmueble from './Inmueble'
 import Utils from './Utils'
+import ManejadorSg from './Firebase/ManjadorSg'
 
 class SistemaBV{
 
@@ -109,6 +110,11 @@ class SistemaBV{
 
     async cerrarSesion(){
         Autenticador.cerrarSesionUsuario()
+        this.state = {
+            ...this.state,
+            arrendador: null,
+            arrendatario: null
+        }
     }
 
     async confirmarSolicitudReserva(idSolicitud){
@@ -287,6 +293,17 @@ class SistemaBV{
 
     obtenerInmueblesCargados(){
         return this.obtenerUsuarioActivo().obtenerInmueblesCargados()
+    }
+
+    async obtenerInformacionUsuario(idUsuario){
+        let usuario = await ManejadorBD.leerInformacionDocumento("Arrendadores", idUsuario)
+        if ( usuario === null ){
+            usuario =  await ManejadorBD.leerInformacionDocumento("Arrendatarios", idUsuario)
+        }
+        if ( usuario !== null ){
+            usuario.fotoPerfil = await ManejadorSg.obtenerFotoPerfil( idUsuario )
+        }
+        return usuario
     }
 
     obtenerMensajesCargadosChat(idChat){
