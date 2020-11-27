@@ -269,6 +269,10 @@ class Usuario extends Valorable{
         }
         return {idError: 1, mensaje: "La valoración no fue encontrada"}
     }
+
+    obtenerChatsCargados(){
+        return this.state.listaChats
+    }
     
     obtenerColeccionCorrespondienteUsuario(){
         let tipo = this.obtenerTipoUsuario()

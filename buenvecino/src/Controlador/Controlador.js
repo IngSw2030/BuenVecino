@@ -117,6 +117,10 @@ class Controlador{
         return await this.modelo.modificarValoracion(idValoracion, camposModificados)
     }
 
+    obtenerChatsCargados(){
+        return this.modelo.obtenerChatsCargados().map( e => e.state )
+    }
+
     async obtenerInmueble(idInmueble){
         let resultado = await this.modelo.obtenerInmueble(idInmueble)
         return resultado !== null ? resultado.state : null
