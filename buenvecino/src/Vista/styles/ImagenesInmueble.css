@@ -3,9 +3,16 @@
     display: flex;
     width: 100%;
     justify-content: center;
+    background-color: gray;
 }
 
 .carousel{
   width: 80%;
+}
+.block{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
 }
 

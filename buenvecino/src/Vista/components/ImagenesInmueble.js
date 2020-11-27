@@ -5,32 +5,34 @@ import Carousel from 'react-bootstrap/Carousel'
 import Imagen from "../assets/FotoInmueble.png"
 
 class ImagenesInmueble extends Component {
+  constructor(props){
+    super()
+    console.log(props.inmueble.listaFotos);
+    this.state = {
+      fotos:props.inmueble.listaFotos
+    }
+}
+
+
   render() {
     return (
       <div className="ImagenesInmueble">
         <Carousel>
-          <Carousel.Item>
-            <img
-              className="d-block w-100"
-              src={Imagen}
-              alt="First slide"
-            />
-          </Carousel.Item>
-          <Carousel.Item>
-            <img
-              className="d-block w-100"
-              src={Imagen}
-              alt="Third slide"
-            />
+          {
+            this.state.fotos.map((item,index)=>{
+              return <Carousel.Item>
+                <div className="block">
+              <img
+                className=""
+                src={item}
+                alt={index}
+              />
+              </div>
+            </Carousel.Item>
 
-          </Carousel.Item>
-          <Carousel.Item>
-            <img
-              className="d-block w-100"
-              src={Imagen}
-              alt="Third slide"
-            />
-          </Carousel.Item>
+            })
+          }
+          
           
         </Carousel>
 
