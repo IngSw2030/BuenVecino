@@ -219,6 +219,10 @@ class PaginaTest extends Component{
           </button>
 
           <button onClick={async (e)=>{
+
+
+
+
             //let atributo = {valoraciones: []}
             let atributo = {nBaños: firebase.firestore.FieldValue.delete()}
             this.agregarAtributo("Inmuebles", atributo)
@@ -236,9 +240,7 @@ class PaginaTest extends Component{
           <input type="file" id="file-selector" multiple ref={this.refArchivo}></input>
           <br/>
           <button onClick={
-            (e) =>{
-              ManejadorSg.obtenerImagenesInmueble("HOLA1")
-            }
+            localStorage.removeItem("Controlador")
           }>
             PRUEBA OTRA
           </button>
@@ -251,66 +253,6 @@ class PaginaTest extends Component{
 
   }
 
-  recibirValoracion(nuevo){
-    console.log( "ACTUALIZCION : ", nuevo )
-    this.setState({
-      vals: nuevo
-    })
-  }
-
-  async pruebaValoracion(e){
-    let c = Controlador.getControlador()
-    if ( this.state.init2 === undefined ){
-      await this.inicioSesionSolicitud(c)
-      this.recibirValoracion = this.recibirValoracion.bind(this)
-      console.log("C: ", c)
-      c.establecerReceptorListaValoraciones(this.recibirValoracion)
-
-
-      setTimeout( ()=>{
-        if ( this.state.tipo == "DUENO" ){
-          let rrrr = c.obtenerInmueblesCargados()
-          console.log(rrrr)
-          this.setState( {inmuebles: rrrr} )
-          
-        }
-      }, 1000 )
-      
-    }
-    else{
-      let res = null
-      let ids = this.inputSolicitudes.current.value
-      let valor = this.inputResponder.current.value
-      let cantidad = this.inputFecha.current.value
-      valor = valor.toUpperCase()
-      let tipoValoracion = ""
-      if ( valor === "C" ){
-
-
-        let objetoVal = {
-          idValorado : ids,
-          tipo: cantidad.toUpperCase(),
-          calificacion: 5,
-          comentario: "Bonito"
-        }
-        res = await c.realizarValoracion(objetoVal)
-        console.log(res)
-
-      }else if ( valor === "M" ){
-        let modificacion = {
-          comentario: "NO TAN BONITO AHORA >:V",
-          calificacion: parseInt(cantidad)
-
-        }
-        res = await c.modificarValoracion(ids, modificacion)
-      }
-      else if ( valor === "E" ){
-        res = await c.eliminarValoracion(ids)
-      }
-      console.log(res)
-      this.setState( {respuestaEstadoSolicitud: res.mensaje} )
-    }
-  }
 
   async agregarAtributo(tabla, atributo){
     let res = await ManejadorBD.leerInformacionColeccion(tabla)
@@ -329,238 +271,9 @@ class PaginaTest extends Component{
     res1.map( async (item) => { await ManejadorBD.borrarInformacion( tabla, item.idFirebase ) } )
   }
 
-  rebibirSolicitudes(nueva){
-    let arrayAux = this.state.sols
-    for(let i in arrayAux){
-      if ( nueva.idFirebase === arrayAux[i].idFirebase ){
-        arrayAux[i] = nueva
-        this.setState( {sols: arrayAux} )
-        return;
-      }
-    }
-    this.setState( {sols: [...this.state.sols, nueva]} )
-    
-    
-  }
-
-  cambiosListaSolicitudes(nuevas){
-    this.setState( {sols2: nuevas} )
-  }
-
-  async inicioSesionSolicitud(c){
-    let texto = this.inputSolicitudes.current.value
-    if ( texto === "1" ){
-      let res = await c.iniciarSesionUsuario("prueba112@prueba.com","123456") //ARRENDADOR
-      await this.setState({tipo: "DUENO", usuario: res.usuario})  
-    }
-    else if (texto === "2"){
-      let res = await c.iniciarSesionUsuario("prueba1123d@prueba.com","123456") //ARRENDATARIO
-      await this.setState({tipo: "INQUILINO", usuario: res.usuario})
-    }
-    else {
-      let res = await c.iniciarSesionUsuario("johnjgm@prueba.com","123456") //ARRENDATARIO
-      await this.setState({tipo: "INQUILINO", usuario: res.usuario})
-    }
-    this.rebibirSolicitudes = this.rebibirSolicitudes.bind(this)
-    this.cambiosListaSolicitudes = this.cambiosListaSolicitudes.bind(this)
-    let res = await c.establecerReceptorSolicitudes(this.rebibirSolicitudes)
-    console.log("RESPUESTA 1 INICIAR SESION : ", res)
-    let res2 = await c.establecerReceptorListaSolicitudes(this.cambiosListaSolicitudes)
-    this.setState( {init2: 3} )
-    console.log("RESPUESTA 2 INICIAR SESION : ", res2)
-    
-    this.inputSolicitudes.current.value = ""
-    let rrr = c.obtenerSolicitudesCargadas()
-
-    this.setState( {sols: rrr} )
-
-  }
-
-  async pruebaSolicitud(e){
-    let c = Controlador.getControlador()
-
-    if (this.state.init2 === undefined){
-      this.inicioSesionSolicitud(c)
-    }
-    else{
-      let idInmueble = this.inputSolicitudes.current.value
-      let respuesta = this.inputResponder.current.value.toUpperCase()
-      let res = {}
-      if ( this.state.tipo === "DUENO" ){
-        if ( respuesta === "A" ){
-          res = await c.aceptarSolicitudReserva(idInmueble)
-        }
-        else if ( respuesta === "R" ){
-          res = await c.rechazarSolicitudReserva(idInmueble)
-        }
-        console.log("ARRENDADOR: ", res)
-        await this.setState( {respuestaEstadoSolicitud: res.mensaje} )
-      }
-      else{
-        //21-nov
-        //1-dic
-        if ( respuesta=== "D" ){
-
-          let fechas = this.inputFecha.current.value
-          fechas = fechas.split(" ")
-          let fecha1 = fechas[0].split("-")
-          let fecha2 = fechas[1].split("-")
-
-          fecha1 = fecha1.map( (item) => {return parseInt(item)} )
-          fecha2 = fecha2.map( (item) => {return parseInt(item)} )
-
-          fecha1 = new Date( fecha1[2], fecha1[1], fecha1[0] )
-          fecha2 = new Date( fecha2[2], fecha2[1], fecha2[0] )
-
-          console.log( fecha1.toString() )
-          console.log( fecha2.toString() )
-
-          fecha1[1]--
-          fecha2[1]--
-
-          let infoSolicitud = {
-            //ENVUELVE INTERNAMENTE
-            fechaInicio: fecha1,
-            fechaFin: fecha2,
-            idInmueble: idInmueble,
-            idArrendatario: this.state.usuario.idFirebase,
-            idArrendador: "wKOO7g9hQuVlDeHPjoMljX53Ryr2"
-          }
-
-          res = await c.crearSolicitudReserva(infoSolicitud)
-          
-        }
-        else if ( respuesta === "C" ){
-          res = await c.cancelarSolicitudReserva(idInmueble)
-        }
-        else if ( respuesta === "CC" ){
-          console.log("HERE CC: ")
-          res = await c.realizarPago(idInmueble, {idSolicitud: idInmueble, valor: 50000, informacionAdicional:{basura1:"1",basura2:"2"}})
-          console.log("RESPUESTA PARCIAL : ", res)
-          this.setState( {respuestaEstadoSolicitud: res.mensaje} )
-          if ( res.idError === 0 || res.idError === 4  ){
-            res = await c.confirmarSolicitudReserva(idInmueble)
-          }
-          
-        }        
-      }
-      this.inputSolicitudes.current.value = ""
-      this.inputResponder.current.value = ""
-      console.log(res.mensaje, " RESPUESTA FINAL")
-      this.setState( {respuestaEstadoSolicitud: res.mensaje} )
-      
-      
-      
-      
-    }
-    
-    
-  }
-
-  //PROBAR FAVORITO, CREAR CHAT, AGREGAR MENSAJE, ELIMINAR MENSAJE
-
-  async pruebaEliminar(e){
-    let c = Controlador.getControlador()
-    let res = await c.eliminarMensajeChat("lk", this.state.mensajes[this.state.mensajes.length-1].idFirebase)
-    await this.setState({
-      ress: res.mensaje
-    })
-  }
-
-  async iniciarSesionUsuarioParaChat(texto){
-    
-    await this.setState({
-      init: 5
-    })
-    let email = {}
-    
-    if ( texto === "1" ){
-      email = "prueba112@prueba.com"
-      
-    }
-    else{
-      email = "prueba1123d@prueba.com"
-    }
-    let contrasena = "123456"
-    let c = Controlador.getControlador()
-    c.cerrarSesion()
-    await c.iniciarSesionUsuario(email, contrasena)
-    
-    this.recibirNuevoMensaje = this.recibirNuevoMensaje.bind(this)
-    let res = await c.establecerReceptorMensajesChat( "lk", this.recibirNuevoMensaje )
-    
-    let res3 = c.obtenerMensajesCargadosChat("lk")
-    await this.setState({
-      mensajes: res3.mensaje
-    })
-  }
-
-  async pruebaChat(e){
-    let texto = this.inputChat.current.value
-    let c = Controlador.getControlador()
-    
-    if ( this.state.init === undefined ){
-      await this.iniciarSesionUsuarioParaChat(texto)
-
-    }
-    else{
-      let k = await c.agregarMensajeChat("lk", texto)
-      console.log(k)
-    }
-
-
-
-    this.inputChat.current.value = ""
-  }
-
-  async recibirNuevoMensaje(idChat, nuevo){
-    if ( nuevo !== undefined ){
-      let listaTot = this.state.mensajes
-      listaTot.push( nuevo.mensajes )
-      await this.setState( {mensajes: nuevo} )
-      
-    }
-    else{
-    }
-    
-
-  }
-
-  async pruebaRegistrarUsuario(e){
-    let c = Controlador.getControlador()
-    let esArrendatario = true
-    let email = "ultPre@prueba.com"
-    let contrasena = "123456"
-    
-    let infoUsuario = {
-      nombre: "JUANITO",
-      dni: 1111111112,
-      tipoDni: "CE",
-      genero: "M",
-      fechaNacimiento: Date.now(),
-      email: email,
-      telefono: 3333333333
-
-    }
-    let res = await c.registrarUsuario(infoUsuario, esArrendatario, email, contrasena)
-    console.log(res)
-  }
   
   
-  
-  async pruebaConsultaUbicacion(e, campo){
-    console.log(this.state[campo])
-    let texto = this.state[campo] === undefined ? "" : this.state[campo] 
-    
-    let c = Controlador.getControlador()
-    let res = await c.buscarInmueblesPorBarrioLocalidad(texto)
-    console.log(res) 
-    await this.setState(
-      {
-        inm: res
-      }
-    )
-  }
+
 
   pruebaAgregarUbicacion(e){
     let c = Controlador.getControlador()
@@ -663,21 +376,21 @@ class PaginaTest extends Component{
   
 
   async cargarImagen(e){
+
+    
     const fileList = e.target.files;
     console.log( fileList )
     for(let i=0; i< fileList.length; i++){
       console.log("fileList : ", fileList[i])
 
-      let extension = fileList[i].type.substring(5, fileList[i].type.length)
-      console.log( extension )
-
-      //let url = await ManejadorSg.cargarImagen("HOLA1", fileList[i])
-      //console.log( url )
+      //let extension = fileList[i].type.substring(5, fileList[i].type.length)
+      //console.log( extension )
+      ManejadorSg.subirFotoPerfil( "J8RfvoQkotgBHJqy6tesdX3Uj0E2", fileList[i] )
     }   
-    let c = Controlador.getControlador()
-    let res = await c.subirFotosInmueble("Inmueble1", fileList)
-    console.log( res )
-    this.state.setState( {archivos: [...this.state.archivos, ...fileList]} )
+    //let c = Controlador.getControlador()
+    //let res = await c.subirFotosInmueble("Inmueble1", fileList)
+    //console.log( res )
+    //this.state.setState( {archivos: [...this.state.archivos, ...fileList]} )*/
   }
 
   

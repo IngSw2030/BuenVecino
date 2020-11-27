@@ -46,6 +46,9 @@ class SolicitudReserva{
     }
 
     constructor(infoReserva){
+        if ( infoReserva.state !== undefined ){
+            infoReserva = infoReserva.state
+        }
         this.state = {
             ...infoReserva
         }
@@ -141,6 +144,10 @@ class SolicitudReserva{
             }
         }
         return bloqueo
+    }
+
+    transformarInformacionJSON(){
+        this.iniciarEscuchaActualizaciones()
     }
 
     static async liberarBloqueosSolicitudes( idBloqueo ){

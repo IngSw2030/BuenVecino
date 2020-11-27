@@ -17,9 +17,12 @@ class Chat extends Component {
 	}
 
 	async componentDidMount(){
-		await this.state.controlador.iniciarSesionUsuario("prueba11@prueba.com", "123456")
 		if ( this.state.controlador.obtenerUsuarioActivo() !== null ){
+			console.log( "USUARIO CARGADO JAJAJAJAAJ" )
 			console.log( this.state.controlador.obtenerChatsCargados() )
+		}
+		else{
+			console.log( this.state.controlador, "NO ESTA ACTIVO" )
 		}
 		
 	}

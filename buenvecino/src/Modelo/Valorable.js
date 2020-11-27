@@ -110,6 +110,13 @@ class Valorable{
         return valoraciones
     }
 
+    transformarInformacionJSON(){
+        for(let i in this.state.listaValoraciones){
+            this.state.listaValoraciones[i] = new Valoracion( this.state.listaValoraciones[i].state )
+            this.state.listaValoraciones[i].transformarInformacionJSON( )
+        }
+    }
+
 }
 
 export default Valorable

@@ -14,6 +14,9 @@ class Usuario extends Valorable{
 
     constructor(infoUsuario){
         super()
+        if ( infoUsuario.state !== undefined ){
+            infoUsuario = infoUsuario.state
+        }
         this.state = {
             ...this.state,
             ...infoUsuario,
@@ -21,7 +24,6 @@ class Usuario extends Valorable{
             receptorChat: null,
             receptorListaSolicitudes: null,
             fotoPerfil: null,
-            
         }
     }
 
@@ -355,6 +357,19 @@ class Usuario extends Valorable{
 
     async subirFotoPerfil(archivo){
         this.state.fotoPerfil = await ManejadorSg.subirFotoPerfil(this.state.idFirebase, archivo)
+    }
+
+    transformarInformacionJSON(){
+        super.transformarInformacionJSON()
+        for(let i in this.state.listaChats){
+            this.state.listaChats[i] = new Chat( this.state.listaChats[i].state )
+            this.state.listaChats[i].transformarInformacionJSON( )
+        }
+        for(let i in this.state.listaSolicitudes){
+            this.state.listaSolicitudes[i] = new SolicitudReserva( this.state.listaSolicitudes[i].state )
+            this.state.listaSolicitudes[i].transformarInformacionJSON( )
+        }
+        
     }
 
     static obtenerObjetoBD(objUsuario){

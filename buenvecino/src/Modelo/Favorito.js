@@ -25,6 +25,9 @@ class Favorito {
     }
 
     constructor(infoFavorito){
+        if ( infoFavorito.state !== undefined ){
+            infoFavorito = infoFavorito.state
+        }
         this.state = {
             ...infoFavorito
         }
@@ -32,6 +35,10 @@ class Favorito {
 
     estaAsociadoMismoInmueble(idInmueble){
         return this.state.idInmueble === idInmueble
+    }
+
+    transformarInformacionJSON(){
+        
     }
 
     static validarEstructuraObjeto(infoFavorito){

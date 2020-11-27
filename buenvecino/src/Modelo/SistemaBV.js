@@ -8,12 +8,18 @@ import Utils from './Utils'
 
 class SistemaBV{
 
-    constructor(){
-        this.state = {
-            arrendador : null,
-            arrendatario : null,
-            cacheInmuebles: []
+    constructor(lc=null){
+        if ( lc !== null ){
+            this.state = lc.modelo.state            
         }
+        else{
+            this.state = {
+                arrendador : null,
+                arrendatario : null,
+                cacheInmuebles: []
+            }
+        }
+        
     }
 
     aceptarSolicitudReserva(idSolicitud){
@@ -251,6 +257,7 @@ class SistemaBV{
     }
 
     obtenerChatsCargados(){
+        console.log( this.state, " STATE :V " )
         if ( this.obtenerUsuarioActivo() !== null ){
             return this.obtenerUsuarioActivo().obtenerChatsCargados()
         }
@@ -368,6 +375,21 @@ class SistemaBV{
 
     async subirFotoPerfil(archivo){
         return await this.obtenerUsuarioActivo().subirFotoPerfil(archivo)
+    }
+
+
+    transformarInformacionJSON(){
+        if ( this.state.arrendador !== null ){
+            this.state.arrendador = new Arrendador ( this.state.arrendador )
+            this.state.arrendador.transformarInformacionJSON()
+        }
+        else if ( this.state.arrendatario !== null ){
+            this.state.arrendatario = new Arrendatario ( this.state.arrendatario )
+            this.state.arrendatario.transformarInformacionJSON()
+        }
+        if (this.state.cacheInmuebles !== []){
+
+        }
     }
 
     validarEstructuraObjetoUsuario(infoUsuario, esArrendatario){

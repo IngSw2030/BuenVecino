@@ -361,6 +361,21 @@ class Arrendatario extends Usuario{
         return {idError: 1, mensaje: "Solicitud no encontrada"}
     }
 
+    static transformarInformacionJSON(){
+        for(let i in this.state.listaFavoritos){
+            this.state.listaFavoritos[i] = new Favorito( this.state.listaFavoritos[i].state )
+            this.state.listaFavoritos[i].transformarInformacionJSON()
+        } 
+        for(let i in this.state.listaPagos){
+            this.state.listaPagos[i] = new Pago( this.state.listaPagos[i].state )
+            this.state.listaPagos[i].transformarInformacionJSON()
+        } 
+        for(let i in this.state.listaReservaciones){
+            this.state.listaReservaciones[i] = new Reservacion( this.state.listaReservaciones[i].state )
+            this.state.listaReservaciones[i].transformarInformacionJSON()
+        }   
+    }
+
     static validarEstructuraObjeto(infoArrendatario){
         let Validator = require('jsonschema').Validator;
         let v = new Validator();

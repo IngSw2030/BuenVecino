@@ -42,10 +42,17 @@ class Reservacion{
     }
 
     constructor(infoReservacion){
+        if ( infoReservacion.state !== undefined ){
+            infoReservacion = infoReservacion.state
+        }
         this.state = {
             ...infoReservacion,
 
         }    
+    }
+
+    transformarInformacionJSON(){
+
     }
 
     static validarEstructuraObjeto(infoReservacion){

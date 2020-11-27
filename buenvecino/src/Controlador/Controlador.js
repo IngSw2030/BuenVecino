@@ -4,8 +4,13 @@ class Controlador{
 
     static instanciaControlador = null
 
-    constructor(){
-        this.modelo = new SistemaBV()
+    constructor(lc = null){
+        if ( lc !== null ){
+            this.modelo = new SistemaBV(lc)
+        }
+        else{
+            this.modelo = new SistemaBV()
+        }
     }
 
     async aceptarSolicitudReserva(idSolicitud){
@@ -106,7 +111,9 @@ class Controlador{
     }
 
     async iniciarSesionUsuario(email, contrasena){
-        return await this.modelo.iniciarSesionUsuario(email, contrasena)
+        let res = await this.modelo.iniciarSesionUsuario(email, contrasena)
+        Controlador.almacenarLocalStorage()
+        return res
     }
 
     async modificarInmueble(idInmueble, camposModificados){
@@ -143,7 +150,8 @@ class Controlador{
     }
 
     obtenerUsuarioActivo(){
-        return this.modelo.obtenerUsuarioActivo().state
+        let respuesta = this.modelo.obtenerUsuarioActivo()
+        return respuesta !== null ? respuesta.state : null
     }
 
     obtenerValoracionesHechas(){
@@ -183,14 +191,39 @@ class Controlador{
         return await this.modelo.subirFotoPerfil(archivo)
     }
 
-
+    static obtenerObjetoStorage(obj) {
+        try{
+            console.log( "HERE JAJAJA", obj )
+            console.log( JSON.parse( obj ) )
+            return JSON.parse( obj )
+        }
+        catch(error){
+            console.log( error )
+        }
+        
+    };
     
-
     static getControlador(){
-        if ( this.instanciaControlador == null ){
-            this.instanciaControlador = new Controlador()
+        if ( this.instanciaControlador === null ){
+            let lc = localStorage.getItem("Controlador")
+            if ( lc === null ){
+                this.instanciaControlador = new Controlador()
+            }
+            else{
+                let modelo = JSON.parse( lc )
+                this.instanciaControlador = new Controlador(modelo)
+                this.instanciaControlador.modelo.transformarInformacionJSON()
+                console.log( "RESULTADO : ", this.instanciaControlador )
+            }
+        }
+        else{
+            localStorage.setItem( "Controlador", JSON.stringify( this.instanciaControlador ) )
         }
         return this.instanciaControlador
+    }
+
+    static almacenarLocalStorage(){
+        localStorage.setItem( "Controlador", JSON.stringify( this.instanciaControlador ) )
     }
 
 }

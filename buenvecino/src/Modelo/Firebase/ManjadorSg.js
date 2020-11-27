@@ -48,14 +48,16 @@ class ManejadorSg{
     static async obtenerFotoPerfil(idUsuario){
         try {
             let referencia = sg.ref().child( this.PATH_FOTOS_PERFIL + idUsuario )
-            let referenciasURL = await referencia.listAll()
-            for(let i in referenciasURL.items){
-                return await referenciasURL.items[i].getDownloadURL() 
-            }       
-            return null
+            return await referencia.getDownloadURL()
+
         }
         catch (error) {
-            throw error
+            if ( error.code === "storage/object-not-found" ){
+                return null
+            }
+            else{
+                throw error
+            }
         }        
     }
 }

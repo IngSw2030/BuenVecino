@@ -31,6 +31,9 @@ class Chat{
 
 
     constructor(infoChat){
+        if ( infoChat.state !== undefined ){
+            infoChat = infoChat.state
+        }
         this.state = {
             ...infoChat,
             listaMensajes: [],
@@ -89,11 +92,14 @@ class Chat{
     }
 
     async cargarMensajes(){
-        let mensajes = await ManejadorBD.realizarConsulta("Mensajes", ["idChat"], ["=="], [this.state.idFirebase])
-        Utils.ordenarArray(mensajes, this.compararMensajes)
-        for(let i in mensajes){
-            this.state.listaMensajes.push( new Mensaje(mensajes[i]) )
+        if ( this.state.listaMensajes === [] ){
+            let mensajes = await ManejadorBD.realizarConsulta("Mensajes", ["idChat"], ["=="], [this.state.idFirebase])
+            Utils.ordenarArray(mensajes, this.compararMensajes)
+            for(let i in mensajes){
+                this.state.listaMensajes.push( new Mensaje(mensajes[i]) )
+            }
         }
+        
     }
 
     compararMensajes(mensaje1, mensaje2){
@@ -137,6 +143,13 @@ class Chat{
             mensaje: this.state.listaMensajes.map( (mensaje) =>{ return mensaje.state } )
         }
         return respuesta
+    }
+
+    transformarInformacionJSON(){
+        for(let i in this.state.listaMensajes){
+            this.state.listaMensajes[i] = new Mensaje( this.state.listaMensajes[i].state )
+        }
+        this.iniciarChat()
     }
     
     static validarEstructuraObjeto(infoChat){
