@@ -57,8 +57,9 @@ class Arrendador extends Usuario{
         "title": "ESTRUCTURA_JSON"
     }
 
-    constructor(infoUsuario){   
+    constructor(infoUsuario){
         super(infoUsuario)
+        console.log( infoUsuario, "RECIBIDA" )
         this.state = {
             ...this.state,
             ...Utils.agregarCamposSiNoExisten(infoUsuario, ["inmuebles"], [])
@@ -222,6 +223,14 @@ class Arrendador extends Usuario{
             }
         }
         return {idError: 2, mensaje: "El inmueble no existe"}
+    }
+
+    transformarInformacionJSON(){
+        super.transformarInformacionJSON()
+        for(let i in this.state.listaInmuebles){
+            this.state.listaInmuebles[i] = Inmueble.crearObjetoInmueble( this.state.listaInmuebles[i].state, this.state.listaInmuebles[i].state.idFirebase )
+            this.state.listaInmuebles[i].transformarInformacionJSON( )
+        }
     }
 
     static validarEstructuraObjeto(infoArrendatario){

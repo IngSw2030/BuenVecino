@@ -29,6 +29,9 @@ class Pago {
     }
 
     constructor(infoPago){
+        if ( infoPago.state !== undefined ){
+            infoPago = infoPago.state
+        }
         this.state = {
             ...infoPago,
         }
@@ -36,6 +39,10 @@ class Pago {
 
     perteneceSolicitud(idSolicitud){
         return this.state.idSolicitud === idSolicitud
+    }
+
+    transformarInformacionJSON(){
+        
     }
 
     static validarEstructuraObjeto(infoArrendatario){

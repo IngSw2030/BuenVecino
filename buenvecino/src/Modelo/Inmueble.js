@@ -99,6 +99,9 @@ class Inmueble extends Valorable{
 
     constructor(infoInmueble){
         super()
+        if ( infoInmueble.state !== undefined ){
+            infoInmueble = infoInmueble.state
+        }
         this.state = {
             ...this.state,
             ...infoInmueble,
@@ -215,6 +218,19 @@ class Inmueble extends Valorable{
                 this.actualizarListaValoraciones(this.state.listaValoraciones)
                 break
             }
+        }
+    }
+
+    transformarInformacionJSON(){
+        super.transformarInformacionJSON()
+        for(let i in this.state.listaInmuebles){
+            this.state.listaInmuebles[i] = Inmueble.crearObjetoInmueble( this.state.listaInmuebles[i].state, this.state.listaInmuebles[i].state.idFirebase )
+            this.state.listaInmuebles[i].transformarInformacionJSON( )
+        }
+        Servicio.transformarInformacionJSON()
+        for(let i in this.state.listaServicios){
+            this.state.listaServicios[i] = Servicio.obtenerServicio( this.state.servicios[i] )
+            this.state.listaServicios[i].transformarInformacionJSON( )
         }
     }
 

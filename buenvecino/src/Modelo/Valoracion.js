@@ -42,6 +42,9 @@ class Valoracion{
     }
 
     constructor(infoValoracion){
+        if ( infoValoracion.state !== undefined ){
+            infoValoracion = infoValoracion.state
+        }
         this.state = {
             ...infoValoracion,
             receptorValoracion: null
@@ -71,6 +74,10 @@ class Valoracion{
 
     perteneceA(idPosiblePropietario){
         return this.state.idAutor === idPosiblePropietario
+    }
+
+    transformarInformacionJSON(){
+        
     }
 
     static async existeObjetoValorado(tipoValoracion, idObjeto){

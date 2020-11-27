@@ -30,6 +30,9 @@ class Mensaje{
     }
 
     constructor(infoMensaje){
+        if ( infoMensaje.state !== undefined ){
+            infoMensaje = infoMensaje.state
+        }
         this.state = {
             ...infoMensaje
         }

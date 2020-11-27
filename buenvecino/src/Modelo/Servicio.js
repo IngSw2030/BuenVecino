@@ -5,9 +5,11 @@ class Servicio{
     static SERVICIOS =  null
 
     constructor(infoServicio){
+        if ( infoServicio.state !== undefined ){
+            infoServicio = infoServicio.state
+        }
         this.state = infoServicio
     }
-
 
     static async cargarServicios(){
         if ( this.SERVICIOS === null ){
@@ -30,6 +32,12 @@ class Servicio{
 
     static obtenerServiciosCargados(){
         return this.SERVICIOS
+    }
+
+    static transformarInformacionJSON(){
+        for(let i in this.SERVICIOS){
+            this.SERVICIOS[i] = new Servicio( this.SERVICIOS[i].state )
+        }   
     }
 }
 

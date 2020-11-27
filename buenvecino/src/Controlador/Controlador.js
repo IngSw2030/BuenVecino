@@ -4,49 +4,73 @@ class Controlador{
 
     static instanciaControlador = null
 
-    constructor(){
-        this.modelo = new SistemaBV()
+    constructor(lc = null){
+        if ( lc !== null ){
+            this.modelo = new SistemaBV(lc)
+        }
+        else{
+            this.modelo = new SistemaBV()
+        }
     }
 
     async aceptarSolicitudReserva(idSolicitud){
-        return this.modelo.aceptarSolicitudReserva(idSolicitud)
+        let respuesta = this.modelo.aceptarSolicitudReserva(idSolicitud)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async agregarFavorito(favorito){
-        return await this.modelo.agregarFavorito(favorito)
+        let respuesta =  await this.modelo.agregarFavorito(favorito)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async agregarMensajeChat(idChat, mensaje){
-        return await this.modelo.agregarMensajeChat(idChat, mensaje)
+        let respuesta =  await this.modelo.agregarMensajeChat
+        Controlador.almacenarLocalStorage()(idChat, mensaje)
+        return respuesta
     }
 
     agregarServiciosInmueble(idInmueble, idServicios){
-        return this.modelo.agregarServiciosInmueble(idInmueble, idServicios)
+        let respuesta =  this.modelo.agregarServiciosInmueble(idInmueble, idServicios)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     buscarFavorito(idInmueble){
         let respuesta = this.modelo.buscarFavorito(idInmueble)
+        Controlador.almacenarLocalStorage()
         return respuesta !== null ? respuesta.state : respuesta
     }
 
     async buscarInmueblesIniciales(cantInmuebles = 3){
-        return await this.modelo.buscarInmueblesIniciales(cantInmuebles)
+        let respuesta =  await this.modelo.buscarInmueblesIniciales(cantInmuebles)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }    
 
     async buscarInmueblesPorBarrioLocalidad(sitio){
-        return await this.modelo.buscarInmueblesPorBarrioLocalidad(sitio)
+        let respuesta =  await this.modelo.buscarInmueblesPorBarrioLocalidad(sitio)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async buscarInmueblePorTipo(tipoInmueble){
-        return await this.modelo.buscarInmueblePorTipo(tipoInmueble)
+        let respuesta =  await this.modelo.buscarInmueblePorTipo(tipoInmueble)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async buscarTodosInmuebles(){
-        return this.modelo.buscarTodosInmuebles()
+        let respuesta =  this.modelo.buscarTodosInmuebles()
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     cancelarSolicitudReserva(idSolicitud){
-        return this.modelo.cancelarSolicitudReserva(idSolicitud)
+        let respuesta =  this.modelo.cancelarSolicitudReserva(idSolicitud)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async cerrarSesion(){
@@ -54,31 +78,45 @@ class Controlador{
     }
 
     async confirmarSolicitudReserva(idSolicitud){
-        return await this.modelo.confirmarSolicitudReserva(idSolicitud)
+        let respuesta =  await this.modelo.confirmarSolicitudReserva(idSolicitud)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async crearChat(idUsuario2, primerMensaje){
-        return await this.modelo.crearChat(idUsuario2, primerMensaje)
+        let respuesta =  await this.modelo.crearChat(idUsuario2, primerMensaje)
+        Controlador.almacenarLocalStorage()
+        return respuesta   
     }
 
     async crearSolicitudReserva(infoReserva){
-        return await this.modelo.crearSolicitudReserva(infoReserva);
+        let respuesta =  await this.modelo.crearSolicitudReserva(infoReserva);
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async eliminarInmueble(idInmueble){
-        return await this.modelo.eliminarInmueble(idInmueble)
+        let respuesta =  await this.modelo.eliminarInmueble(idInmueble)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     eliminarFavorito(idFavorito){
-        return this.modelo.eliminarFavorito(idFavorito)
+        let respuesta =  this.modelo.eliminarFavorito(idFavorito)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     eliminarMensajeChat(idChat, idMensaje){
-        return this.modelo.eliminarMensajeChat(idChat, idMensaje)
+        let respuesta =  this.modelo.eliminarMensajeChat(idChat, idMensaje)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     eliminarValoracion(idValoracion){
-        return this.modelo.eliminarValoracion(idValoracion)
+        let respuesta =  this.modelo.eliminarValoracion(idValoracion)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     establecerReceptorChats(metodoReceptor){
@@ -94,7 +132,7 @@ class Controlador{
     }
 
     establecerReceptorMensajesChat(idChat, metodoReceptor){
-        return this.modelo.establecerReceptorMensajesChat(idChat, metodoReceptor)
+        return  this.modelo.establecerReceptorMensajesChat(idChat, metodoReceptor)
     }
 
     establecerReceptorSolicitudes(metodoReceptor){
@@ -102,23 +140,36 @@ class Controlador{
     }
 
     existeUsuarioSesionActiva(){
-        return this.modelo.existeUsuarioSesionActiva()
+        let respuesta =  this.modelo.existeUsuarioSesionActiva()
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async iniciarSesionUsuario(email, contrasena){
-        return await this.modelo.iniciarSesionUsuario(email, contrasena)
+        let respuesta = await this.modelo.iniciarSesionUsuario(email, contrasena)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async modificarInmueble(idInmueble, camposModificados){
-        return await this.modelo.modificarInmueble(idInmueble, camposModificados)
+        let respuesta =  await this.modelo.modificarInmueble(idInmueble, camposModificados)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async modificarValoracion(idValoracion, camposModificados){
-        return await this.modelo.modificarValoracion(idValoracion, camposModificados)
+        let respuesta =  await this.modelo.modificarValoracion(idValoracion, camposModificados)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     obtenerChatsCargados(){
         return this.modelo.obtenerChatsCargados().map( e => e.state )
+        
+    }
+
+    async obtenerFotoPerfil(){
+        return await this.modelo.obtenerFotoPerfil()
     }
 
     async obtenerInmueble(idInmueble){
@@ -143,7 +194,8 @@ class Controlador{
     }
 
     obtenerUsuarioActivo(){
-        return this.modelo.obtenerUsuarioActivo().state
+        let respuesta = this.modelo.obtenerUsuarioActivo()
+        return respuesta !== null ? respuesta.state : null
     }
 
     obtenerValoracionesHechas(){
@@ -155,42 +207,68 @@ class Controlador{
     }
 
     async realizarPago(idSolicitud, infoPago){
-        return await this.modelo.realizarPago(idSolicitud, infoPago)
+        let respuesta =  await this.modelo.realizarPago(idSolicitud, infoPago)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async realizarValoracion(infoValoracion){
-        return await this.modelo.realizarValoracion(infoValoracion)
+        let respuesta =  await this.modelo.realizarValoracion(infoValoracion)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     rechazarSolicitudReserva(idSolicitud){
-        return this.modelo.rechazarSolicitudReserva(idSolicitud)
+        let respuesta =  this.modelo.rechazarSolicitudReserva(idSolicitud)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async registrarInmueble(infoInmueble){
-        return this.modelo.registrarInmueble(infoInmueble)
+        let respuesta =  this.modelo.registrarInmueble(infoInmueble)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async registrarUsuario(infoUsuario, esArrendatario, email, contrasena){
-        return await this.modelo.registrarUsuario(infoUsuario, esArrendatario, email, contrasena)
+        let respuesta =  await this.modelo.registrarUsuario(infoUsuario, esArrendatario, email, contrasena)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     
     async subirFotosInmueble(idInmueble, archivos){
-        return await this.modelo.subirFotosInmueble(idInmueble, archivos)
+        let respuesta =  await this.modelo.subirFotosInmueble(idInmueble, archivos)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
 
     async subirFotoPerfil(archivo){
-        return await this.modelo.subirFotoPerfil(archivo)
+        let respuesta =  await this.modelo.subirFotoPerfil(archivo)
+        Controlador.almacenarLocalStorage()
+        return respuesta
     }
-
-
     
-
     static getControlador(){
-        if ( this.instanciaControlador == null ){
-            this.instanciaControlador = new Controlador()
+        if ( this.instanciaControlador === null ){
+            let lc = localStorage.getItem("Controlador")
+            if ( lc === null ){
+                this.instanciaControlador = new Controlador()
+            }
+            else{
+                let modelo = JSON.parse( lc )
+                this.instanciaControlador = new Controlador(modelo)
+                this.instanciaControlador.modelo.transformarInformacionJSON()
+            }
+        }
+        else{
+            localStorage.setItem( "Controlador", JSON.stringify( this.instanciaControlador ) )
         }
         return this.instanciaControlador
+    }
+
+    static almacenarLocalStorage(){
+        localStorage.setItem( "Controlador", JSON.stringify( this.instanciaControlador ) )
     }
 
 }

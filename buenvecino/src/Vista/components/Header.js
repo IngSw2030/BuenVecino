@@ -16,16 +16,34 @@ class Header extends Component {
 		super()
 		this.state = {
 			open: false,
-			controlador: Controlador.getControlador()
+			controlador: Controlador.getControlador(),
+			usuarioActivo: null,
+			foto: "https://image.freepik.com/vector-gratis/perfil-avatar-hombre-icono-redondo_24640-14046.jpg"
 		}
 		this.handleClose = this.handleClose.bind( this )
+
+		console.log( this.state.controlador, " EXISTE" )
+	}
+
+	async componentDidMount(){
+		console.log( "CONTROLER : ", this.state.controlador )
+		let usuario = this.state.controlador.obtenerUsuarioActivo()
+		if ( usuario !== null ){
+			let foto = await this.state.controlador.obtenerFotoPerfil()
+			if (foto !== null) {
+				console.log("ESTE USUARIO NO TIENE FOTO")
+				this.setState({foto: foto,})
+			}
+			else {
+				this.setState({ foto: "https://upload.wikimedia.org/wikipedia/commons/0/06/Rammstein_logo.png", })
+				console.log("CAMBIAR FOTO PERFIL CUANDO NO EXISTE")
+			}
+			this.setState({usuario: usuario})
+		}
 	}
 
 	setOpen = (valor) => {
-		console.log(valor)
-		console.log(this.state.open)
 		this.setState({ open: valor })
-		console.log(this.state.open)
 	}
 	handleOpen = () => {
 		this.setOpen(true);
@@ -40,7 +58,7 @@ class Header extends Component {
 		return (
 			<div className="headerG">
         <div className="imgH">
-        <Link to="/">  
+        <Link to="/">
 				<img src={Logo} alt="Logo de la pagina" className="header__icon" />
         </Link>
         </div>
@@ -61,15 +79,15 @@ class Header extends Component {
 
 						</ul>
 					</nav>
-					<NavDropdown title={<Avatar style={{fontSize:200}} />} id="basic-nav-dropdown" className="icono">
+
+					<NavDropdown title={ <img src={ this.state.foto }/> } id="basic-nav-dropdown" className="icono">				
 						<NavDropdown.Item ><Link to="/perfil">Mi Perfil</Link></NavDropdown.Item>
 						<NavDropdown.Item ><Link to="/favoritos">Mis Favoritos</Link></NavDropdown.Item>
 						<NavDropdown.Item ><Link to="/gestionarInmueble">Mis Inmuebles</Link></NavDropdown.Item>
             			<NavDropdown.Item ><Link to="/chats">Mis Chats</Link></NavDropdown.Item>
 						<NavDropdown.Item ><Link to="/historialpagos">Historial de Pagos</Link></NavDropdown.Item>
             			<NavDropdown.Item ><Link to="/notificaciones">Mis Notificaciones</Link></NavDropdown.Item>
-						<NavDropdown.Item ><Link to="/historialInmueble">Historial de Inmuebles</Link></NavDropdown.Item>
-						
+						<NavDropdown.Item ><Link to="/historialInmueble">Historial de Inmuebles</Link></NavDropdown.Item>	
             			<NavDropdown.Divider />
 						<NavDropdown.Item 
 							onClick = {this.cerrarSesion}
@@ -86,8 +104,16 @@ class Header extends Component {
 	}
 
 	notificarInicioSesion(){
-		console.log( "Inicio para header" )
-		return 0
+		let usuarioActivo = this.state.controlador.obtenerUsuarioActivo()
+		if ( usuarioActivo !== null ){
+			this.setState( {
+				usuarioActivo: usuarioActivo,
+				foto: usuarioActivo.fotoPerfil
+			} )
+		}
+		else{
+			//Sesion no iniciada
+		}
 	}
 }
 
