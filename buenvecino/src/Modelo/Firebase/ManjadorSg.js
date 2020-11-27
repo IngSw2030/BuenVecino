@@ -53,7 +53,7 @@ class ManejadorSg{
         }
         catch (error) {
             if ( error.code === "storage/object-not-found" ){
-                return null
+                return await this.obtenerFotoPerfil("noFoto.png")
             }
             else{
                 throw error

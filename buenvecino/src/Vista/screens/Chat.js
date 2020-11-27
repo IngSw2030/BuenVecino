@@ -11,15 +11,15 @@ class Chat extends Component {
 	constructor(props){
 		super()
 		this.state = {
-			controlador: Controlador.getControlador()
+			controlador: Controlador.getControlador(),
+			listaChats: []
 		}
 		
 	}
 
 	async componentDidMount(){
 		if ( this.state.controlador.obtenerUsuarioActivo() !== null ){
-			console.log( "USUARIO CARGADO JAJAJAJAAJ" )
-			console.log( this.state.controlador.obtenerChatsCargados() )
+			this.setState( {listaChats: this.state.controlador.obtenerChatsCargados()} )
 		}
 		else{
 			console.log( this.state.controlador, "NO ESTA ACTIVO" )
@@ -38,11 +38,13 @@ class Chat extends Component {
 					<div className="listaCon">
 						<h2>Contactos</h2>
 						<div className="contactos">
-							this.state.controlador.
-							<Contacto />
-							<Contacto />
-							<Contacto />
-							<Contacto />
+						{
+							this.state.listaChats.map( (item, index) =>{
+								return <Contacto infoChat = {item} />
+
+							})
+						}
+						
 						</div>
 					</div>
 					<div className="mensajes">

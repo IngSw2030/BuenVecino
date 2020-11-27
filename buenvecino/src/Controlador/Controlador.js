@@ -75,6 +75,7 @@ class Controlador{
 
     async cerrarSesion(){
         this.modelo.cerrarSesion()
+        localStorage.removeItem("Controlador")
     }
 
     async confirmarSolicitudReserva(idSolicitud){
@@ -170,6 +171,10 @@ class Controlador{
 
     async obtenerFotoPerfil(){
         return await this.modelo.obtenerFotoPerfil()
+    }
+
+    async obtenerInformacionUsuario(idUsuario){
+        return await this.modelo.obtenerInformacionUsuario(idUsuario)
     }
 
     async obtenerInmueble(idInmueble){

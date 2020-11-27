@@ -292,6 +292,7 @@ class Usuario extends Valorable{
         }
         else{
             return await ManejadorSg.obtenerFotoPerfil( this.state.idFirebase )
+            
         }
     }
 

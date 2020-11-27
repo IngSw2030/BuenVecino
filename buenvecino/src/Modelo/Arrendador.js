@@ -228,7 +228,7 @@ class Arrendador extends Usuario{
     transformarInformacionJSON(){
         super.transformarInformacionJSON()
         for(let i in this.state.listaInmuebles){
-            this.state.listaInmuebles[i] = Inmueble.crearObjetoInmueble( this.state.listaInmuebles[i].state, this.state.listaInmuebles[i].state.idFirebase )
+            this.state.listaInmuebles[i] = Arrendador.crearObjetoInmueble( this.state.listaInmuebles[i].state, this.state.listaInmuebles[i].state.idFirebase )
             this.state.listaInmuebles[i].transformarInformacionJSON( )
         }
     }
