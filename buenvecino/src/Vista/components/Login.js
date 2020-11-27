@@ -38,7 +38,7 @@ class Login extends Component {
                         <Button type="submit">Iniciar sesión</Button>
 
                         <div className="botones">
-                        <Button><Link to="/registrarUsuario">Registrate</Link> </Button>
+                        <Link to="/registrarUsuario"><button>REGISTRATE </button></Link>
                         <Button onClick={ (e)=>{this.props.cerrar()} }> 
                             Cancelar 
                         </Button>

@@ -79,7 +79,6 @@ class Header extends Component {
 
 						</ul>
 					</nav>
-
 					<NavDropdown title={ <img src={ this.state.foto }/> } id="basic-nav-dropdown" className="icono">				
 						<NavDropdown.Item ><Link to="/perfil">Mi Perfil</Link></NavDropdown.Item>
 						<NavDropdown.Item ><Link to="/favoritos">Mis Favoritos</Link></NavDropdown.Item>
@@ -93,7 +92,7 @@ class Header extends Component {
 							onClick = {this.cerrarSesion}
 						><Link to="/">Cerrar Sesión</Link></NavDropdown.Item>
 					</NavDropdown>
-
+					
 				</div>
 			</div>
 		);

@@ -44,3 +44,8 @@
  .dropdown-toggle::after{
      visibility: hidden;
  }
+
+ .headerG .icono img{
+     width: 3em;
+     border-radius: 30px;
+ }
