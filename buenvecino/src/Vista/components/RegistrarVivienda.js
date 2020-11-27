@@ -3,6 +3,7 @@ import { Button } from "@material-ui/core";
 import "../styles/RegistrarVivienda.css";
 import Mapa from './Mapa'
 import Controlador from "../../Controlador/Controlador";
+import { Link } from "react-router-dom";
 
 class RegistrarVivienda extends Component {
     
@@ -252,8 +253,8 @@ class RegistrarVivienda extends Component {
                             />
                         </div>
                         <div className="botones">
-                            <Button> Cancelar </Button>
-                            <Button type="submit"> Registrar Vivienda </Button>
+                            <Link to="/"> <Button> Cancelar </Button></Link>
+                            <Button type="submit" className="RegistrarVi"> Registrar Vivienda </Button>
                         </div>
 
                         <div>

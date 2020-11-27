@@ -1,11 +1,13 @@
-.ModificarInmueble .head{
+.RegistrarInmueble .head{
     background: linear-gradient(90deg, #292929 0%, rgba(40, 40, 40, 0) 100%), url("../assets/Fondo.jpg") center center;
-    height: 12em;
-    display: flex;
-    flex-direction: column;
+    height: 10em;
 }
-.ModificarInmueble .contenido{
+
+.RegistrarInmueble .contenido{
     display: flex;
+    align-content: center;
+    margin: 0%;
+    margin-top: -3%;
     justify-content: center;
-    margin-top: -5%;
+    margin-bottom: 1%;
 }
