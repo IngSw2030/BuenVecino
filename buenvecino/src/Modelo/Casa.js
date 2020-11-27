@@ -10,9 +10,6 @@ class Casa extends Inmueble{
                 "type": "integer",
                 "minimum": 1
             },
-            "esCompartido": {
-                "type": "boolean"
-            },
             "nPisos": {
                 "type": "integer",
                 "minimum": 1
@@ -23,7 +20,6 @@ class Casa extends Inmueble{
         },
         "required": [
             "nHabitaciones",
-            "esCompartido",
             "nCocinas",
             "nPisos"
         ],

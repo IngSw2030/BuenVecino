@@ -18,40 +18,47 @@ class InfoInmueble extends Component {
     constructor(props){
         super()
         this.state = {
-            inmueble: {},
+            inmueble: null,
             controlador: Controlador.getControlador()
         }
     }
 
     async componentDidMount(){
         let inmueble = await this.state.controlador.obtenerInmueble(this.props.match.params.idInmueble)
-        console.log( inmueble, " RECEIVED " )
         this.setState( {inmueble: inmueble} )
     }
 
     render() {
         return (
-        <div className="InfoInmueble">
-            <div className="headerMapa">
-                <Header />
-            </div>
-            <ImagenesInmueble inmueble={this.state.inmueble}/>
-            <div className="contenido">
-                <DescripcionInmueble inmueble={this.state.inmueble}/>
-                <div>
-                    <Reservar inmueble={this.state.inmueble}/>
-                    <div className="descripcion">
-                        <DescripcionLugar imagen={logo1} descripcion="Habitaciones - 1 " />
-                        <DescripcionLugar imagen={logo2} descripcion=" Baños - 1" />
-                        <DescripcionLugar imagen={logo3} descripcion="Cocina Integral" />
-                        <DescripcionLugar imagen={logo4} descripcion="Wifi - 5Mb" />
+            this.state.inmueble !== null ?
+                <div className="InfoInmueble">
+
+                    <div>
+                        {this.state.inmueble.idFirebase} HOLA COMO ANDA
                     </div>
-                    <ContactoArrendador inmueble={this.state.inmueble} />
+
+                    <div className="headerMapa">
+                        <Header />
+                    </div>
+                    <ImagenesInmueble inmueble={this.state.inmueble}/>
+                    <div className="contenido">
+                        <DescripcionInmueble inmueble={this.state.inmueble}/>
+                        <div>
+                            <Reservar inmueble={this.state.inmueble}/>
+                            <div className="descripcion">
+                                <DescripcionLugar imagen={logo1} descripcion="Habitaciones - 1 " />
+                                <DescripcionLugar imagen={logo2} descripcion=" Baños - 1" />
+                                <DescripcionLugar imagen={logo3} descripcion="Cocina Integral" />
+                                <DescripcionLugar imagen={logo4} descripcion="Wifi - 5Mb" />
+                            </div>
+                            <ContactoArrendador inmueble={this.state.inmueble} />
+                        </div>
+                    </div>
+                    <Footer />
                 </div>
-            </div>
-            <Footer />
-        </div>
-        );
+            :
+                null
+        )
     }
 }
 
