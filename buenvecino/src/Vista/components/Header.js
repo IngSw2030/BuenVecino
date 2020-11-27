@@ -16,20 +16,19 @@ class Header extends Component {
 		super()
 		this.state = {
 			open: false,
-			controlador: Controlador.getControlador(),
 			usuarioActivo: null,
 			foto: "https://image.freepik.com/vector-gratis/perfil-avatar-hombre-icono-redondo_24640-14046.jpg"
 		}
 		this.handleClose = this.handleClose.bind( this )
 
-		console.log( this.state.controlador, " EXISTE" )
+		console.log( Controlador.getControlador(), " EXISTE" )
 	}
 
 	async componentDidMount(){
-		console.log( "CONTROLER : ", this.state.controlador )
-		let usuario = this.state.controlador.obtenerUsuarioActivo()
+		console.log( "CONTROLER : ", Controlador.getControlador() )
+		let usuario = Controlador.getControlador().obtenerUsuarioActivo()
 		if ( usuario !== null ){
-			let foto = await this.state.controlador.obtenerFotoPerfil()
+			let foto = await Controlador.getControlador().obtenerFotoPerfil()
 			if (foto !== null) {
 				console.log("ESTE USUARIO NO TIENE FOTO")
 				this.setState({foto: foto,})
@@ -38,7 +37,7 @@ class Header extends Component {
 				this.setState({ foto: "https://upload.wikimedia.org/wikipedia/commons/0/06/Rammstein_logo.png", })
 				console.log("CAMBIAR FOTO PERFIL CUANDO NO EXISTE")
 			}
-			this.setState({usuario: usuario})
+			this.setState({usuarioActivo: usuario})
 		}
 	}
 
@@ -46,11 +45,16 @@ class Header extends Component {
 		this.setState({ open: valor })
 	}
 	handleOpen = () => {
-		this.setOpen(true);
+		console.log("ABRIR", Controlador.getControlador().obtenerUsuarioActivo() )
+		if ( Controlador.getControlador().obtenerUsuarioActivo() === null ){
+			this.setOpen(true);
+		}
+		
 	};
 
 	handleClose = () => {
 		this.setOpen(false);
+		console.log("RECIEN CERRADITO : ", Controlador.getControlador())
 		this.notificarInicioSesion()
 	};
 
@@ -66,9 +70,16 @@ class Header extends Component {
 					<nav>
 						<ul className="nav-items">
 							{/* <li onClick={this.handleOpen}>Ingresar</li> */}
-							<li type="button" onClick={this.handleOpen}>
-								Ingresar
-     						 </li>
+							{
+								this.state.usuarioActivo === null ? 
+								<li type="button" onClick={this.handleOpen}>
+									Ingresar
+							  	</li>
+							  :
+							  	null
+							}
+							
+							
 							<Modal
 								open={this.state.open}
 								onClose={this.handleClose}
@@ -99,11 +110,12 @@ class Header extends Component {
 	}
 
 	cerrarSesion = (e) =>{
-		this.state.controlador.cerrarSesion()
+		Controlador.getControlador().cerrarSesion()
 	}
 
 	notificarInicioSesion(){
-		let usuarioActivo = this.state.controlador.obtenerUsuarioActivo()
+		let usuarioActivo = Controlador.getControlador().obtenerUsuarioActivo()
+		console.log( "HA INICIADO SESION : ", usuarioActivo )
 		if ( usuarioActivo !== null ){
 			this.setState( {
 				usuarioActivo: usuarioActivo,

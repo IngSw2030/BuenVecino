@@ -18,13 +18,12 @@ class InfoInmueble extends Component {
     constructor(props){
         super()
         this.state = {
-            inmueble: null,
-            controlador: Controlador.getControlador()
+            inmueble: null
         }
     }
 
     async componentDidMount(){
-        let inmueble = await this.state.controlador.obtenerInmueble(this.props.match.params.idInmueble)
+        let inmueble = await Controlador.getControlador().obtenerInmueble(this.props.match.params.idInmueble)
         this.setState( {inmueble: inmueble} )
     }
 

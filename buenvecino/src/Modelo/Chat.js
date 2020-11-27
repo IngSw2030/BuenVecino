@@ -41,7 +41,10 @@ class Chat{
         }
     }
 
-    async actualizarChat(chatActualizado){  
+    async actualizarChat(chatActualizado){ 
+        
+        console.log("CHAT ACTUALIZADO", chatActualizado)
+
         let mensajesActualizados = chatActualizado.mensajes
         let tamanoActualizado = mensajesActualizados.length
         let tamanoLocal = this.state.mensajes.length
@@ -89,6 +92,7 @@ class Chat{
         let idMensaje = await ManejadorBD.escribirInformacion("Mensajes", objMensaje)
         let clausulaAgregar = Utils.clausulaAgregarElementoArrayFirebase(idMensaje)
         await ManejadorBD.actualizarInformacion("Chats", this.state.idFirebase, {mensajes: clausulaAgregar})
+        return {idError: 0, mensaje: "Mensaje enviado correctamente"}
     }
 
     async cargarMensajes(){

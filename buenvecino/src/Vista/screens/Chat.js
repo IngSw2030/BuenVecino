@@ -11,7 +11,6 @@ class Chat extends Component {
 	constructor(props){
 		super()
 		this.state = {
-			controlador: Controlador.getControlador(),
 			listaChats: [],
 			chatActualizar: [],
 			chatSeleccionado: 0
@@ -20,14 +19,11 @@ class Chat extends Component {
 	}
 
 	async componentDidMount(){
-		if ( this.state.controlador.obtenerUsuarioActivo() !== null ){
-			await this.setState( {listaChats: this.state.controlador.obtenerChatsCargados()} )
-			console.log( this.state.listaChats, " MMM " )
+		if ( Controlador.getControlador().obtenerUsuarioActivo() !== null ){
+			await this.setState( {listaChats: Controlador.getControlador().obtenerChatsCargados()} )
 		}
-		else{
-			console.log( this.state.controlador, "NO ESTA ACTIVO" )
-		}
-		
+		this.actualizarListaChats = this.actualizarListaChats.bind( this )
+		Controlador.getControlador().establecerReceptorChats( this.actualizarListaChats )		
 	}
 
 	render() {
@@ -43,13 +39,13 @@ class Chat extends Component {
 						<div className="contactos">
 						{
 							this.state.listaChats.map( (item, index) =>{
-								console.log("MAPPING : ", item)
 								return (
 								<Contacto 
 									infoChat = {item} 
 									indexChat={index} 
 									key={index} 
 									notificarCambio={this.cambiarChat}
+									
 								/>)
 							})
 						}		
@@ -58,14 +54,12 @@ class Chat extends Component {
 					<div className="mensajes">
 						{
 							this.state.chatActualizar.map( (item, index)=>{
-								console.log("SECOND MAPPING : ", item)
 								return <Mensaje 
 									mensajes={item.listaMensajes} 
+									idChat={item.idFirebase}
 								/>
 							} )
 						}
-						
-
 					</div>
 
 
@@ -75,12 +69,13 @@ class Chat extends Component {
 		);
 	}
 
+	actualizarListaChats(listaChatsActualizados){
+		this.setState( {listaChats: listaChatsActualizados} )
+	}
+
 	cambiarChat(index){
 		this.setState( {chatSeleccionado: index} )
 		this.setState( {chatActualizar: [ this.state.listaChats[ index ] ]} )
-
-		console.log("##$$ : ", this.state.listaChats[ index ], this.state.listaChats, "INDEX: :"+index)
-
 	}
 }
 

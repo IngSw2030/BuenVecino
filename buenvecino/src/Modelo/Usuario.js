@@ -60,6 +60,8 @@ class Usuario extends Valorable{
         }
         if ( this.state.receptorChat !== null ){
             let nuevosChats = this.state.listaChats.map( (chat) => {return chat.state} )
+            console.log( this.state.listaChats, " LLL " )
+
             this.state.receptorChat( nuevosChats )
         }
     }

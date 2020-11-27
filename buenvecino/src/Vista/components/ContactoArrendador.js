@@ -15,21 +15,20 @@ class ContactoArrendador extends Component {
 		super()
 		this.state = {
 			open: false,
-			controlador: Controlador.getControlador(),
 		}
 		this.handleClose = this.handleClose.bind( this )
 	}
 
 	componentDidMount(){
 		this.setState( {idInmueble : this.props.inmueble.idFirebase} )
-		let tipo = this.state.controlador.obtenerTipoUsuarioActivo()
+		let tipo = Controlador.getControlador().obtenerTipoUsuarioActivo()
 		if ( tipo === null ){
 			this.modificarImagenFavorito(1)
 		}
 		else if ( tipo === "Arrendador" ){
 			this.modificarImagenFavorito(0)
 		}
-		else if ( this.state.controlador.buscarFavorito(this.state.idInmueble) === null ){
+		else if ( Controlador.getControlador().buscarFavorito(this.state.idInmueble) === null ){
 			this.modificarImagenFavorito(1)
 		}
 		else{
@@ -100,7 +99,7 @@ class ContactoArrendador extends Component {
 	}
 
 	decidirFuncionalidadBoton(){
-		if ( !this.state.controlador.existeUsuarioSesionActiva() ){
+		if ( !Controlador.getControlador().existeUsuarioSesionActiva() ){
 			this.handleOpen()
 		}
 		else if ( this.state.disparadorIS === 1 ){
@@ -125,7 +124,7 @@ class ContactoArrendador extends Component {
 	};
 
 	notificarInicioSesion(){
-		if ( !this.state.controlador.existeUsuarioSesionActiva() ){
+		if ( !Controlador.getControlador().existeUsuarioSesionActiva() ){
 			//Inicio de sesión no efectuado
 			return
 		}
@@ -133,14 +132,14 @@ class ContactoArrendador extends Component {
 			console.log("PROCEDER A CHAT")
 		}
 		else{
-			if ( this.state.controlador.obtenerTipoUsuarioActivo() === "Arrendatario" ){
+			if ( Controlador.getControlador().obtenerTipoUsuarioActivo() === "Arrendatario" ){
 				this.cambiarEstadoFavorito(true)
 			}	
 		}
 	}
 
 	cambiarEstadoFavorito(ignorarEliminarFavorito=false){
-		if ( this.state.controlador.buscarFavorito(this.state.idInmueble) !== null ){
+		if ( Controlador.getControlador().buscarFavorito(this.state.idInmueble) !== null ){
 			if ( !ignorarEliminarFavorito ){
 				this.eliminarFavorito()
 			}
@@ -160,7 +159,7 @@ class ContactoArrendador extends Component {
 			comentario: "",
 			idInmueble: this.state.idInmueble
 		}
-		let respuesta = await this.state.controlador.agregarFavorito(objFavorito)
+		let respuesta = await Controlador.getControlador().agregarFavorito(objFavorito)
 		if ( respuesta.idError === 0 ){
 			this.modificarImagenFavorito(2)
 		}
@@ -168,8 +167,8 @@ class ContactoArrendador extends Component {
 	}
 
 	async eliminarFavorito(){
-		let idFavorito = this.state.controlador.buscarFavorito(this.state.idInmueble).idFirebase
-		let respuesta = await this.state.controlador.eliminarFavorito(idFavorito)
+		let idFavorito = Controlador.getControlador().buscarFavorito(this.state.idInmueble).idFirebase
+		let respuesta = await Controlador.getControlador().eliminarFavorito(idFavorito)
 		if ( respuesta.idError === 0 ){
 			this.modificarImagenFavorito(1)
 		}
