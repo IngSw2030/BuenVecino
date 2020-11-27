@@ -13,11 +13,11 @@ class Contacto extends Component {
             nombreUsuario: "",
             ultimoMensaje: ""
         }
+        console.log(props, " ---- LLL ")
     }
 
     async componentDidMount(){
         let idUsuario2 = this.props.infoChat.usuario1
-        console.log( this.props.infoChat, " LO QUE ME DAN" )
         if ( this.state.controlador.obtenerUsuarioActivo().idFirebase === idUsuario2 ){
             idUsuario2 = this.props.infoChat.usuario2
         }
@@ -28,19 +28,22 @@ class Contacto extends Component {
                 foto: usuario.fotoPerfil
             })
         }
-        console.log( this.state )
     }
 
     render() {
         return (
             <div className="contacto">
                 {/* <img/> */}
-                <button>
+                <button onClick={this.notificarCambio}>
                     <img src={this} />
                     <p>{this.state.nombreUsuario}</p>
                 </button>
             </div>
         );
+    }
+
+    notificarCambio = () =>{
+        this.props.notificarCambio( this.props.indexChat )
     }
 }
 

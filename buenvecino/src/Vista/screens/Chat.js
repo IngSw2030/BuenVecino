@@ -12,14 +12,17 @@ class Chat extends Component {
 		super()
 		this.state = {
 			controlador: Controlador.getControlador(),
-			listaChats: []
+			listaChats: [],
+			chatActualizar: [],
+			chatSeleccionado: 0
 		}
-		
+		this.cambiarChat = this.cambiarChat.bind(this)
 	}
 
 	async componentDidMount(){
 		if ( this.state.controlador.obtenerUsuarioActivo() !== null ){
-			this.setState( {listaChats: this.state.controlador.obtenerChatsCargados()} )
+			await this.setState( {listaChats: this.state.controlador.obtenerChatsCargados()} )
+			console.log( this.state.listaChats, " MMM " )
 		}
 		else{
 			console.log( this.state.controlador, "NO ESTA ACTIVO" )
@@ -40,15 +43,28 @@ class Chat extends Component {
 						<div className="contactos">
 						{
 							this.state.listaChats.map( (item, index) =>{
-								return <Contacto infoChat = {item} />
-
+								console.log("MAPPING : ", item)
+								return (
+								<Contacto 
+									infoChat = {item} 
+									indexChat={index} 
+									key={index} 
+									notificarCambio={this.cambiarChat}
+								/>)
 							})
-						}
-						
+						}		
 						</div>
 					</div>
 					<div className="mensajes">
-						<Mensaje />
+						{
+							this.state.chatActualizar.map( (item, index)=>{
+								console.log("SECOND MAPPING : ", item)
+								return <Mensaje 
+									mensajes={item.listaMensajes} 
+								/>
+							} )
+						}
+						
 
 					</div>
 
@@ -57,6 +73,14 @@ class Chat extends Component {
 				<Footer />
 			</div>
 		);
+	}
+
+	cambiarChat(index){
+		this.setState( {chatSeleccionado: index} )
+		this.setState( {chatActualizar: [ this.state.listaChats[ index ] ]} )
+
+		console.log("##$$ : ", this.state.listaChats[ index ], this.state.listaChats, "INDEX: :"+index)
+
 	}
 }
 

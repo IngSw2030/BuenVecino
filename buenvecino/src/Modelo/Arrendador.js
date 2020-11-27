@@ -59,7 +59,6 @@ class Arrendador extends Usuario{
 
     constructor(infoUsuario){
         super(infoUsuario)
-        console.log( infoUsuario, "RECIBIDA" )
         this.state = {
             ...this.state,
             ...Utils.agregarCamposSiNoExisten(infoUsuario, ["inmuebles"], [])
