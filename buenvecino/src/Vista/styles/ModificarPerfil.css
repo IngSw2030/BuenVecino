@@ -1,0 +1,60 @@
+.botones a {
+    padding: 1%;
+    display: flex;
+    justify-content: space-around;
+    background: #fd275f;
+    color: white;
+    width: 40%;
+    font-weight: 600;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+.botones a{
+    text-decoration: none;
+}
+
+.botones a:hover {
+    color: #fd275f;
+    background-color: white;
+    border: 1px solid #fd275f;
+}
+
+.botones a button:hover{
+    color: #fd275f;
+    background-color: white;
+    
+}
+
+.botones a button{
+    background: none;
+    border: none;
+    color: white;
+    font-family: Saira;
+    font-weight: 600;
+    font-size: 20px;
+    width: 100%;
+}
+
+.botones a button:focus{
+    border: none;
+    border-radius: none;
+    outline: none; 
+    box-shadow: none; 
+}
+
+.RegistrarUsuario form .modificar{
+    display: flex;
+    align-items: center;
+    margin: 1%;
+}
+.RegistrarUsuario form .modificar label{
+    width: 12em;
+}
+.RegistrarUsuario .formulario p{
+    margin: 0%;
+}
+.visualPerfil div{
+    display: flex;
+    flex-direction: column;
+}

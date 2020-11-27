@@ -42,6 +42,15 @@ label{
 
 input{
     font-family: Saira;
+    padding: 1%;
+}
+
+select{
+    padding: 1%;
+    font-family: Saira;
+}
+select option{
+    font-family: Saira;
 }
 
 .RegistrarUsuario .botones{
