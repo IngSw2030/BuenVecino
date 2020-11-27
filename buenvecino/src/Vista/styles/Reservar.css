@@ -43,3 +43,52 @@
   
   color: #000000;
 }
+
+.reserva{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  color: white;
+  width: 40%;
+  transform: translate(80%,20%);
+  border-radius: 50px;
+  height: 20em;
+}
+
+.reserva h3{
+  padding:2%;
+  text-align: center;
+  background-color: #24243c;
+  border-radius: 50px 50px 0px 0px;
+}
+
+.reserva .formu{
+  display: flex;
+  margin: -1%;
+  width: 80%;
+  align-content: center;
+  justify-content: center;
+  align-self: center;
+  
+}
+
+.reserva .formu form{
+  width: 100%;
+}
+
+.reserva label{
+  color: gray;
+}
+
+.reserva Button{
+  margin-top: 3%;
+  background: #fd275f;
+  color: white;
+  font-size: 18px;
+}
+
+.reserva Button:hover{
+  background: white;
+  color: #fd275f;
+  border: 1px solid #fd275f;
+}
