@@ -12,8 +12,10 @@ class BusquedaMapa extends Component {
               <div className="Inmuebles">
                 {
                     this.props.infoInmuebles.map( (obj, index) => {
+                      console.log(obj)
+                      let path = "/inmueble/"+obj.idFirebase  
                       return (
-                        <Link to="/inmueble">
+                        <Link to={path}>
                           <InmuebleMapa info={obj} />
                         </Link>
                       )
