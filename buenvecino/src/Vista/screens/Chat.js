@@ -44,7 +44,6 @@ class Chat extends Component {
 
 							})
 						}
-							this.state.controlador.
 						
 						</div>
 					</div>

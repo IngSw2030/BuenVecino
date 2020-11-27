@@ -75,7 +75,7 @@ class Controlador{
 
     async cerrarSesion(){
         this.modelo.cerrarSesion()
-        Controlador.almacenarLocalStorage()
+        localStorage.removeItem("Controlador")
     }
 
     async confirmarSolicitudReserva(idSolicitud){
