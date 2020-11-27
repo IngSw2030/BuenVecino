@@ -286,6 +286,15 @@ class Usuario extends Valorable{
         }
     }
 
+    async obtenerFotoPerfil(){
+        if ( this.state.fotoPerfil !== null ){
+            return this.state.fotoPerfil
+        }
+        else{
+            return await ManejadorSg.obtenerFotoPerfil( this.state.idFirebase )
+        }
+    }
+
     obtenerSolicitudesCargadas(){
         return this.state.listaSolicitudes.map( (item) => {return item.state} )
     }
@@ -368,8 +377,7 @@ class Usuario extends Valorable{
         for(let i in this.state.listaSolicitudes){
             this.state.listaSolicitudes[i] = new SolicitudReserva( this.state.listaSolicitudes[i].state )
             this.state.listaSolicitudes[i].transformarInformacionJSON( )
-        }
-        
+        }        
     }
 
     static obtenerObjetoBD(objUsuario){

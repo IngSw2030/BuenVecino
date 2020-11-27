@@ -22,19 +22,23 @@ class Header extends Component {
 		}
 		this.handleClose = this.handleClose.bind( this )
 
-		console.log( Controlador.getControlador(), " ME ESTA LLEGANDO " )
-		console.log( Controlador.getControlador().obtenerUsuarioActivo(), " USUARIO ; " )
-		this.iniciarSesionSiExiste()
+		console.log( this.state.controlador, " EXISTE" )
 	}
 
-	iniciarSesionSiExiste(){
-		let usuario = Controlador.getControlador().obtenerUsuarioActivo()
+	async componentDidMount(){
+		console.log( "CONTROLER : ", this.state.controlador )
+		let usuario = this.state.controlador.obtenerUsuarioActivo()
 		if ( usuario !== null ){
-			this.setState( {
-				usuario: usuario,
-				foto: usuario.fotoPerfil
-
-			} )
+			let foto = await this.state.controlador.obtenerFotoPerfil()
+			if (foto !== null) {
+				console.log("ESTE USUARIO NO TIENE FOTO")
+				this.setState({foto: foto,})
+			}
+			else {
+				this.setState({ foto: "https://upload.wikimedia.org/wikipedia/commons/0/06/Rammstein_logo.png", })
+				console.log("CAMBIAR FOTO PERFIL CUANDO NO EXISTE")
+			}
+			this.setState({usuario: usuario})
 		}
 	}
 

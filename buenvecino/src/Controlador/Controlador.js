@@ -168,6 +168,10 @@ class Controlador{
         
     }
 
+    async obtenerFotoPerfil(){
+        return await this.modelo.obtenerFotoPerfil()
+    }
+
     async obtenerInmueble(idInmueble){
         let resultado = await this.modelo.obtenerInmueble(idInmueble)
         return resultado !== null ? resultado.state : null

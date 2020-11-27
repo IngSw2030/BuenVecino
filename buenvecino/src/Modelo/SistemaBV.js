@@ -265,6 +265,10 @@ class SistemaBV{
         }
         
     }
+    
+    obtenerFotoPerfil(){
+        return this.obtenerUsuarioActivo().obtenerFotoPerfil()
+    }
 
     async obtenerInmueble(idInmueble){
         for(let i in this.state.cacheInmuebles){
