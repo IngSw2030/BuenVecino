@@ -250,6 +250,10 @@ class PaginaTest extends Component{
             PRUEBA OTRA
           </button>
 
+          <button onClick= {()=>{
+            
+            window.location.href="/src/Vista/screens/Chat.js"}}>Mirar Locion</button>
+
           </div>
 
 

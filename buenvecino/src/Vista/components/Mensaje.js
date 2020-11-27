@@ -29,7 +29,7 @@ class Mensaje extends Component {
     render() {
         return (
             <div className="Mensaje">
-                <div className="mensa">
+                <div className="mensa" id="mensa">
                     {
                         this.state.mensajes.map( (item, index)=>{
                             if ( item.remitente === this.state.idUsuario ){
@@ -61,7 +61,12 @@ class Mensaje extends Component {
         if ( mensaje !== "" ){
             let respuesta = await Controlador.getControlador().agregarMensajeChat(this.props.idChat, mensaje)
             this.refMensaje.current.value = ""
+            let elemento = window.document.getElementById('mensa')
+            elemento.scrollTop = elemento.scrollHeight  
+            //window.document.getElementById('mensa').scrollTop=0;
         }
+        
+            
     }
 }
 
