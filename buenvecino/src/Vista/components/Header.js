@@ -111,7 +111,7 @@ class Header extends Component {
 
 	cerrarSesion = (e) =>{
 		Controlador.getControlador().cerrarSesion()
-		window.location.reload(false);
+		window.location.reload();
 	}
 
 	notificarInicioSesion(){

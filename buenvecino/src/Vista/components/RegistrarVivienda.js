@@ -303,7 +303,7 @@ class RegistrarVivienda extends Component {
     async iniciarRegistro(e){
         e.preventDefault()
 
-        if ( Controlador.getControlador().obtenerTipoUsuarioActivo() !== "Arrendatario" ){
+        if ( Controlador.getControlador().obtenerTipoUsuarioActivo() !== "Arrendador" ){
             this.mostrarError("NO ESTA LOGUEADO UN ARRENDADOR")
             return
         }
@@ -374,6 +374,7 @@ class RegistrarVivienda extends Component {
                 }
             }
             this.setState( {mensajeError: ""} )
+            alert("SE REGISTRO")
         }
         else{
             this.setState( {mensajeError: "MIRE LA CONSOLA QUE HUBO UN ERROR"} )

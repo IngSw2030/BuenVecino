@@ -125,11 +125,10 @@ class ContactoArrendador extends Component {
 
 	notificarInicioSesion(){
 		if ( !Controlador.getControlador().existeUsuarioSesionActiva() ){
-			//Inicio de sesión no efectuado
 			return
 		}
 		if ( this.state.disparadorIS === 1 ){
-			console.log("PROCEDER A CHAT")
+			this.iniciarChat()
 		}
 		else{
 			if ( Controlador.getControlador().obtenerTipoUsuarioActivo() === "Arrendatario" ){
@@ -176,7 +175,7 @@ class ContactoArrendador extends Component {
 	}
 
 	iniciarChat(){
-
+		
 	}
 
 	mostrarMensajeExito(mensaje){
