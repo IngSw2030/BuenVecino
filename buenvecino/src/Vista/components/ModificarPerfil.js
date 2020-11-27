@@ -18,6 +18,8 @@ class ModificarPerfil extends Component {
         email: "",
         telefono: "",
         genero: "",
+        direccion:"",
+        ciudad:""
       },
     };
     this.refFormulario = React.createRef();
@@ -118,7 +120,7 @@ class ModificarPerfil extends Component {
                     placeholder=" Ingrese su direccion "
                     name="direccion"
                     required
-                    value="Calle falsa 123"
+                    value={this.state.usuarioActivo.direccion}
                   />
                 </div>
                 <div>
@@ -127,7 +129,7 @@ class ModificarPerfil extends Component {
                     type="text"
                     placeholder=" Ingrese su ciudad "
                     name="ciudad"
-                    value="Bogota Ome"
+                    value={this.state.usuarioActivo.ciudad}
                     required
                   />
                 </div>
