@@ -33,9 +33,9 @@ class InfoInmueble extends Component {
             this.state.inmueble !== null ?
                 <div className="InfoInmueble">
 
-                    <div>
+                    {/* <div>
                         {this.state.inmueble.idFirebase} HOLA COMO ANDA
-                    </div>
+                    </div> */}
 
                     <div className="headerMapa">
                         <Header />

@@ -9,6 +9,9 @@ input[type=number] { -moz-appearance:textfield; }
 .RegistrarUsuario{
     width: 50%;
     transform: translate(50%,0%);
+    border: 2px solid #24243c;
+    border-radius: 50px 50px 50px 50px;
+    margin-bottom: 3%;
 
 }
 img{
@@ -18,9 +21,13 @@ img{
     display: flex;
     align-items: center;
     justify-content: space-around;
+    border-radius: 50px 50px 0px 0px;
+    background: #24243c;
+    color: white;
 }
 
 form{
+    margin: 5%;
     display: flex;
     flex-direction: column;
 }
@@ -28,10 +35,58 @@ form{
 label{
     margin-top: 1%;
     align-self: center;
+    font-family: Saira;
+    font-size: 18px;
+    font-weight: 500;
 }
 
-.botones{
+input{
+    font-family: Saira;
+}
+
+.RegistrarUsuario .botones{
     padding: 3%;
     display: flex;
     justify-content: space-around;
+}
+
+.RegistrarUsuario .botones .Cancelar{
+    padding: 1%;
+    display: flex;
+    justify-content: space-around;
+    background: #fd275f;
+    color: white;
+    width: 40%;
+    font-weight: 600;
+    font-size: 18px;
+    
+}
+
+.RegistrarUsuario .botones .Registrarse{
+    padding: 2%;
+    display: flex;
+    justify-content: space-around;
+    background-color: #24243c;
+    color: white;
+    width: 40%;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.RegistrarUsuario .botones .Cancelar:hover{
+    color: #fd275f;
+    background-color: white;
+    border: 1px solid #fd275f;
+}
+
+.RegistrarUsuario .botones .Registrarse:hover{
+    color: #24243c;
+    background-color: white;
+    border: 1px solid #24243c;
+
+}
+
+.visual div{
+    display: flex;
+    flex-direction: column;
 }
