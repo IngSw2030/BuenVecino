@@ -11,10 +11,19 @@ class ModificarPerfil extends Component {
         super()
         this.state = {
             tipoUsuario: "Arrendador",
-
+            usuarioActivo:null
         }
         this.refFormulario = React.createRef()
         this.tipoUsuario = React.createRef()
+
+    }
+    componentDidMount(){
+        
+        let usuario = Controlador.getControlador().obtenerUsuarioActivo()
+        console.log("Usuario",usuario)
+        this.setState({usuarioActivo:"Perro hpta",})
+        console.log("Usuario activo",this.state.usuarioActivo,this.state.tipoUsuario)
+        
     }
 
     render() {
