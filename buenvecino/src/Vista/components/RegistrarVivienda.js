@@ -243,7 +243,7 @@ class RegistrarVivienda extends Component {
                             }
                         </div>
 
-                        <div>
+                        <div className="mapa">
                             <Mapa 
                                 zoom={13} 
                                 centrar = {{lat: 4.641055, lng: -74.086925}} 
