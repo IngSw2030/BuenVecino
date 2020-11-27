@@ -215,7 +215,8 @@ class PaginaTest extends Component{
           <button onClick={async (e)=>{
 
           }}>
-            FUNCION VARIA
+            
+             VARIA
           </button>
 
           <button onClick={async (e)=>{
@@ -240,7 +241,11 @@ class PaginaTest extends Component{
           <input type="file" id="file-selector" multiple ref={this.refArchivo}></input>
           <br/>
           <button onClick={
-            localStorage.removeItem("Controlador")
+            (e)=>{
+              localStorage.removeItem("Controlador")
+              console.log("ITEM : ", localStorage.getItem("Controlador") ) 
+            }
+            
           }>
             PRUEBA OTRA
           </button>

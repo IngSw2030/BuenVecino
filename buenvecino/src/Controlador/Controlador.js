@@ -26,8 +26,8 @@ class Controlador{
     }
 
     async agregarMensajeChat(idChat, mensaje){
-        let respuesta =  await this.modelo.agregarMensajeChat
-        Controlador.almacenarLocalStorage()(idChat, mensaje)
+        let respuesta =  await this.modelo.agregarMensajeChat(idChat, mensaje)
+        Controlador.almacenarLocalStorage()
         return respuesta
     }
 

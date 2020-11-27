@@ -11,7 +11,6 @@ class Login extends Component {
     constructor(props){
         super()
         this.state = {
-            controlador: Controlador.getControlador()
         }
         this.refFormulario = React.createRef()
     }
@@ -70,7 +69,7 @@ class Login extends Component {
 
     async iniciarSesion(e){        
         e.preventDefault()
-        if ( this.state.controlador.existeUsuarioSesionActiva() ){
+        if ( Controlador.getControlador().existeUsuarioSesionActiva() ){
             console.log("CUIDADO, YA EXISTE SESIÓN")
             return
         }
@@ -85,7 +84,7 @@ class Login extends Component {
         let email = datos.get( "correo" )
         let contrasena = datos.get( "psw" )
 
-        let respuesta = await this.state.controlador.iniciarSesionUsuario(email, contrasena)
+        let respuesta = await Controlador.getControlador().iniciarSesionUsuario(email, contrasena)
         if ( respuesta.idError === 0 ){
             this.mostrarResultado( respuesta.mensaje )
             this.props.cerrar()

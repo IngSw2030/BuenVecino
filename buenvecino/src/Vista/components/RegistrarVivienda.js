@@ -10,7 +10,6 @@ class RegistrarVivienda extends Component {
     constructor(props){
         super()
         this.state = {
-            controlador: Controlador.getControlador(),
             tipoInmueble: "C",
             fotosCargadas: [],
             estadoFotos: [],
@@ -304,7 +303,7 @@ class RegistrarVivienda extends Component {
     async iniciarRegistro(e){
         e.preventDefault()
 
-        if ( this.state.controlador.obtenerTipoUsuarioActivo() !== "Arrendatario" ){
+        if ( Controlador.getControlador().obtenerTipoUsuarioActivo() !== "Arrendatario" ){
             this.mostrarError("NO ESTA LOGUEADO UN ARRENDADOR")
             return
         }
@@ -366,10 +365,10 @@ class RegistrarVivienda extends Component {
             }
         }
 
-        let respuesta = await this.state.controlador.registrarInmueble( objInmueble )
+        let respuesta = await Controlador.getControlador().registrarInmueble( objInmueble )
         if ( respuesta.idError == 0 ){
             if ( this.state.fotosCargadas.length > 0 ){
-                let respuestaFotos = await this.state.controlador.subirFotosInmueble(respuesta.idInmueble, this.state.fotosCargadas )
+                let respuestaFotos = await Controlador.getControlador().subirFotosInmueble(respuesta.idInmueble, this.state.fotosCargadas )
                 if ( respuestaFotos.idError > 0 ){
                     this.mostrarError(respuestaFotos.mensaje)
                 }

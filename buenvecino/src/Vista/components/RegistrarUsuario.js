@@ -9,8 +9,7 @@ class RegistrarUsuario extends Component {
     constructor(props){
         super()
         this.state = {
-            tipoUsuario: "Arrendador",
-            controlador: Controlador.getControlador()
+            tipoUsuario: "Arrendador"
 
         }
         this.refFormulario = React.createRef()
@@ -169,13 +168,13 @@ class RegistrarUsuario extends Component {
             }
         }
 
-        let respuesta = await this.state.controlador.registrarUsuario( objetoBasico, esArrendatario, objetoBasico.email, contrasena1 )
+        let respuesta = await Controlador.getControlador().registrarUsuario( objetoBasico, esArrendatario, objetoBasico.email, contrasena1 )
         if ( respuesta.idError !== 0 ){
             this.mostrarError( respuesta )
         }
         else{
             if ( agregarFoto ){
-                await this.state.controlador.subirFotoPerfil(foto)
+                await Controlador.getControlador().subirFotoPerfil(foto)
                 console.log("FOTO CARGADA")
             }
             
