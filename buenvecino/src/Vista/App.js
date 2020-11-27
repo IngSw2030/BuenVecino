@@ -28,7 +28,6 @@ class App extends Component {
           <Switch>
             <Route path="/" exact>
               <Landing />
-							
               {/* <Header />
               <Main /> */}
               {/* home */}
@@ -40,8 +39,8 @@ class App extends Component {
             <Route path="/busqueda" exact>
               <Mapas/>
             </Route>
-            <Route path="/inmueble" exact>
-              <InfoInmueble/>
+            <Route path="/inmueble/:idInmueble" component={InfoInmueble} exact>
+              
             </Route>
 						<Route path="/gestionar" exact>
               <GestionarInmueble/>

@@ -8,7 +8,7 @@ class Favorito {
             "fechaAgregado": {
                 "type": "number"
             },
-            "Comentario": {
+            "comentario": {
                 "type": "string"
             },
             "idInmueble": {
@@ -18,7 +18,7 @@ class Favorito {
         },
         "required": [
             "fechaAgregado",
-            "Comentario",
+            "comentario",
             "idInmueble"
         ],
         "title": "ESTRUCTURA_JSON"

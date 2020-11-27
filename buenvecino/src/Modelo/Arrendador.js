@@ -9,8 +9,6 @@ import Inmueble from './Inmueble';
 
 class Arrendador extends Usuario{
 
-    static TABLA_INMUEBLES = "Inmuebles2"
-
     static ESTRUCTURA_JSON = {     
         "type": "object",
         "additionalProperties": false,
@@ -93,7 +91,7 @@ class Arrendador extends Usuario{
     async cargarInformacionAdicionalInmuebles(){
         let listaInmuebles = []
         let inmueblesAux = this.state.inmuebles
-        let consulta = await ManejadorBD.realizarConsulta(Arrendador.TABLA_INMUEBLES, ["idPropietario"], ["=="], [this.state.idFirebase])
+        let consulta = await ManejadorBD.realizarConsulta("Inmuebles", ["idPropietario"], ["=="], [this.state.idFirebase])
         consulta = Utils.emparejarArrayIds( consulta, this.state.inmuebles )
         for( let i in consulta ){
             let objeto = consulta[i]
@@ -131,10 +129,10 @@ class Arrendador extends Usuario{
                 let auxiliar = this.state.inmuebles[i]
                 this.state.inmuebles.splice(i, 1)
                 this.state.listaInmuebles.splice(i, 1)
-                let objauxiliar = await ManejadorBD.leerInformacionDocumento(Arrendador.TABLA_INMUEBLES, auxiliar)
+                let objauxiliar = await ManejadorBD.leerInformacionDocumento("Inmuebles", auxiliar)
                 let clausulaEliminar = Utils.clausulaEliminarElementoArrayFirebase(idInmueble)
                 await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: clausulaEliminar})
-                await ManejadorBD.borrarInformacion(Arrendador.TABLA_INMUEBLES, idInmueble)
+                await ManejadorBD.borrarInformacion("Inmuebles", idInmueble)
                 return {idError: 0, mensaje: "Inmueble eliminado exitosamente"}
             }
         }
@@ -142,7 +140,6 @@ class Arrendador extends Usuario{
     }
 
     async modificarInmueble(idInmueble, camposModificados){
-        console.log("Cambiar el ATRIBUTO ESTATICO TABLA_INMUEBLES")
         let inmuebleModificado = null
         for( let i in this.state.listaInmuebles ){
             let idAInmuebleAux = this.state.listaInmuebles[i].state.idFirebase
@@ -154,7 +151,7 @@ class Arrendador extends Usuario{
         if ( inmuebleModificado === null ){
             return {idError: 1, mensaje: "Inmueble no encontrado"}
         }
-        await ManejadorBD.actualizarInformacion(Arrendador.TABLA_INMUEBLES, idInmueble, camposModificados)
+        await ManejadorBD.actualizarInformacion("Inmuebles", idInmueble, camposModificados)
         return {idError: 0, mensaje: "Modificación realizada"}
     }
 
@@ -181,8 +178,7 @@ class Arrendador extends Usuario{
             if ( errores.errors.length > 0 ){
                 return {idError: 3, mensaje: errores}
             }
-            console.log("MODIFICAR TABLA INMUEBLES 2 POR INMUEBLES")
-            let idInmueble = await ManejadorBD.escribirInformacion("Inmuebles2", infoInmueble)
+            let idInmueble = await ManejadorBD.escribirInformacion("Inmuebles", infoInmueble)
             let inmueble = Arrendador.crearObjetoInmueble(infoInmueble, idInmueble)
             let clausulaAgregar = Utils.clausulaAgregarElementoArrayFirebase(idInmueble)
             await ManejadorBD.actualizarInformacion("Arrendadores", this.state.idFirebase, {inmuebles: clausulaAgregar})

@@ -86,11 +86,6 @@ class Login extends Component {
         let respuesta = await this.state.controlador.iniciarSesionUsuario(email, contrasena)
         if ( respuesta.idError === 0 ){
             this.mostrarResultado( respuesta.mensaje )
-            //let h = this.props.notificar()
-            //console.log( this.props.notificar, "###" )
-            console.log( "¿CUAL ES EL SIGUIENTE PASO? " )
-            console.log( " CERRAR MODAL " )
-
             this.props.cerrar()
         }
         else{

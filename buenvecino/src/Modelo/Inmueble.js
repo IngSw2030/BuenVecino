@@ -131,7 +131,7 @@ class Inmueble extends Valorable{
         }
         if ( rechazados.length !== idsServicio.length ){
             let actualizacion = { servicios: this.state.servicios }
-            ManejadorBD.actualizarInformacion( "Inmuebles2", this.state.idFirebase, actualizacion )
+            ManejadorBD.actualizarInformacion( "Inmuebles", this.state.idFirebase, actualizacion )
             if ( rechazados.length > 0 ){
                 return {idError: -1, mensaje: "Algunos servicios fueron rechazados", rechazados}
             }
@@ -141,9 +141,7 @@ class Inmueble extends Valorable{
         }
         else{
             return {idError: 2, mensaje: "Los servicios ingresados no existen"}
-        }
-
-        
+        }     
     }
 
 
@@ -169,7 +167,7 @@ class Inmueble extends Valorable{
         this.actualizarInmueble = this.actualizarInmueble.bind(this)
         for(let i in this.state.listaValoraciones){
             this.state.listaValoraciones[i].establecerReceptorValoracion(this.recibirActualizacionValoracion)
-            ManejadorBD.escucharActualizacionesDocumento("Inmuebles2", this.state.idFirebase, this.actualizarInmueble)
+            ManejadorBD.escucharActualizacionesDocumento("Inmuebles", this.state.idFirebase, this.actualizarInmueble)
         }
     }
 
@@ -186,7 +184,7 @@ class Inmueble extends Valorable{
                 this.state.servicios[i].splice(i, 1)
                 this.state.listaServicios[i].splice(i, 1)
                 let clausulaRemover = {servicios: Utils.clausulaEliminarElementoArrayFirebase(idServicio)}
-                ManejadorBD.actualizarInformacion("Inmuebles2", this.state.idFirebase, clausulaRemover )
+                ManejadorBD.actualizarInformacion("Inmuebles", this.state.idFirebase, clausulaRemover )
             }
         }
     }

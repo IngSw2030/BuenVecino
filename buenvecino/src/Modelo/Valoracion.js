@@ -75,9 +75,7 @@ class Valoracion{
 
     static async existeObjetoValorado(tipoValoracion, idObjeto){
         let coleccion = this.obtenerColeccionDelValoradoSegunTipo(tipoValoracion)
-        console.log( coleccion, idObjeto, " BOBOBOBOB " )
         let respuesta = await ManejadorBD.leerInformacionDocumento(coleccion, idObjeto)
-        console.log("RESP : ", respuesta)
         return respuesta !== null ? true : false
     }
 
@@ -94,7 +92,7 @@ class Valoracion{
     //Retorna la coleccion asociada al objeto valorado de la valoracion basandose en un tipo de valoracion
     static obtenerColeccionDelValoradoSegunTipo(tipoValoracion){ 
         switch( tipoValoracion ){
-            case "IN": return "Inmuebles2"
+            case "IN": return "Inmuebles"
             case "AR": return "Arrendadores"
             case "AO": return "Arrendatarios"
             default: return null

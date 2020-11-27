@@ -14,15 +14,13 @@ class ManejadorBD{
 
     static async actualizarInformacionArray(coleccion, id, nuevoDato, agregar){
         try {
-            
             delete nuevoDato.idFirebase
             if ( agregar ){
                 await db.collection(coleccion).doc(id).update(nuevoDato)
             }
             else{
                 await db.collection(coleccion).doc(id).update(nuevoDato)
-            }
-            
+            }      
         }
         catch (error) {
             throw error
@@ -49,12 +47,9 @@ class ManejadorBD{
 
     static escucharActualizacionesDocumento(coleccion, documento, metodoRecuperacion){
         try {
-            //db.collection(coleccion).doc(documento).onSnapshot( metodoRecuperacion )
             db.collection(coleccion).doc(documento).onSnapshot( function(doc) {
                 metodoRecuperacion( {...doc.data(), idFirebase: doc.id} )
             } )
-
-            
         }
         catch (error) {
             throw error

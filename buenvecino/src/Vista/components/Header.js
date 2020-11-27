@@ -7,6 +7,7 @@ import Modal from '@material-ui/core/Modal'
 import Login from "./Login"
 import Logo from "../assets/Logo.png"
 import NavDropdown from 'react-bootstrap/NavDropdown'
+import Controlador from "../../Controlador/Controlador";
 
 
 class Header extends Component {
@@ -15,6 +16,7 @@ class Header extends Component {
 		super()
 		this.state = {
 			open: false,
+			controlador: Controlador.getControlador()
 		}
 		this.handleClose = this.handleClose.bind( this )
 	}
@@ -52,13 +54,9 @@ class Header extends Component {
 							<Modal
 								open={this.state.open}
 								onClose={this.handleClose}
-
 								className="mdl"
 							>
-
 								<Login cerrar={this.handleClose}/>
-
-
 							</Modal>
 
 						</ul>
@@ -73,12 +71,18 @@ class Header extends Component {
 						<NavDropdown.Item ><Link to="/historialInmueble">Historial de Inmuebles</Link></NavDropdown.Item>
 						
             			<NavDropdown.Divider />
-						<NavDropdown.Item ><Link to="/">Cerrar Sesión</Link></NavDropdown.Item>
+						<NavDropdown.Item 
+							onClick = {this.cerrarSesion}
+						><Link to="/">Cerrar Sesión</Link></NavDropdown.Item>
 					</NavDropdown>
 
 				</div>
 			</div>
 		);
+	}
+
+	cerrarSesion = (e) =>{
+		this.state.controlador.cerrarSesion()
 	}
 
 	notificarInicioSesion(){

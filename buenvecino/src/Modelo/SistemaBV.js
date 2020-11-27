@@ -11,7 +11,8 @@ class SistemaBV{
     constructor(){
         this.state = {
             arrendador : null,
-            arrendatario : null
+            arrendatario : null,
+            cacheInmuebles: []
         }
     }
 
@@ -21,6 +22,19 @@ class SistemaBV{
 
     async agregarFavorito(favorito){
         return await this.obtenerUsuarioActivo().agregarFavorito(favorito)
+    }
+
+    async agregarInmuebleCache(idInmueble, posicion = -1){
+        if ( posicion == -1 ){
+            posicion = this.state.cacheInmuebles.length
+        }
+        let nuevoInmueble = await ManejadorBD.leerInformacionDocumento("Inmuebles", idInmueble)
+        if ( nuevoInmueble !== null ){
+            nuevoInmueble = Arrendador.crearObjetoInmueble(nuevoInmueble, idInmueble)
+            await nuevoInmueble.cargarInformacionAdicional()
+            this.state.cacheInmuebles[posicion] =  {inmueble: nuevoInmueble, tiempo: Date.now()}    
+        }
+        return nuevoInmueble
     }
 
     async agregarMensajeChat(idChat, mensaje){
@@ -33,7 +47,7 @@ class SistemaBV{
 
     buscarFavorito(idInmueble){
         if ( this.obtenerTipoUsuarioActivo() === "Arrendatario" ){
-            return this.arrendatario.buscarFavorito(idInmueble)
+            return this.obtenerUsuarioActivo().buscarFavorito(idInmueble)
         }
         else{
             return null
@@ -125,8 +139,7 @@ class SistemaBV{
     }
 
     async crearSolicitudReserva(infoReserva){
-        console.log("CAMBIAR TABLA Inmuebles2 X Inmuebles")
-        let inmueble = await ManejadorBD.leerInformacionDocumento("Inmuebles2", infoReserva.idInmueble)
+        let inmueble = await ManejadorBD.leerInformacionDocumento("Inmuebles", infoReserva.idInmueble)
         if ( inmueble === null ){
             return {idError: 1, mensaje: "El inmueble no existe"}
         }
@@ -209,7 +222,7 @@ class SistemaBV{
             }
             else{
                 let arrendatario = await ManejadorBD.leerInformacionDocumento( "Arrendatarios", idRespuesta )
-                let usuario = new Arrendador( arrendatario )
+                let usuario = new Arrendatario( arrendatario )
                 await this.establecerUsuario(usuario, true)
                 return {idError: 0, mensaje: "inicio de sesión exitoso", usuario: this.state.arrendatario.state, tipo: "Arrendatario"}
             }
@@ -237,6 +250,21 @@ class SistemaBV{
         return null
     }
 
+    async obtenerInmueble(idInmueble){
+        for(let i in this.state.cacheInmuebles){
+            if ( this.state.cacheInmuebles[i].inmueble.state.idFirebase === idInmueble ){
+                if ( this.state.cacheInmuebles[i].tiempo + 1000*60*10 < Date.now() ){
+                    return this.state.cacheInmuebles[i].inmueble
+                }
+                else{
+                    return await this.agregarInmuebleCache(idInmueble, i)
+                }
+            }
+        }
+        return await this.agregarInmuebleCache(idInmueble)
+
+    }
+
     obtenerInmueblesCargados(){
         return this.obtenerUsuarioActivo().obtenerInmueblesCargados()
     }
@@ -262,7 +290,15 @@ class SistemaBV{
     }
 
     obtenerUsuarioActivo(){
-        return this.state.arrendatario !== null ? this.state.arrendatario : this.state.arrendador
+        if ( this.state.arrendatario !== null ){
+            return this.state.arrendatario
+        }
+        else if ( this.state.arrendador !== null ){
+            return this.state.arrendador
+        }
+        else{
+            return null
+        }
     }
 
     obtenerValoracionesHechas(){
@@ -331,21 +367,7 @@ class SistemaBV{
         else{
             return Arrendador.validarEstructuraObjeto(infoUsuario)
         }
-    }    
-
-    async pruebaX(param){
-        let inmuebles = await ManejadorBD.leerInformacionColeccion("Inmuebles")
-        for (let i in inmuebles){
-            console.log(inmuebles[i])
-            let nubicacion = inmuebles[i].ubicacion
-            let cadena = Inmueble.obtenerCadenaBusqueda( nubicacion.barrio, nubicacion.localidad )
-            nubicacion = {...nubicacion, ...cadena}
-            delete nubicacion.tagBusqueda
-            await ManejadorBD.actualizarInformacion("Inmuebles", inmuebles[i].idFirebase, {ubicacion: {...nubicacion}})
-        }
     }
-    
-
 }
 
 export default SistemaBV

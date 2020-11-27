@@ -25,7 +25,8 @@ class Controlador{
     }
 
     buscarFavorito(idInmueble){
-        return this.modelo.buscarFavorito(idInmueble)
+        let respuesta = this.modelo.buscarFavorito(idInmueble)
+        return respuesta !== null ? respuesta.state : respuesta
     }
 
     async buscarInmueblesIniciales(cantInmuebles = 3){
@@ -116,6 +117,11 @@ class Controlador{
         return await this.modelo.modificarValoracion(idValoracion, camposModificados)
     }
 
+    async obtenerInmueble(idInmueble){
+        let resultado = await this.modelo.obtenerInmueble(idInmueble)
+        return resultado !== null ? resultado.state : null
+    }
+
     obtenerInmueblesCargados(){
         return this.modelo.obtenerInmueblesCargados()
     }
@@ -183,9 +189,6 @@ class Controlador{
         return this.instanciaControlador
     }
 
-    async pruebaX(param=null){
-        return await this.modelo.pruebaX(param)
-    }
 }
 
 
