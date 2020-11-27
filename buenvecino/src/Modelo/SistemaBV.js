@@ -250,6 +250,16 @@ class SistemaBV{
         return null
     }
 
+    obtenerChatsCargados(){
+        if ( this.obtenerUsuarioActivo() !== null ){
+            return this.obtenerUsuarioActivo().obtenerChatsCargados()
+        }
+        else{
+            return []
+        }
+        
+    }
+
     async obtenerInmueble(idInmueble){
         for(let i in this.state.cacheInmuebles){
             if ( this.state.cacheInmuebles[i].inmueble.state.idFirebase === idInmueble ){

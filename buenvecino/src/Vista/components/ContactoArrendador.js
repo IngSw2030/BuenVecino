@@ -44,7 +44,7 @@ class ContactoArrendador extends Component {
 			<div className="logos">
 				<div 
 					onClick={ async (e)=>{
-						this.setState( {disparador: 1} )
+						this.setState( {disparadorIS: 1} )
 						this.decidirFuncionalidadBoton()
 					}
 				}>
@@ -55,7 +55,7 @@ class ContactoArrendador extends Component {
 					this.state.colorFavorito !== null ?
 						<div 
 							onClick={ async (e)=>{ 
-								this.setState( {disparador: 2} )
+								this.setState( {disparadorIS: 2} )
 								this.decidirFuncionalidadBoton()
 							}
 						}>
@@ -112,10 +112,7 @@ class ContactoArrendador extends Component {
 	}
 
 	setOpen = (valor) => {
-		console.log(valor)
-		console.log(this.state.open)
 		this.setState({ open: valor })
-		console.log(this.state.open)
 	}
 
 	handleOpen = () => {
@@ -136,7 +133,6 @@ class ContactoArrendador extends Component {
 			console.log("PROCEDER A CHAT")
 		}
 		else{
-			console.log( this.state.controlador.obtenerTipoUsuarioActivo() )
 			if ( this.state.controlador.obtenerTipoUsuarioActivo() === "Arrendatario" ){
 				this.cambiarEstadoFavorito(true)
 			}	
@@ -148,10 +144,12 @@ class ContactoArrendador extends Component {
 			if ( !ignorarEliminarFavorito ){
 				this.eliminarFavorito()
 			}
+			else{
+				this.modificarImagenFavorito(2)
+			}
 		}
 		else{
 			this.agregarFavorito()
-
 		}
 		
 	}
