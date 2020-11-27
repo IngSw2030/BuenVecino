@@ -11,7 +11,9 @@ class ModificarInmueble extends Component {
         <div className="head">
         <Header/>
         </div>
+        <div className="contenido">
         <ModificarVivienda/>
+        </div>
 
         <Footer/>
         

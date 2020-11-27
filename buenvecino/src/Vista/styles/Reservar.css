@@ -85,9 +85,12 @@
   background: #fd275f;
   color: white;
   font-size: 18px;
+  font-family: Saira;
+  font-weight: 600;
+
 }
 
-.reserva Button:hover{
+.reserva button:hover{
   background: white;
   color: #fd275f;
   border: 1px solid #fd275f;

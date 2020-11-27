@@ -2,8 +2,29 @@ import React, { Component } from "react";
 import { Button } from "@material-ui/core";
 import "../styles/RegistrarVivienda.css";
 import Mapa from './Mapa'
+import { Link } from "react-router-dom";
+import Controlador from "../../Controlador/Controlador";
+
 
 class ModificarVivienda extends Component {
+
+    constructor(props){
+        super()
+        this.state = {
+            controlador: Controlador.getControlador(),
+            tipoInmueble: "C",
+            fotosCargadas: [],
+            estadoFotos: [],
+
+            mensajeError: ""
+        }
+        this.refFormulario = React.createRef()
+        this.refTipoInmueble = React.createRef()
+        this.refFotos = React.createRef()
+
+        this.establecerCoordenadas = this.establecerCoordenadas.bind(this)
+    }
+
     render() {
         return (
             <div className="RegistrarVivienda">
@@ -176,15 +197,140 @@ class ModificarVivienda extends Component {
 
                         </div>
 
+                        <div className="mapa">
+                            <Mapa 
+                                zoom={13} 
+                                centrar = {{lat: 4.641055, lng: -74.086925}} 
+                                infoInmuebles={[]}
+                                retornarCoordenadas = {this.establecerCoordenadas}   
+                            />
+                        </div>
                         
-                        <div className="botones">
-                            <Button> Cancelar </Button>
-                            <Button type="submit"> Registrate </Button>
+
+                        
+                        <div className="botonesM">
+                            <Link to="/"><Button className="cancelarM"> Cancelar </Button></Link>
+                            <Button type="submit" className="actualizarM"> Actualizar </Button>
                         </div>
                     </form>
                 </div>
             </div>
         );
+    }
+
+    establecerCoordenadas(coordenadas){
+        this.setState( {coordenadasSeleccionadas: coordenadas} )
+    }
+
+    eliminarArchivo(index){
+        let fotos = this.state.fotosCargadas
+        let estados = this.state.estadoFotos
+        fotos.splice(index, 1)
+        estados.splice(index, 1)
+        this.setState({
+            fotosCargadas: fotos,
+            estadoFotos: estados
+        })
+    }
+    
+    async actualizarFotos(e){
+        let archivos = e.target.files
+        await this.setState( {fotosCargadas: [...this.state.fotosCargadas, ...archivos]} )
+        let aceptadas = this.state.fotosCargadas.map( (item) =>{
+            return item.type.startsWith("image/")
+        } )
+        this.setState( {estadoFotos: aceptadas} )
+    }
+
+    cambiarTipoInmueble(e){
+        this.setState( {tipoInmueble: this.refTipoInmueble.current.value })
+    }
+
+
+    async iniciarRegistro(e){
+        e.preventDefault()
+
+        if ( this.state.controlador.obtenerTipoUsuarioActivo() !== "Arrendatario" ){
+            this.mostrarError("NO ESTA LOGUEADO UN ARRENDADOR")
+            return
+        }
+
+
+        let miFormulario = this.refFormulario.current
+        let datos = new FormData( miFormulario )
+
+        let esAmoblado = datos.get("amoblado") === "Si"
+        let esCompartido = datos.get("compartido") === "Si"
+        let tipo = datos.get("TInmueble")
+        
+        if ( this.state.fotosCargadas.length === 0 ){
+            this.mostrarError("Las fotos deben ser cargadas")
+            return
+        }
+        for( let i in this.state.fotosCargadas ){
+            if ( !this.state.estadoFotos[i] ){
+                this.mostrarError("Verifique archivos rechazados, no va a continuar :v")
+                return
+            }
+        }
+        if ( this.state.coordenadasSeleccionadas === undefined ){
+            this.mostrarError("Verifique que haya seleccionado en el mapa la ubicación, no va a continuar :v")
+            return
+        }
+
+        let objetoUbicacion = {
+            direccion:      datos.get("direccion"),
+            barrio:         datos.get("barrio"),
+            localidad:      datos.get("localidad"),
+            latitud:        this.state.coordenadasSeleccionadas.lat,
+            longitud:       this.state.coordenadasSeleccionadas.lng
+        }
+
+        let objInmueble = {
+            tipo:           datos.get("TInmueble"),
+            nombre:         datos.get("name"),
+            precio:         parseInt( datos.get("precio") ),
+            descripcion:    datos.get("descripcion"),
+            area:           parseFloat( datos.get("area") ),
+            esAmoblado:     esAmoblado,
+            esCompartido:   esCompartido,
+            ubicacion:      objetoUbicacion,
+            nBanos:         parseInt( datos.get("nbanos") ),
+        }
+        if ( tipo === "A" || tipo === "C" ){
+            objInmueble = {
+                ...objInmueble,
+                nHabitaciones:  parseInt( datos.get("nhabitaciones") ),
+                nPisos:         parseInt( datos.get("nPisos") ),
+                nCocinas:       parseInt( datos.get("nCocinas") ),
+            }
+        }
+        else{
+            objInmueble = {
+                ...objInmueble,
+                nCamas:         parseInt( datos.get("nCamas") )
+            }
+        }
+
+        let respuesta = await this.state.controlador.registrarInmueble( objInmueble )
+        if ( respuesta.idError == 0 ){
+            if ( this.state.fotosCargadas.length > 0 ){
+                let respuestaFotos = await this.state.controlador.subirFotosInmueble(respuesta.idInmueble, this.state.fotosCargadas )
+                if ( respuestaFotos.idError > 0 ){
+                    this.mostrarError(respuestaFotos.mensaje)
+                }
+            }
+            this.setState( {mensajeError: ""} )
+        }
+        else{
+            this.setState( {mensajeError: "MIRE LA CONSOLA QUE HUBO UN ERROR"} )
+
+           this.mostrarError( respuesta.mensaje )
+        }
+    }
+
+    mostrarError(e){
+        console.log( e )
     }
 }
 
