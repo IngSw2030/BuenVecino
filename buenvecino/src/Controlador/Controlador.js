@@ -267,7 +267,13 @@ class Controlador{
             }
         }
         else{
-            localStorage.setItem( "Controlador", JSON.stringify( this.instanciaControlador ) )
+            let lc = localStorage.getItem("Controlador")
+            if ( lc === null ){
+                this.instanciaControlador = new Controlador()
+            }
+            else{
+                localStorage.setItem( "Controlador", JSON.stringify( this.instanciaControlador ) )
+            }
         }
         return this.instanciaControlador
     }

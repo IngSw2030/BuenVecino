@@ -92,14 +92,13 @@ class Chat{
     }
 
     async cargarMensajes(){
-        if ( this.state.listaMensajes === [] ){
+        if ( this.state.listaMensajes.length === 0 ){
             let mensajes = await ManejadorBD.realizarConsulta("Mensajes", ["idChat"], ["=="], [this.state.idFirebase])
             Utils.ordenarArray(mensajes, this.compararMensajes)
             for(let i in mensajes){
                 this.state.listaMensajes.push( new Mensaje(mensajes[i]) )
             }
-        }
-        
+        }        
     }
 
     compararMensajes(mensaje1, mensaje2){
