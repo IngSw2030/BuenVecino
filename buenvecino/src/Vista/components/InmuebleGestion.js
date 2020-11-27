@@ -46,7 +46,7 @@ class InmuebleGestion extends Component {
                         <InmuebleMapa info={obj} />
                         </Link>
                     </div>
-                    <div className="botones">
+                    <div className="botonesGestion">
                         <Link to="/modificarInmueble">
                         <Button
                             variant="contained"
