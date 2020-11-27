@@ -23,7 +23,9 @@ class Chat extends Component {
 			await this.setState( {listaChats: Controlador.getControlador().obtenerChatsCargados()} )
 		}
 		this.actualizarListaChats = this.actualizarListaChats.bind( this )
-		Controlador.getControlador().establecerReceptorChats( this.actualizarListaChats )		
+		Controlador.getControlador().establecerReceptorChats( this.actualizarListaChats )	
+		
+		console.log("MONTADO : ", Controlador.getControlador().obtenerUsuarioActivo())
 	}
 
 	render() {

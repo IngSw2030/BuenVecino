@@ -10,7 +10,8 @@ class Mensaje extends Component {
         super()
         let idActivo = Controlador.getControlador().obtenerUsuarioActivo().idFirebase
         this.state = {
-            mensajes: []
+            mensajes: [],
+            idUsuario: idActivo
         }
         this.recibirActualizacionMensaje = this.recibirActualizacionMensaje.bind( this )
         this.refMensaje = React.createRef()
