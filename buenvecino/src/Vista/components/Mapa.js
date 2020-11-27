@@ -4,10 +4,11 @@ import '../styles/Mapa.css';
 import Controlador from '../../Controlador/Controlador' 
 import {Link} from 'react-router-dom'
 
-const AnyReactComponent = ({ text } ) => {
+const AnyReactComponent = ({ text,path } ) => {
   const [visible, setVisible] = React.useState(false)
+  let url = "/inmueble/"+path
   return (
-    <Link to="/inmueble">
+    <Link to={url}>
     <div className="marcador" 
       onMouseOver={
           (e)=>{
@@ -79,6 +80,7 @@ class Mapa extends Component {
                 lat={obj.ubicacion.latitud}
                 lng={obj.ubicacion.longitud}
                 text={obj.nombre}
+                path={obj.idFirebase}
               />
        
             
