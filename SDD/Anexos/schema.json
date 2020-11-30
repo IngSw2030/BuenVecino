@@ -1,0 +1,415 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/BuenVecino",
+    "definitions": {
+        "Arrendador": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "nombre": {
+                    "type": "string"
+                },
+                "dni": {
+                    "type": "integer"
+                },
+                "tipoDni": {
+                    "type": "string",
+                    "enum": ["CC", "CE", "TI", "PA"]
+                },
+                "genero": {
+                    "type": "string",
+                    "enum": ["M", "F", "O", "N"]
+                },
+                "fechaNacimiento": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "telefono": {
+                    "type": "integer"
+                },
+                "direccion": {
+                    "type": "string"
+                },
+                "ciudad": {
+                    "type": "string"
+                },
+                "solicitudes":{
+                    "type": "array",
+                    "items": {
+                        "type" : "string",
+                        "uniqueItems": true
+                    }
+                },
+                "favoritos":{
+                    "type": "array",
+                    "items": {
+                        "type" : "string",
+                        "uniqueItems": true
+                    }
+                },
+                "chats":{
+                    "type": "array",
+                    "items": {
+                        "type" : "string",
+                        "uniqueItems": true
+                    }
+                },
+                "pagos":{
+                    "type": "array",
+                    "items": {
+                        "type" : "string",
+                        "uniqueItems": true
+                    }
+                }
+            },
+            "required": [
+                "ciudad",
+                "direccion",
+                "dni",
+                "email",
+                "fechaNacimiento",
+                "genero",
+                "nombre",
+                "telefono",
+                "tipoDni",
+                "solicitudes",
+                "chats",
+                "pagos"
+            ],
+            "title": "Arrendador"
+        },
+        "Arrendatario":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "nombre": {
+                    "type": "string"
+                },
+                "dni": {
+                    "type": "integer"
+                },
+                "tipoDni": {
+                    "type": "string",
+                    "enum": ["CC", "CE", "TI", "PA"]
+                },
+                "genero": {
+                    "type": "string",
+                    "enum": ["M", "F", "O", "N"]
+                },
+                "fechaNacimiento": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "telefono": {
+                    "type": "integer"
+                },
+                "solicitudes":{
+                    "type": "array",
+                    "items": {
+                        "type" : "string",
+                        "uniqueItems": true
+                    }
+                },
+                "chats":{
+                    "type": "array",
+                    "items": {
+                        "type" : "string",
+                        "uniqueItems": true
+                    }
+                }
+            },
+            "required": [
+                "dni",
+                "email",
+                "fechaNacimiento",
+                "genero",
+                "nombre",
+                "telefono",
+                "tipoDni",
+                "solicitudes",
+                "pagos"
+            ],
+            "title": "Arrendatario"
+        },
+        "Chat":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "usuario1": {
+                    "type": "string"
+                },
+                "usuario2": {
+                    "type": "string"
+                },
+                "mensajes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "uniqueItems": true
+                    }
+                }
+            },
+            "required": [
+                "usuario1",
+                "usuario2",
+                "mensajes"
+            ],
+            "title": "Chat"
+        },
+        "Favorito":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                
+                "fechaAgregado": {
+                    "type": "number"
+                },
+                "comentario": {
+                    "type": "string"
+                },
+                "idInmueble": {
+                    "type": "string"
+                }
+                
+            },
+            "required": [
+                "fechaAgregado",
+                "comentario",
+                "idInmueble"
+            ],
+            "title": "Favorito"
+        },
+        "Inmueble":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "tipo": {
+                    "type": "string",
+                    "enum": ["C", "H", "A"]
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "precio": {
+                    "type": "integer"
+                },
+                "descripcion": {
+                    "type": "string"
+                },
+                "area": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "esAmoblado": {
+                    "type": "boolean"
+                },
+                "idPropietario" : {
+                    "type": "string"
+                },
+                "ubicacion" : {
+                    "type": "object"
+                },
+                "nBanos": {
+                    "type": "integer"
+                },
+                "esCompartido": {
+                    "type": "boolean"
+                },
+                "properties": {
+                    "nCamas": {
+                        "type": "integer"
+                    }
+                },
+                "nHabitaciones": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "nPisos": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "nCocinas": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "area",
+                "descripcion",
+                "esAmoblado",
+                "nombre",
+                "precio",
+                "tipo",
+                "idPropietario",
+                "ubicacion",
+                "nBanos",
+                "esCompartido"
+            ],
+            "title": "Inmueble"
+        },
+        "Mensaje":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "mensaje": {
+                    "type": "string"
+                },
+                "remitente": {
+                    "type": "string"
+                },
+                "idChat": {
+                    "type": "string"
+                },
+                "momento": {
+                    "type": "integer"   
+                }
+            },
+            "required": [
+                "mensaje",
+                "momento",
+                "remitente",
+                "idChat"
+            ],
+            "title": "Mensaje"
+        },
+        "Pago":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "idSolicitud": {
+                    "type": "string"
+                },
+                "estado":{
+                    "type": "string",
+                    "enum": ["A", "D", "R"],
+                    "$comment": "D: desconocido, A: Aceptado por la entidad R: rechazado por la entidad"
+                },
+                "valor":{
+                    "type": "integer"
+                },
+                "informacionAdicional":{
+                    "type": "object"
+                }
+            },
+            "required": [
+                "idSolicitud",
+                "estado",
+                "valor",
+                "informacionAdicional"
+            ],
+            "title": "Pago"
+        },
+        "Reservacion":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "idArrendatario": {
+                    "type": "string"
+                },
+                "idArrendador": {
+                    "type": "string"
+                },
+                "idInmueble": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "fechaInicio": {
+                    "type": "integer"
+                },
+                "fechaFin": {
+                    "type": "integer"
+                },
+                "valoracion": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "fechaFin",
+                "fechaInicio",
+                "idArrendador",
+                "idArrendatario",
+                "idInmueble",
+                "valor",
+                "valoracion"
+            ],
+            "title": "Reservacion"
+        },
+        "SolicitudReserva":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "idArrendatario": {
+                    "type": "string"
+                },
+                "idArrendador": {
+                    "type": "string"
+                },
+                "idInmueble": {
+                    "type": "string"
+                },
+                "fechaInicio": {
+                    "type": "integer"
+                },
+                "fechaFin": {
+                    "type": "integer"
+                },
+                "estado":{
+                    "type": "string",
+                    "enum": ["A", "C", "D", "R", "CC", "O"],
+                    "$comment": "D: desconocido, A: Aceptado por Arrendatario, R: rechazado por Arrendatario, C: Cancelado por Arrendador, CC: Confirmado por Arrendador, O: EL inmueble ya fue ocupado"
+                }
+            },
+            "required": [
+                "idArrendatario",
+                "idArrendador",
+                "idInmueble",
+                "fechaInicio",
+                "fechaFin",
+                "estado"
+            ],
+            "title": "ESTRUCTURA_JSON"
+        },
+        "Valoracion":{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "idAutor": {
+                    "type": "string"
+                },
+                "idValorado":{
+                    "type": "string"
+                },
+                "comentario":{
+                    "type": "string"
+                },
+                "calificacion":{
+                    "type": "integer",
+                    "minimum" : 1,
+                    "maximun" : 5
+                },
+                "fecha":{
+                    "type": "integer"
+                },
+                "tipo":{
+                    "type": "string",
+                    "enum": ["AO", "AR", "IN"]
+                }
+            },
+            "required": [
+                "idAutor",
+                "idValorado",
+                "comentario",
+                "calificacion",
+                "fecha",
+                "tipo"
+            ],
+            "title": "ESTRUCTURA_JSON"
+        }
+    }
+}
